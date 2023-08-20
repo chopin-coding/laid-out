@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "anxiety",
+    "treebeard"
 ]
 
 MIDDLEWARE = [
@@ -61,8 +63,7 @@ ROOT_URLCONF = "laid_out.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,7 +88,7 @@ DATABASES = {
         "NAME": os.environ["DB_NAME"],
         "USER": os.environ["DB_USER"],
         "PASSWORD": os.environ["DB_USER_PASS"],
-        "HOST": os.environ["DB_HOST"]
+        "HOST": os.environ["DB_HOST"],
     }
 }
 
