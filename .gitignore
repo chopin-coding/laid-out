@@ -288,3 +288,6 @@ fabric.properties
 
 # Env variables
 settings.env
+
+# Migrations
+anxiety/migrations
