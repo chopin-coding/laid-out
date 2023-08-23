@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "anxiety",
-    "treebeard"
+    "treebeard",
 ]
 
 MIDDLEWARE = [
@@ -63,7 +63,10 @@ ROOT_URLCONF = "laid_out.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates", BASE_DIR / "venv/Lib/site-packages/treebeard/templates"],
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR / "venv/Lib/site-packages/treebeard/templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

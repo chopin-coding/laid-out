@@ -1,27 +1,21 @@
+from datetime import datetime
 from django.db import models
 from treebeard.mp_tree import MP_Node
 from django.core.validators import MaxLengthValidator
 
 
-class AnxietyList(models.Model):
-    list_id = models.CharField(max_length=16)
-    user = models.CharField(max_length=36)
-
-    def __str__(self):
-        return f"List ID: {self.list_id}, User: {self.user}"
-
-    class Meta:
-        verbose_name = "Anxiety List"
-        verbose_name_plural = "Anxiety Lists"
-
-
 class AnxietyTree(MP_Node):
-    anxiety_list = models.ForeignKey(AnxietyList, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    description = models.TextField(validators=[MaxLengthValidator(5000)], blank=True)
+    tree_id = models.CharField(max_length=16)
+    date_created = models.DateTimeField("Creation Date", default=datetime.now())
+    user = models.CharField(max_length=36, null=True, blank=True)
+
+    title = models.TextField(validators=[MaxLengthValidator(500)])
+    description = models.TextField(
+        validators=[MaxLengthValidator(5000)], null=True, blank=True
+    )
 
     def __str__(self):
-        return self.title
+        return f"List: {self.tree_id}Title: {self.title}"
 
     class Meta:
         verbose_name = "Anxiety Tree"
