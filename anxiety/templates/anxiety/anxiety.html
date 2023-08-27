@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Tree with HTMX</title>
+
+    <!-- HTMX -->
+
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <style>
+        .node {
+            margin-left: 20px;
+        }
+        .node-description {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-
+    <div id="tree">
+        <div class="node">
+            <label for="anxiety-tree-node">Root Node</label>
+            <button hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="toggle-description" hx-target=".node-description">Info</button>
+            <div class="node-description" hx-swap="outerHTML">Description</div>
+        </div>
+    </div>
+    <br>
+    <div>
+        <button class="htmx-test" hx-post="{% url 'htmx-test' %}" hx-target="#htmx-test-text">HTMX Test button</button>
+        <div id="htmx-test-text"></div>
+    </div>
 </body>
 </html>
