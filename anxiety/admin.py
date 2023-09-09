@@ -4,7 +4,7 @@ from treebeard.forms import movenodeform_factory
 from anxiety.models import AnxietyTree, AnxietyTreeMetadata
 
 
-@admin.register(AnxietyTree)
+# @admin.register(AnxietyTree)
 class AnxietyTreeAdmin(TreeAdmin):
     form = movenodeform_factory(AnxietyTree)
 
