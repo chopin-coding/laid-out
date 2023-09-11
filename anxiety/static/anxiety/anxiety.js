@@ -1,67 +1,25 @@
-"use strict";
-
 const sample_data = [
   {
     title: "Node 1",
+    locked: false,
     children: [
       {
         title: "Node 1.1",
+        locked: false,
         children: [],
       },
       {
         title: "Node 1.2",
+        locked: false,
         children: [],
-      },
-    ],
-  },
-  {
-    title: "Node 2",
-    children: [
-      {
-        title: "Node 2.1",
-        children: [],
-      },
-      {
-        title: "Node 2.2",
-        children: [
-          {
-            title: "Node 2.2.3",
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "funny stuff",
-    children: [],
-  },
-  {
-    title: "Node 4",
-    children: [
-      {
-        title: "Node 4.1",
-        children: [
-          {
-            title: "Node 4.1.1",
-            children: [],
-          },
-          {
-            title: "Node 4.1.2",
-            children: [
-              {
-                title: "some node",
-                children: [],
-              },
-            ],
-          },
-        ],
       },
     ],
   },
 ];
 
-function htmlToJSON2(element) {
+function htmlToJSON(element) {
+  "use strict";
+
   const result = [];
 
   function convertNode(node) {
@@ -83,11 +41,83 @@ function htmlToJSON2(element) {
 }
 
 function jsonToHTML(data) {
+  "use strict";
+
+  function createChildNode(node) {
+    const ul = document.createElement("ul");
+    node.appendChild(ul);
+    const li = document.createElement("li");
+    ul.appendChild(li);
+    const lockedCheckbox = document.createElement("input");
+    const inputElement = document.createElement("input");
+
+    lockedCheckbox.type = "checkbox";
+    lockedCheckbox.value = "false";
+
+    li.appendChild(lockedCheckbox);
+    li.appendChild(inputElement);
+
+    inputElement.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        createSiblingNode(li);
+      }
+
+      if (event.key === "Tab") {
+        createChildNode(li);
+        event.preventDefault();
+      }
+    });
+    inputElement.focus();
+  }
+
+  function createSiblingNode(node) {
+    const li = document.createElement("li");
+    const lockedCheckbox = document.createElement("input");
+    const inputElement = document.createElement("input");
+
+    lockedCheckbox.type = "checkbox";
+    lockedCheckbox.value = "false";
+
+    li.appendChild(lockedCheckbox);
+    li.appendChild(inputElement);
+
+    node.parentNode.insertBefore(li, node.nextSibling);
+
+    inputElement.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        createSiblingNode(inputElement.parentNode);
+      }
+
+      if (event.key === "Tab") {
+        createChildNode(li);
+        event.preventDefault();
+      }
+    });
+    inputElement.focus();
+  }
+
   function createHTMLNode(item) {
     const li = document.createElement("li");
-    const input_element = document.createElement("input");
-    input_element.value = item.title;
-    li.appendChild(input_element);
+    const lockedCheckbox = document.createElement("input");
+    const inputElement = document.createElement("input");
+
+    inputElement.value = item.title;
+
+    lockedCheckbox.type = "checkbox";
+    lockedCheckbox.value = item.locked;
+
+    li.appendChild(lockedCheckbox);
+    li.appendChild(inputElement);
+
+    inputElement.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        createSiblingNode(li);
+      }
+      if (event.key === "Tab") {
+        createChildNode(li);
+        event.preventDefault();
+      }
+    });
 
     if (item.children.length > 0) {
       const ul = document.createElement("ul");
@@ -113,5 +143,5 @@ const htmlResult = jsonToHTML(sample_data);
 containerElement.appendChild(htmlResult);
 
 const htmlElement = document.getElementById("tree-root-container");
-const jsonResult = htmlToJSON2(htmlElement);
-console.log(jsonResult);
+const jsonResult = htmlToJSON(htmlElement);
+// console.log(jsonResult);
