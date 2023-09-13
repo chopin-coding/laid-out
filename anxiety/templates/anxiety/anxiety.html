@@ -1,18 +1,27 @@
+{% extends 'base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Anxiety</title>
-</head>
-<body>
+
+{% block head %}
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="tree-root-container">
+
+    </div>
+
+    <div id="new-tree-button-container">
+
+    </div>
+
+    <button id="newTree-button">
+        Create New Tree
+    </button>
+
+    <div class="backend-tree-root-container">
+
+    </div>
 
 
-<div id="tree-root-container">
-
-</div>
-<script src="//unpkg.com/alpinejs" defer></script>
-<script src="{% static 'anxiety/anxiety.js' %}" defer></script>
-</body>
-</html>
+    <script src="{% static 'anxiety/anxiety.js' %}" defer></script>
+{% endblock %}
