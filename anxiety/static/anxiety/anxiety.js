@@ -27,7 +27,7 @@ function htmlToJSON() {
   function convertNode(node) {
     const tree_node = {
       title: node.querySelector(":scope > .node-text").value,
-      locked: node.querySelector(":scope > .node-locked").value,
+      locked: node.querySelector(":scope > .node-locked").checked,
       children: [],
     };
     const childNodes = node.querySelectorAll(":scope > ul > li"); // Selects immediate children
@@ -65,9 +65,7 @@ function jsonToHTML(data) {
     li.appendChild(deleteNodeButton);
 
     if (locked_value !== null) {
-      lockedCheckbox.value = locked_value;
-    } else {
-      lockedCheckbox.value = "false";
+      lockedCheckbox.checked = locked_value;
     }
 
     if (input_value !== null) {

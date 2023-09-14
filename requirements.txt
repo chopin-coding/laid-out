@@ -4,3 +4,5 @@ python-dotenv==1.0.0
 Markdown==3.4.4
 djangorestframework==3.14.0
 django-filter==23.2
+pydantic==2.3.0
+jsonschema==4.19.0
