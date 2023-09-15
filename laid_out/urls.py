@@ -19,10 +19,9 @@ from anxiety.views import index_view
 from django.urls import path, include
 
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-
     path("", index_view, name="index"),
     path("anxiety/", include("anxiety.urls")),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
