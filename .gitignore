@@ -284,10 +284,16 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 
+
+.idea/jsLibraryMappings.xml
+
 # End of https://www.toptal.com/developers/gitignore/api/django,pycharm
 
 # Env variables
 *.env
+
+# Django collectedstatic
+collectedstatic
 
 # Migrations
 anxiety/migrations
