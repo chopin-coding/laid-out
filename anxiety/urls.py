@@ -1,4 +1,5 @@
 from django.urls import path, include
+from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
 from . import views
@@ -15,8 +16,11 @@ htmx_urlpatterns = [
 ]
 
 api_urlpatterns = [
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
+    # path("docs/", include_docs_urls(title='Anxiety Tree API')),  # TODO: remove before prod
+
 ]
 
 urlpatterns += htmx_urlpatterns
 urlpatterns += api_urlpatterns
+

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "debug_toolbar",  # FIXME: remove before prod
     "rest_framework",
     "anxiety",
+    "django_vite"
 ]
 
 REST_FRAMEWORK = {
@@ -48,9 +49,7 @@ REST_FRAMEWORK = {
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 # FIXME: remove before prod?
-INTERNAL_IPS = [
-    "127.0.0.1"
-]
+INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # must come before most but after gzip
@@ -134,9 +133,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
+
+DJANGO_VITE_DEV_MODE = True
+
+STATIC_ROOT = BASE_DIR / "collectedstatic"
+
+STATICFILES_DIRS = [
+    DJANGO_VITE_ASSETS_PATH
+]

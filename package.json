@@ -1,0 +1,18 @@
+{
+  "name": "django-vite-server",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.3"
+  }
+}

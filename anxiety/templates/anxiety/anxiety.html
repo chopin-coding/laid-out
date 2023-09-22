@@ -1,27 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load django_vite %}
 
 {% block head %}
-    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+    {% vite_hmr_client %}
+    {% vite_asset 'ts/main.ts' %}
+
 {% endblock %}
 
 {% block content %}
+
     <div id="tree-root-container">
 
     </div>
 
-    <div id="new-tree-button-container">
-
-    </div>
-
-    <button id="newTree-button">
-        Create New Tree
+    <button onclick="localStorage.removeItem('anxietyTrees')">
+        Clear Storage
     </button>
 
-    <div class="backend-tree-root-container">
+    <button onclick="addAnxietyTrees()">
+        Create new tree
+    </button>
+
+    <div id="app">
 
     </div>
 
 
-    <script src="{% static 'anxiety/anxiety.js' %}" defer></script>
+
+    <div>
+        <div>
+            Tree List
+        </div>
+        <div id="tree-list-container">
+
+        </div>
+    </div>
+
+
+
 {% endblock %}
