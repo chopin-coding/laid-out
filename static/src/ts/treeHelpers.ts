@@ -1,34 +1,41 @@
 import { v4 as uuidv4 } from "uuid";
 
 export interface TreeNode {
-  title: string;
-  locked: boolean;
+  title: string
+  locked: boolean
+  nodeId: string
   children: TreeNode[];
 }
 
 export interface Tree {
-  frontendTreeId: string;
-  treeName: string;
-  treeData: TreeNode[];
+  frontendTreeId: string
+  treeName: string
+  treeData: TreeNode[]
+}
+
+export function defaultTreeNode(): TreeNode {
+  const newNodeId: string = uuidv4();
+  return {
+      title: "",
+      locked: false,
+      nodeId: newNodeId,
+      children: [],
+    }
 }
 
 function defaultTreeData(): TreeNode[] {
   return [
-    {
-      title: "",
-      locked: false,
-      children: [],
-    },
+    defaultTreeNode()
   ];
 }
 
-function createTree(
+export function defaultTree(
   treeName: string = null,
   treeData: TreeNode[] = null,
 ): Tree {
-  const newId: string = uuidv4();
+  const newFrontendTreeId: string = uuidv4();
   return {
-    frontendTreeId: newId,
+    frontendTreeId: newFrontendTreeId,
     treeName: treeName || "New Tree",
     treeData: treeData || defaultTreeData(),
   };
@@ -42,7 +49,7 @@ export function addTrees(treesToAdd: Tree[] = null): void {
       existingTrees.push(tree);
     }
   } else {
-    existingTrees.push(createTree());
+    existingTrees.push(defaultTree());
   }
   saveTrees(existingTrees);
 }
@@ -52,7 +59,18 @@ export function getTrees(): Tree[] {
   return JSON.parse(trees);
 }
 
-function updateTree(
+export function getTreeDataByFrontendTreeId(
+  frontendTreeId: string,
+): TreeNode[] {
+  const trees: Tree[] = getTrees();
+  const indexToReturn: number = trees.findIndex(
+    (tree: Tree): boolean => tree.frontendTreeId === frontendTreeId,
+  );
+
+  return trees[indexToReturn].treeData;
+}
+
+export function updateTree(
   frontendTreeId: string,
   treeName: string = null,
   treeData: TreeNode[] = null,
@@ -93,10 +111,10 @@ function saveTrees(trees: Tree[]) {
   window.dispatchEvent(new Event("tree-storage"));
 }
 
-function initLocalStorageTrees() {
+export function initLocalStorageTrees() {
   let trees: Tree[] = getTrees();
   if (trees.length === 0) {
-    trees.push(createTree());
+    trees.push(defaultTree());
     saveTrees(trees);
   }
 }
@@ -120,43 +138,46 @@ function renderTreeNode(treeNode: TreeNode) {
   return htmlTreeNode;
 }
 
-function renderTree(treeData: TreeNode[]) {
+export function renderTree(treeData: TreeNode[]): HTMLElement {
+  const rootEl = document.createElement("div");
+  rootEl.id = "tree-root-container";
   const ul = document.createElement("ul");
   treeData.forEach((item) => {
     ul.appendChild(renderTreeNode(item));
   });
 
-  document.getElementById("tree-root-container").appendChild(ul);
+  rootEl.appendChild(ul);
+  return rootEl;
 }
 
-function parseHtmlTree() {
-  const htmlTreeRoot: HTMLElement = document.getElementById(
-    "tree-root-container",
-  );
-  const treeNodeArray: TreeNode[] = [];
-
-  // Convert HTML Tree Node to TreeNode
-  function convertNode(htmlTreeNode): TreeNode {
-    const parsedHtmlTreeNode: TreeNode = {
-      title: htmlTreeNode.querySelector(":scope > .node-text").value,
-      locked: htmlTreeNode.querySelector(":scope > .node-locked").checked,
-      children: [],
-    };
-    const childNodes = htmlTreeNode.querySelectorAll(":scope > ul > li");
-
-    childNodes.forEach((childNode): void => {
-      parsedHtmlTreeNode.children.push(convertNode(childNode));
-    });
-    return parsedHtmlTreeNode;
-  }
-
-  const topLevelNodes = htmlTreeRoot.querySelectorAll(":scope > ul > li");
-  topLevelNodes.forEach((htmlTreeNode): void => {
-    treeNodeArray.push(convertNode(htmlTreeNode));
-  });
-
-  return treeNodeArray;
-}
+// function parseHtmlTree() {
+//   const htmlTreeRoot: HTMLElement = document.getElementById(
+//     "tree-root-container",
+//   );
+//   const treeNodeArray: TreeNode[] = [];
+//
+//   // Convert HTML TreeHelpers Node to TreeNode
+//   function convertNode(htmlTreeNode): TreeNode {
+//     const parsedHtmlTreeNode: TreeNode = {
+//       title: htmlTreeNode.querySelector(":scope > .node-text").value,
+//       locked: htmlTreeNode.querySelector(":scope > .node-locked").checked,
+//       children: [],
+//     };
+//     const childNodes = htmlTreeNode.querySelectorAll(":scope > ul > li");
+//
+//     childNodes.forEach((childNode): void => {
+//       parsedHtmlTreeNode.children.push(convertNode(childNode));
+//     });
+//     return parsedHtmlTreeNode;
+//   }
+//
+//   const topLevelNodes = htmlTreeRoot.querySelectorAll(":scope > ul > li");
+//   topLevelNodes.forEach((htmlTreeNode): void => {
+//     treeNodeArray.push(convertNode(htmlTreeNode));
+//   });
+//
+//   return treeNodeArray;
+// }
 
 function createNode(title: string = null, locked: boolean = null) {
   const htmlTreeNode: HTMLLIElement = document.createElement("li");

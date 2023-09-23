@@ -2,13 +2,14 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, Field, UUID4
 
 
 class TreeDataNode(BaseModel):
     title: str
     locked: bool
     children: list["TreeDataNode"]
+    nodeId: UUID4
 
     @field_validator("title")
     def ensure_title_max_length(cls, v: str) -> str:
@@ -20,36 +21,6 @@ class TreeDataNode(BaseModel):
 
 class TreeData(BaseModel):
     tree_data: list[TreeDataNode]
-
-
-tree_data_json_schema = {
-    "$defs": {
-        "TreeDataNode": {
-            "properties": {
-                "title": {"title": "Title", "type": "string"},
-                "locked": {"title": "Locked", "type": "boolean"},
-                "children": {
-                    "items": {"$ref": "#/$defs/TreeDataNode"},
-                    "title": "Children",
-                    "type": "array",
-                },
-            },
-            "required": ["title", "locked", "children"],
-            "title": "TreeDataNode",
-            "type": "object",
-        }
-    },
-    "properties": {
-        "tree_data": {
-            "items": {"$ref": "#/$defs/TreeDataNode"},
-            "title": "Tree Data",
-            "type": "array",
-        }
-    },
-    "required": ["tree_data"],
-    "title": "TreeData",
-    "type": "object",
-}
 
 
 def default_tree_data():

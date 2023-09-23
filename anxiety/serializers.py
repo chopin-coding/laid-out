@@ -1,6 +1,7 @@
 import jsonschema
+from pydantic import ValidationError
 from rest_framework import serializers
-from anxiety.models import AnxietyTree, tree_data_json_schema, default_tree_data
+from anxiety.models import AnxietyTree, default_tree_data, TreeData, TreeDataNode
 
 
 class AnxietyTreeSerializer(serializers.Serializer):
@@ -21,10 +22,8 @@ class AnxietyTreeSerializer(serializers.Serializer):
                 raise serializers.ValidationError("The tree data is too large.")
 
         try:
-            jsonschema.validate(
-                instance={"tree_data": data}, schema=tree_data_json_schema
-            )
-        except jsonschema.exceptions.ValidationError as e:
+            _ = {"tree_data": TreeData(tree_data=data)}
+        except ValidationError as e:
             raise serializers.ValidationError(e)
 
         return data
