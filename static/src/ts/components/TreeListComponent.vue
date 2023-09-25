@@ -9,10 +9,6 @@ interface TreeArray {
 // defineProps<TreeNode[]>(); doesn't work
 let props = defineProps<TreeArray>();
 
-function clearStorage() {
-  localStorage.removeItem("anxietyTrees");
-}
-
 function newTree() {
   props.trees.push(treeHelpers.defaultTree())
 }
@@ -25,8 +21,8 @@ function deleteBtnHandler(frontendTreeId: string) {
   }
 }
 
+const emit = defineEmits(['selectTree'])
 
-// v-on:click="treeBtnHandler(tree.frontendTreeId)"
 </script>
 
 <template>
@@ -36,7 +32,7 @@ function deleteBtnHandler(frontendTreeId: string) {
     <h2>Trees</h2>
     <div v-for="tree in trees" :key="tree.frontendTreeId">
       <input
-        v-model="tree.treeName"
+        v-model="tree.treeName" v-on:click="emit('selectTree', tree.frontendTreeId)"
       />
       <button @click="deleteBtnHandler(tree.frontendTreeId)">Delete</button>
     </div>

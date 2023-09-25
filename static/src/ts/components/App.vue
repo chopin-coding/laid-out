@@ -14,19 +14,46 @@ if (loggedIn) {
 } else {
   tempTreeStore.value.push(treeHelpers.defaultTree());
 }
+
+// async function printTreeData() {
+//   while (true) {
+//     console.log(tempTreeStore.value[0].treeName);
+//     await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+//   }
+// }
+
+// printTreeData();
+
+let selectedTreeIndex = ref(0);
+
+function selectTreeHandler(frontendTreeId: string): void {
+  const indexToSelect = tempTreeStore.value.findIndex(
+    (tree) => tree.frontendTreeId === frontendTreeId,
+  );
+
+  if (indexToSelect !== -1) {
+    selectedTreeIndex.value = indexToSelect;
+  }
+}
 </script>
 
 <template>
   <div>
     <div>
       <component
+        v-if="tempTreeStore.length !== 0"
         :is="TreeComponent"
-        :treeNodes="tempTreeStore[0].treeData"
+        :tree-nodes="tempTreeStore[selectedTreeIndex].treeData"
       />
+      <div v-else>No trees to show</div>
     </div>
 
     <div>
-      <component :is="TreeListComponent" :trees="tempTreeStore" />
+      <component
+        :is="TreeListComponent"
+        :trees="tempTreeStore"
+        @select-tree="(frontendTreeId) => selectTreeHandler(frontendTreeId)"
+      />
     </div>
   </div>
 </template>
