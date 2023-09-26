@@ -10,36 +10,35 @@ interface TreeArray {
 let props = defineProps<TreeArray>();
 
 function newTree() {
-  props.trees.push(treeHelpers.defaultTree())
+  props.trees.push(treeHelpers.defaultTree());
 }
 
 function deleteBtnHandler(frontendTreeId: string) {
-  const indexToDelete = props.trees.findIndex(tree => tree.frontendTreeId === frontendTreeId)
+  const indexToDelete = props.trees.findIndex(
+    (tree) => tree.frontendTreeId === frontendTreeId,
+  );
 
   if (indexToDelete !== -1) {
-    props.trees.splice(indexToDelete, 1)
+    props.trees.splice(indexToDelete, 1);
   }
 }
 
-const emit = defineEmits(['selectTree'])
-
+const emit = defineEmits(["selectTree"]);
 </script>
 
 <template>
-  <div>
-  </div>
+  <div></div>
   <div>
     <h2>Trees</h2>
     <div v-for="tree in trees" :key="tree.frontendTreeId">
-      <input
-        v-model="tree.treeName" v-on:click="emit('selectTree', tree.frontendTreeId)"
-      />
+      <span
+        v-text="tree.treeName"
+        v-on:click="emit('selectTree', tree.frontendTreeId)"
+      ></span>
       <button @click="deleteBtnHandler(tree.frontendTreeId)">Delete</button>
     </div>
     <div>
-      <button @click="newTree">
-        Add
-      </button>
+      <button @click="newTree">Add</button>
     </div>
   </div>
 </template>

@@ -4,27 +4,31 @@ import { ref } from "vue";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import * as treeHelpers from "../treeHelpers";
 
-
-
-interface TreeNodeArray {
+interface TreeComponentProps {
   treeNodes: treeHelpers.TreeNode[];
 }
 
 // defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeNodeArray>();
+let props = defineProps<TreeComponentProps>();
 
-let visibilityToggle = ref(false)
-
-
+let visibilityToggle = ref(false);
 </script>
 
 <template>
-<!-- TODO: global toggle for uncontrollable item visibility -->
   <div>
-    <label for="uncontrollable-visibility toggle" >Hide Uncontrollable</label>
-    <input id="uncontrollable-visibility toggle" type="checkbox" v-model="visibilityToggle"/>
+    <label for="uncontrollable-visibility toggle">Hide Uncontrollable</label>
+    <input
+      id="uncontrollable-visibility toggle"
+      type="checkbox"
+      v-model="visibilityToggle"
+    />
   </div>
-  <component :is="TreeNodeComponent" :tree-nodes="treeNodes" :visibility-toggle="visibilityToggle" />
+
+  <component
+    :is="TreeNodeComponent"
+    :tree-nodes="treeNodes"
+    :visibility-toggle="visibilityToggle"
+  />
 </template>
 
 <style scoped></style>

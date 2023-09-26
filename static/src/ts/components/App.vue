@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import * as treeHelpers from "../treeHelpers";
 import { useStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
@@ -15,15 +15,6 @@ if (loggedIn) {
   tempTreeStore.value.push(treeHelpers.defaultTree());
 }
 
-// async function printTreeData() {
-//   while (true) {
-//     console.log(tempTreeStore.value[0].treeName);
-//     await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
-//   }
-// }
-
-// printTreeData();
-
 let selectedTreeIndex = ref(0);
 
 function selectTreeHandler(frontendTreeId: string): void {
@@ -35,11 +26,16 @@ function selectTreeHandler(frontendTreeId: string): void {
     selectedTreeIndex.value = indexToSelect;
   }
 }
+
 </script>
 
 <template>
   <div>
     <div>
+      <div>
+        <label for="selected-tree-name-input">Tree Name</label>
+        <input id="selected-tree-name-input" v-model="tempTreeStore[selectedTreeIndex].treeName" />
+      </div>
       <component
         v-if="tempTreeStore.length !== 0"
         :is="TreeComponent"
@@ -49,6 +45,7 @@ function selectTreeHandler(frontendTreeId: string): void {
     </div>
 
     <div>
+
       <component
         :is="TreeListComponent"
         :trees="tempTreeStore"
