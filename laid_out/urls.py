@@ -24,4 +24,5 @@ urlpatterns = [
     path("", index_view, name="index"),
     path("anxiety/", include("anxiety.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path('accounts/', include('allauth.urls')),
 ]

@@ -1,5 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+
 
 {% block content %}
-	<h1>home page :)</h1>
+    {% include 'base/navbar.html' %}
+
+	<h1 style="text-align: center">home page :)</h1>
+
 {% endblock %}

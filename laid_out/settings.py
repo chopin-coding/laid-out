@@ -27,6 +27,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -35,8 +39,46 @@ INSTALLED_APPS = [
     "debug_toolbar",  # FIXME: remove before prod
     "rest_framework",
     "anxiety",
-    "django_vite"
+    "django_vite",
 ]
+
+# ***   ALLAUTH   ***
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+# ACCOUNT_SIGNUP_REDIRECT_URL
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL
+SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_STORE_TOKENS = False
+
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+
+ACCOUNT_ADAPTER = 'laid_out.adapter.UsernameCustomAdapter'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': os.environ["ALLAUTH_GOOGLE_AUTH_CLIENT_ID"],
+            'secret': os.environ["ALLAUTH_GOOGLE_AUTH_SECRET"],
+        }
+    }
+}
+
+# ***   ALLAUTH   ***
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -60,6 +102,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -102,6 +145,14 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 # TODO: Configure these before prod
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -139,7 +190,6 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
