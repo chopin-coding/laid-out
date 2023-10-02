@@ -8,16 +8,38 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                    <a class="nav-link {% if current_page == 'home' %} active {% endif %}"
+                            {% if current_page == 'home' %} aria-current="page" {% endif %}
+                       href="{% url 'index' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'anxiety_index' %}">Anxiety</a>
+                    <a class="nav-link {% if current_page == 'anxiety' %} active {% endif %}"
+                            {% if current_page == 'anxiety' %} aria-current="page" {% endif %}
+                       href="{% url 'anxiety_index' %}">Anxiety</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link {% if current_page == 'about' %} active {% endif %}"
+                            {% if current_page == 'about' %} aria-current="page" {% endif %}
+                       href="{% url 'about' %}">About</a>
                 </li>
             </ul>
-            <a class="btn btn-primary" href="{% url 'account_login' %}" role="button">Login</a>
+            {% if user_authenticated == False %}
+                <a class="btn btn-primary" href="{% url 'account_login' %}" role="button">Log in</a>
+            {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'account_details' %}">Details</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'account_logout' %}">Log out</a></li>
+                    </ul>
+                </li>
+            {% endif %}
         </div>
     </div>
 </nav>

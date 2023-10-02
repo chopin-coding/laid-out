@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render
 
 from django.http import HttpResponse, Http404
@@ -10,18 +12,35 @@ from anxiety.models import AnxietyTree
 from anxiety.serializers import AnxietyTreeSerializer
 
 
+def navbar_helper(
+        *,
+        request: WSGIRequest,
+        current_page: str,
+):
+    return {
+        "current_page": current_page,
+        "user_authenticated": request.user.is_authenticated
+    }
+
+
 def index_view(request):
-    return render(request, "../templates/index.html")
+    return render(request, "../templates/index.html", context=navbar_helper(request=request, current_page='home'))
 
 
 def anxiety_view(request):
-    anxiety_list = 123
-
-    return render(request, "anxiety/anxiety.html", {"anxiety_list": anxiety_list})
+    return render(request, "anxiety/anxiety.html", context=navbar_helper(request=request, current_page='anxiety'))
 
 
 def htmx_test_view(request):
     return HttpResponse("HTMX test")
+
+
+def account_view(request):
+    return render(request, "account.html", context=navbar_helper(request=request, current_page='account_details'))
+
+
+def about_view(request):
+    return render(request, "about.html", context=navbar_helper(request=request, current_page='about'))
 
 
 class AnxietyTreeViewSet(
