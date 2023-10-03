@@ -1,15 +1,36 @@
 {% extends 'base/base.html' %}
-{% load account %}
 {% block title %}
-Account
+    Account
 {% endblock %}
 
 
 
 {% block content %}
-    {% include 'base/navbar.html' %}
 
-	<h4 class="text-center">Account Details </h4>
+    <h4 class="text-center">Account Details </h4>
+    <div>
+        Username: {{ user.get_username }}
+    </div>
+    <div>
+        Email: {{ user.email }}
+    </div>
+    <ul>
+        <li>
+            <a href="{% url 'account_email' %}">Change email</a>
+        </li>
+        <li>
+            <a href="{% url 'socialaccount_connections' %}">Social authentication methods</a>
+        </li>
+        <li>
+            <a href="{% url 'account_change_password' %}">Set or change password</a>
+        </li>
+
+
+        <li>
+            <a href="#">Delete account (TBA)</a>
+        </li>
+
+    </ul>
 
 
 

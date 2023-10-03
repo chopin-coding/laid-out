@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.http import HttpResponse, Http404
+from django.urls import reverse
 from rest_framework import mixins, generics, viewsets, permissions
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -12,23 +13,20 @@ from anxiety.models import AnxietyTree
 from anxiety.serializers import AnxietyTreeSerializer
 
 
-def navbar_helper(
-        *,
-        request: WSGIRequest,
-        current_page: str,
-):
-    return {
-        "current_page": current_page,
-        "user_authenticated": request.user.is_authenticated
+def index_view(request):
+    context = {
+        "current_page": "home",
     }
 
-
-def index_view(request):
-    return render(request, "../templates/index.html", context=navbar_helper(request=request, current_page='home'))
+    return render(request, "../templates/index.html", context=context)
 
 
 def anxiety_view(request):
-    return render(request, "anxiety/anxiety.html", context=navbar_helper(request=request, current_page='anxiety'))
+    context = {
+        "current_page": "anxiety",
+    }
+
+    return render(request, "anxiety/anxiety.html", context=context)
 
 
 def htmx_test_view(request):
@@ -36,11 +34,23 @@ def htmx_test_view(request):
 
 
 def account_view(request):
-    return render(request, "account.html", context=navbar_helper(request=request, current_page='account_details'))
+    if not request.user.is_authenticated:
+        return redirect(reverse('account_login'))
+
+    context = {
+        "current_page": "account_details",
+    }
+
+    return render(request, "account.html", context=context)
 
 
 def about_view(request):
-    return render(request, "about.html", context=navbar_helper(request=request, current_page='about'))
+
+    context = {
+        "current_page": "account_about",
+    }
+
+    return render(request, "about.html", context=context)
 
 
 class AnxietyTreeViewSet(
