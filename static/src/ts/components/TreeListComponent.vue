@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import * as treeHelpers from "../treeHelpers";
+import { Tree } from "../interfaces";
 
 interface TreeArray {
-  trees: treeHelpers.Tree[];
+  trees: Tree[];
 }
 
 // defineProps<TreeNode[]>(); doesn't work
@@ -30,12 +30,12 @@ const emit = defineEmits(["selectTree"]);
   <div></div>
   <div>
     <h2>Trees</h2>
-    <div v-for="tree in trees" :key="tree.frontendTreeId">
+    <div v-for="tree in trees" :key="tree.tree_id">
       <span
-        v-text="tree.treeName"
-        v-on:click="emit('selectTree', tree.frontendTreeId)"
+        v-text="tree.tree_name"
+        v-on:click="emit('selectTree', tree.tree_id)"
       ></span>
-      <button @click="deleteBtnHandler(tree.frontendTreeId)">Delete</button>
+      <button @click="deleteBtnHandler(tree.tree_id)">Delete</button>
     </div>
     <div>
       <button @click="newTree">Add</button>

@@ -4,9 +4,10 @@ import throttle from "lodash/throttle";
 
 import * as treeHelpers from "../treeHelpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
+import { TreeNode } from "../interfaces";
 
 interface TreeNodeComponentProps {
-  treeNodes: treeHelpers.TreeNode[];
+  treeNodes: TreeNode[];
   visibilityToggle: boolean;
 }
 
@@ -15,17 +16,17 @@ let props = defineProps<TreeNodeComponentProps>();
 
 async function childBtnHandler(nodeId: string) {
   const indexToAddTo = props.treeNodes.findIndex(
-    (node) => node.nodeId === nodeId,
+    (node) => node.node_id === nodeId,
   );
 
-  const nodeToAdd: treeHelpers.TreeNode = treeHelpers.defaultTreeNode();
+  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
 
   if (indexToAddTo !== -1) {
     props.treeNodes[indexToAddTo].children.push(nodeToAdd);
   }
 
   await nextTick();
-  document.getElementById(`${nodeToAdd.nodeId}-titleInput`).focus();
+  document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
 
 throttle(function () {
@@ -34,21 +35,21 @@ throttle(function () {
 
 async function siblingBtnHandler(nodeId: string) {
   const indexToAddTo =
-    props.treeNodes.findIndex((node) => node.nodeId === nodeId) + 1;
+    props.treeNodes.findIndex((node) => node.node_id === nodeId) + 1;
 
-  const nodeToAdd: treeHelpers.TreeNode = treeHelpers.defaultTreeNode();
+  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
 
   if (indexToAddTo !== -1) {
     props.treeNodes.splice(indexToAddTo, 0, nodeToAdd);
   }
 
   await nextTick();
-  document.getElementById(`${nodeToAdd.nodeId}-titleInput`).focus();
+  document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
 
 function deleteBtnHandler(nodeId: string) {
   const indexToDelete = props.treeNodes.findIndex(
-    (node) => node.nodeId === nodeId,
+    (node) => node.node_id === nodeId,
   );
 
   if (indexToDelete !== -1) {
@@ -61,19 +62,19 @@ function deleteBtnHandler(nodeId: string) {
   <ul>
     <li
       v-for="node in treeNodes"
-      :key="node.nodeId"
+      :key="node.node_id"
       v-show="!(node.locked && visibilityToggle)"
     >
       <input type="checkbox" v-model="node.locked" />
       <input
         v-model="node.title"
-        @keyup.enter.exact="siblingBtnHandler(node.nodeId)"
-        @keydown.prevent.tab.exact="childBtnHandler(node.nodeId)"
-        :id="`${node.nodeId}-titleInput`"
+        @keyup.enter.exact="siblingBtnHandler(node.node_id)"
+        @keydown.prevent.tab.exact="childBtnHandler(node.node_id)"
+        :id="`${node.node_id}-titleInput`"
       />
-      <button @click="childBtnHandler(node.nodeId)">Add child</button>
-      <button @click="siblingBtnHandler(node.nodeId)">Add sibling</button>
-      <button @click="deleteBtnHandler(node.nodeId)">Delete</button>
+      <button @click="childBtnHandler(node.node_id)">Add child</button>
+      <button @click="siblingBtnHandler(node.node_id)">Add sibling</button>
+      <button @click="deleteBtnHandler(node.node_id)">Delete</button>
       <component
         v-if="node.children.length > 0"
         :is="TreeNodeComponent"

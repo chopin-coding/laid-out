@@ -27,10 +27,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -61,37 +61,39 @@ SOCIALACCOUNT_STORE_TOKENS = False
 
 # ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 # ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
 
-ACCOUNT_ADAPTER = 'laid_out.adapter.UsernameCustomAdapter'
+ACCOUNT_ADAPTER = "laid_out.adapter.UsernameCustomAdapter"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_EMAIL_VERIFICATION = "optional"  #
 
-
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
         ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
+        "AUTH_PARAMS": {
+            "access_type": "online",
         },
-        'APP': {
-            'client_id': os.environ["ALLAUTH_GOOGLE_AUTH_CLIENT_ID"],
-            'secret': os.environ["ALLAUTH_GOOGLE_AUTH_SECRET"],
-        }
+        "APP": {
+            "client_id": os.environ["ALLAUTH_GOOGLE_AUTH_CLIENT_ID"],
+            "secret": os.environ["ALLAUTH_GOOGLE_AUTH_SECRET"],
+        },
     }
 }
 
-# ***   ALLAUTH   ***
+# ***   DRF   ***
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    # FIXME: gotta configure this I guess
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ]
 }
 
 # Session lifetime in seconds
@@ -155,10 +157,9 @@ DATABASES = {
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
+    "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # TODO: Configure these before prod
@@ -189,22 +190,31 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = "/static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ***   django-vite   ***
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 DJANGO_VITE_DEV_MODE = True
 
-STATIC_ROOT = BASE_DIR / "collectedstatic"
 
+
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+STATIC_ROOT = BASE_DIR / "collectedstatic"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
+    BASE_DIR / "static",
     DJANGO_VITE_ASSETS_PATH
 ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+
+

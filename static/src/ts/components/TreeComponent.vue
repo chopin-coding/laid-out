@@ -2,10 +2,10 @@
 import { ref } from "vue";
 
 import TreeNodeComponent from "./TreeNodeComponent.vue";
-import * as treeHelpers from "../treeHelpers";
+import { TreeNode } from "../interfaces";
 
 interface TreeComponentProps {
-  treeNodes: treeHelpers.TreeNode[];
+  treeNodes: TreeNode[];
 }
 
 // defineProps<TreeNode[]>(); doesn't work

@@ -4,7 +4,14 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 
-router = DefaultRouter()
+
+class OptionalSlashRouter(DefaultRouter):
+    def __init__(self):
+        super().__init__()
+        self.trailing_slash = "/?"
+
+
+router = OptionalSlashRouter()
 router.register(r"trees", views.AnxietyTreeViewSet, basename="tree")
 
 urlpatterns = [
@@ -18,9 +25,7 @@ htmx_urlpatterns = [
 api_urlpatterns = [
     path("api/", include(router.urls)),
     # path("docs/", include_docs_urls(title='Anxiety Tree API')),  # TODO: remove before prod
-
 ]
 
 urlpatterns += htmx_urlpatterns
 urlpatterns += api_urlpatterns
-

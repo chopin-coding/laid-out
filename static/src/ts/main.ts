@@ -1,9 +1,11 @@
-import { createApp } from 'vue';
-import App from './components/App.vue';
+import { createApp } from "vue";
+import App from "./components/App.vue";
+import { axiosGetTrees } from "./treeHelpers"
 
+const app = createApp(App);
 
-const app = createApp(App)
+app.mount("#app");
 
-app.mount("#app")
-
+const receivedTrees = axiosGetTrees()
+console.log(receivedTrees)
 

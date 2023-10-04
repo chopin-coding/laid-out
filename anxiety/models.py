@@ -2,14 +2,14 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from pydantic import BaseModel, field_validator, Field, UUID4
+from pydantic import BaseModel, field_validator, UUID4
 
 
 class TreeDataNode(BaseModel):
     title: str
     locked: bool
     children: list["TreeDataNode"]
-    nodeId: UUID4
+    node_id: UUID4
 
     @field_validator("title")
     def ensure_title_max_length(cls, v: str) -> str:
@@ -23,8 +23,12 @@ class TreeData(BaseModel):
     tree_data: list[TreeDataNode]
 
 
+def default_tree_node():
+    return {"title": "", "locked": False, "node_id": str(uuid.uuid4()), "children": []}
+
+
 def default_tree_data():
-    return [{"title": "", "locked": False, "children": []}]
+    return [default_tree_node()]
 
 
 class AnxietyTree(models.Model):
@@ -32,21 +36,18 @@ class AnxietyTree(models.Model):
     tree_name = models.CharField(
         max_length=50, null=True, blank=True, default="New Tree"
     )
-    date_created = models.DateTimeField("Creation Date", auto_now_add=True)
-    # TODO: an owner is assigned regardless of whether the user is authenticated.
-    #  gotta prevent people seeing each others shit
+    date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)
     owner = models.ForeignKey(
-        "auth.User",
+        to="auth.User",
         related_name="anxiety_trees",
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
     )
     date_modified = models.DateTimeField(auto_now=True)
-    # owner_session_id = models.CharField(max_length=, null=True, blank=True)
 
     tree_data = ArrayField(
-        base_field=models.JSONField(null=True, blank=True), default=list
+        base_field=models.JSONField(null=True, blank=True, default=default_tree_node),
+        default=default_tree_data,
     )
 
     def __str__(self):

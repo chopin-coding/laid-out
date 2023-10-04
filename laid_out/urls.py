@@ -24,8 +24,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index_view, name="index"),
     path("anxiety/", include("anxiety.urls")),
-    path("about/", views.about_view, name='about'),
+    path("about/", views.about_view, name="about"),
     path("__debug__/", include("debug_toolbar.urls")),
-    path('accounts/', include('allauth.urls')),
+    path("accounts/", include("allauth.urls")),
     path("accounts/details", views.account_view, name="account_details"),
 ]
