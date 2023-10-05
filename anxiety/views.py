@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponse, Http404
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
 from rest_framework import mixins, generics, viewsets, permissions
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
@@ -81,12 +82,10 @@ class AnxietyTreeViewSet(
         user = self.request.user
         return user.anxiety_trees.all()
 
-    def get_object(self):
-        # queryset = self.get_queryset()
-        # obj = queryset.get(pk=self.kwargs["tree_id"])
-        # return obj
+        # return AnxietyTree.objects.all()
 
-        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["tree_id"])
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -114,29 +113,33 @@ class AnxietyTreeViewSet(
         return Response(return_string, status=201)
 
     def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        self.perform_update(serializer)
 
-        if getattr(instance, "_prefetched_objects_cache", None):
+        if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
 
         return Response(status=200)
 
-    def destroy(self, request, *args, **kwargs):
-        # try:
-        #     instance = self.get_object()
-        #     instance.delete()
-        # except ObjectDoesNotExist:
-        #     # this is to handle get_object() gracefully in case the instance doesn't exist
-        #     # the default destroy function from mixins.DestroyModelMixin didn't handle this and returned HTTP 500
-        #     pass
-        #
-        # return Response(status=204)
+    def perform_update(self, serializer):
+        serializer.save()
 
-        instance = self.get_object()
-        instance.delete()
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+        except Http404:
+            # this is to handle get_object() gracefully in case the instance doesn't exist
+            # the default destroy function from mixins.DestroyModelMixin didn't handle this and returned HTTP 500
+            pass
+
         return Response(status=204)

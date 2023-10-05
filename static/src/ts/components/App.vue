@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import * as treeHelpers from "../treeHelpers";
 import { useStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
@@ -8,15 +8,36 @@ import TreeListComponent from "./TreeListComponent.vue";
 const loggedIn = JSON.parse(document.getElementById("logged-in").textContent);
 const userTrees = JSON.parse(document.getElementById("user-trees").textContent);
 
+const syncTimerBaseCount = 1 * 1000; // 5 seconds
+
 let tempTreeStore = ref([]);
+let syncTimer = null;
 
 if (loggedIn) {
-  tempTreeStore.value.push.apply(tempTreeStore.value, userTrees)
+  tempTreeStore.value.push.apply(tempTreeStore.value, userTrees);
 } else {
   tempTreeStore.value.push(treeHelpers.defaultTree());
 }
 
 let selectedTreeIndex = ref(0);
+
+watch(tempTreeStore.value[0], (newValue, oldValue) => {
+  console.log(`The first tree has been changed"`);
+
+  // reset the sync timer
+  if (syncTimer) {
+    clearTimeout(syncTimer);
+  }
+
+  // start the sync timer
+  syncTimer = setTimeout(async () => {
+    const updateStatus = await treeHelpers.updateTree(tempTreeStore.value[0])
+
+    console.log(`updateStatus: ${updateStatus}`)
+  }, syncTimerBaseCount);
+});
+
+// 3 reactive states: syncing, synced, failed that
 
 function selectTreeHandler(treeId: string): void {
   const indexToSelect = tempTreeStore.value.findIndex(

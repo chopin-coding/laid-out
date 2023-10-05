@@ -1,4 +1,3 @@
-import jsonschema
 from pydantic import ValidationError
 from rest_framework import serializers
 from anxiety.models import AnxietyTree, default_tree_data, TreeData, TreeDataNode
