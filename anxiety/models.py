@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from pydantic import BaseModel, field_validator, UUID4
+from pydantic import UUID4, BaseModel, field_validator
 
 
 class TreeDataNode(BaseModel):

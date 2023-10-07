@@ -4,6 +4,7 @@ import * as treeHelpers from "../treeHelpers";
 import { useStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
 import TreeListComponent from "./TreeListComponent.vue";
+import {createTree} from "../treeHelpers";
 
 const loggedIn = JSON.parse(document.getElementById("logged-in").textContent);
 const userTrees = JSON.parse(document.getElementById("user-trees").textContent);

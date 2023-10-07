@@ -23,22 +23,23 @@ function defaultTreeData(): TreeNode[] {
 }
 
 export function defaultTree(
+  treeId: string = null,
   treeName: string = null,
   treeData: TreeNode[] = null,
 ): Tree {
   const newTreeId: string = uuidv4();
   return {
-    tree_id: newTreeId,
+    tree_id: treeId || newTreeId,
     tree_name: treeName || "New Tree",
     tree_data: treeData || defaultTreeData(),
   };
 }
 
-async function createTree() {
+export async function createTree() {
   try {
-    const { data, status } = await axios.post<string>(
+    const { data, status } = await axios.post(
       API_BASE_URL,
-      { name: "John Smith", job: "manager" },
+      {},
       {
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +54,7 @@ async function createTree() {
 
     console.log(status);
 
-    return data;
+    return data.tree_id;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log("error message: ", error.message);

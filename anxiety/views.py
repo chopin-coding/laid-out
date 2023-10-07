@@ -1,13 +1,8 @@
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import render, redirect
-
-from django.http import HttpResponse, Http404
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_protect
-from rest_framework import mixins, generics, viewsets, permissions
-from rest_framework.exceptions import ValidationError
+
+from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -27,7 +22,6 @@ def index_view(request):
 
 def anxiety_view(request):
     if request.user.is_authenticated:
-        # queryset = AnxietyTree.objects.filter(owner=request.user)
         queryset = request.user.anxiety_trees.all()
         if not queryset.exists():
             AnxietyTree.objects.create(owner=request.user)

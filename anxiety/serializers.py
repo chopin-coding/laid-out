@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
 from pydantic import ValidationError
 from rest_framework import serializers
-from anxiety.models import AnxietyTree, default_tree_data, TreeData, TreeDataNode
 
-from django.contrib.auth.models import User
+from anxiety.models import (AnxietyTree, TreeData, TreeDataNode,
+                            default_tree_data)
 
 
 class UserSerializer(serializers.ModelSerializer):
