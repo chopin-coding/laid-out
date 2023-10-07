@@ -43,7 +43,13 @@ class AnxietyTreeSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
-        created = AnxietyTree.objects.create(**validated_data)
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        else:
+            raise serializers.ValidationError("Trees can only be created by registered users")
+        created = AnxietyTree.objects.create(owner=user, **validated_data)
         return created
 
     def update(self, instance, validated_data):
