@@ -6,13 +6,14 @@ import * as treeHelpers from "../treeHelpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import { TreeNode } from "../interfaces";
 
-interface TreeNodeComponentProps {
+interface TreeNodeProps {
   treeNodes: TreeNode[];
+  loggedIn: boolean;
   visibilityToggle: boolean;
 }
 
 // defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeNodeComponentProps>();
+let props = defineProps<TreeNodeProps>();
 
 async function childBtnHandler(nodeId: string) {
   const indexToAddTo = props.treeNodes.findIndex(
@@ -79,6 +80,7 @@ function deleteBtnHandler(nodeId: string) {
         v-if="node.children.length > 0"
         :is="TreeNodeComponent"
         :tree-nodes="node.children"
+        :logged-in="loggedIn"
         :visibility-toggle="visibilityToggle"
       />
     </li>

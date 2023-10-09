@@ -2,28 +2,28 @@
 import * as treeHelpers from "../treeHelpers";
 import {Tree} from "../interfaces";
 
-interface TreeArray {
+interface TreeListProps {
   trees: Tree[];
+  loggedIn: boolean;
 }
 
 const emit = defineEmits(["selectTree", "createTree"]);
 
 // defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeArray>();
+let props = defineProps<TreeListProps>();
 
-async function newTree() {
-  // props.trees.push(treeHelpers.defaultTree());
-
-
-  const treeId = await treeHelpers.createTree()
+async function newTree(loggedIn: boolean) {
+  const treeId = await treeHelpers.createTree(loggedIn)
   const newTree = treeHelpers.defaultTree(treeId)
 
   props.trees.push(newTree)
-  emit('createTree', treeId)
+  if (loggedIn) {
+    emit('createTree', treeId)
+  }
 }
 
-async function deleteBtnHandler(treeId: string) {
-  const deleteResult = await treeHelpers.deleteTree(treeId)
+async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
+  const deleteResult = await treeHelpers.deleteTree(treeId, loggedIn)
 
   if (deleteResult === 204) {
     const indexToDelete = props.trees.findIndex(
@@ -48,10 +48,10 @@ async function deleteBtnHandler(treeId: string) {
           v-text="tree.tree_name"
           v-on:click="emit('selectTree', tree.tree_id)"
       ></span>
-      <button v-show="trees.length > 1" @click="deleteBtnHandler(tree.tree_id)">Delete</button>
+      <button v-show="trees.length > 1" @click="deleteBtnHandler(tree.tree_id, loggedIn)">Delete</button>
     </div>
     <div>
-      <button @click="newTree">Add</button>
+      <button @click="newTree(loggedIn)">Add</button>
     </div>
   </div>
 </template>

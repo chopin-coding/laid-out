@@ -1,26 +1,35 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 import * as treeHelpers from "../treeHelpers";
-import {useStorage} from "@vueuse/core";
+import {useLocalStorage} from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
 import TreeListComponent from "./TreeListComponent.vue";
 
-const loggedIn = JSON.parse(document.getElementById("logged-in").textContent);
-const userTrees = JSON.parse(document.getElementById("user-trees").textContent);
 
-const syncTimerBaseCount = 1 * 1000; // 5 seconds
+// FIXME: loggedIn and userTrees error handling
+const loggedIn: boolean = JSON.parse(document.getElementById("logged-in").textContent);
+
+
+const localTreeStore = useLocalStorage('tree-store', {trees: [treeHelpers.defaultTree()]})
+let syncTimerBaseCount = 3000
 
 let tempTreeStore = ref([]);
 let syncTimer = null;
 let syncIndicator = ref('synced')
-
-if (loggedIn) {
-  tempTreeStore.value.push.apply(tempTreeStore.value, userTrees);
-} else {
-  tempTreeStore.value.push(treeHelpers.defaultTree());
-}
-
 let selectedTreeIndex = ref(0);
+
+initializeTrees()
+
+function initializeTrees() {
+  if (loggedIn) {
+    tempTreeStore.value = JSON.parse(document.getElementById("user-trees").textContent)
+
+    initializeTreeWatchers()
+  } else {
+    // TODO: see if this could cause performance issues
+    tempTreeStore.value = localTreeStore.value.trees
+  }
+}
 
 
 function treeWatcher(treeIndex: string) {
@@ -34,7 +43,7 @@ function treeWatcher(treeIndex: string) {
 
     // start the sync timer
     syncTimer = setTimeout(async () => {
-      const updateStatus = await treeHelpers.updateTree(tempTreeStore.value[treeIndex])
+      const updateStatus = await treeHelpers.updateTree(tempTreeStore.value[treeIndex], loggedIn)
 
       if (updateStatus === 200) {
         syncIndicator.value = "synced"
@@ -51,8 +60,6 @@ function initializeTreeWatchers() {
     treeWatcher(index)
   }
 }
-
-initializeTreeWatchers()
 
 function addTreeWatcher(treeId: string) {
   const indexToWatch = tempTreeStore.value.findIndex(
@@ -97,6 +104,7 @@ function selectTreeHandler(treeId: string): void {
           v-if="tempTreeStore.length !== 0"
           :is="TreeComponent"
           :tree-nodes="tempTreeStore[selectedTreeIndex].tree_data"
+          :logged-in="loggedIn"
       />
       <div v-else>No trees to show</div>
     </div>
@@ -105,6 +113,7 @@ function selectTreeHandler(treeId: string): void {
       <component
           :is="TreeListComponent"
           :trees="tempTreeStore"
+          :logged-in="loggedIn"
           @select-tree="(treeId: string) => selectTreeHandler(treeId)"
           @create-tree="(treeId: string) => addTreeWatcher(treeId)"
       />

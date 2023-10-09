@@ -4,12 +4,13 @@ import { ref } from "vue";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import { TreeNode } from "../interfaces";
 
-interface TreeComponentProps {
+interface TreeProps {
   treeNodes: TreeNode[];
+  loggedIn: boolean;
 }
 
 // defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeComponentProps>();
+let props = defineProps<TreeProps>();
 
 let visibilityToggle = ref(false);
 </script>
@@ -28,6 +29,7 @@ let visibilityToggle = ref(false);
     :is="TreeNodeComponent"
     :tree-nodes="treeNodes"
     :visibility-toggle="visibilityToggle"
+    :logged-in="loggedIn"
   />
 </template>
 

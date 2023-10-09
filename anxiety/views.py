@@ -21,17 +21,23 @@ def index_view(request):
 
 
 def anxiety_view(request):
+    # FIXME: This view for a user with a large number of large-sized trees would slow the whole
+    #  app down since this is not async
+
     if request.user.is_authenticated:
         queryset = request.user.anxiety_trees.all()
         if not queryset.exists():
             AnxietyTree.objects.create(owner=request.user)
 
         serializer = AnxietyTreeSerializer(queryset, many=True)
-        serialized_user_trees = serializer.data
+        user_trees = serializer.data
+    else:
+        user_trees = None
+
 
     context = {
         "current_page": "anxiety",
-        "user_trees": serialized_user_trees,
+        "user_trees": user_trees,
         "logged_in": request.user.is_authenticated,
     }
 
