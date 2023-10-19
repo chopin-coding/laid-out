@@ -26,7 +26,7 @@ function initializeTrees() {
 
     initializeTreeWatchers()
   } else {
-    // TODO: see if this could cause performance issues
+    // TODO: see if this causes performance issues
     tempTreeStore.value = localTreeStore.value.trees
   }
 }
@@ -86,6 +86,9 @@ function selectTreeHandler(treeId: string): void {
 </script>
 
 <template>
+  <div class="text-3xl font-bold underline">
+    tailwind test
+  </div>
   <div>
     <div>
       <div>

@@ -25,6 +25,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve("./static/src/ts/main.ts"),
+        style: resolve("./static/src/ts/style.ts"),
       },
       output: {
         chunkFileNames: undefined,

@@ -8,11 +8,15 @@
     {% vite_hmr_client %}
     {% vite_asset 'ts/main.ts' %}
 
+
 {% endblock %}
 
 {% block content %}
     {{ user_trees|json_script:"user-trees" }}
     {{ logged_in|json_script:"logged-in" }}
+{#    <div class="text-3xl font-bold underline">#}
+{#        tailwind test anxiety html#}
+{#    </div>#}
 
     <div id="app">
     </div>
