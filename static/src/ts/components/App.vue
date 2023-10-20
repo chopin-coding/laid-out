@@ -91,9 +91,6 @@ function selectTreeHandler(treeId: string): void {
 </script>
 
 <template>
-  <div class="text-3xl font-bold underline text-sky-400">
-    test tailwind
-  </div>
   <div>
     <div>
       <div>
