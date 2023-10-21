@@ -61,7 +61,7 @@ def account_view(request):
 
 def about_view(request):
     context = {
-        "current_page": "account_about",
+        "current_page": "about",
     }
 
     return render(request, "about.html", context=context)

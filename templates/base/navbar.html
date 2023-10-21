@@ -1,10 +1,29 @@
-<nav class="bg-secondary">
+{% block head %}
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        function updateThemeBasedOnSystemPreference() {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        }
+    </script>
+{% endblock %}
+
+<nav class="bg-backg border-b border-primary">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <!-- Mobile menu button-->
                 <button type="button"
-                        class="relative inline-flex items-center justify-center rounded-md p-2 text-textc hover:bg-accent focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-textblackdim hover:bg-primarylight focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                         aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open main menu</span>
@@ -29,88 +48,161 @@
                     </svg>
                 </button>
             </div>
+            <!-- brand -->
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex flex-shrink-0 items-center">
+                    {#                    <span class="ml-3 text-xl text-textblackdim italic font-normal">laid out</span>#}
                     <a href="{% url 'index' %}">
-                        <img class="h-8 w-auto" src="../../static/images/favicon.png"
+                        <img class="h-9 w-auto" src="../../static/images/favicon.png"
                              alt="logo" href="{% url 'index' %}">
                     </a>
+
 
                 </div>
                 <div class="hidden sm:ml-6 sm:block">
                     <div class="flex space-x-4">
-                        <!-- Current: "bg-primary text-textc", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <a href="{% url 'index' %}"
-                           class="{% if current_page == 'home' %} bg-primary text-textwhite {% endif %} text-textblack rounded-md px-3 py-2 font-medium"
+                           class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-normal"
                            aria-current="page">Home</a>
                         <a href="{% url 'anxiety_index' %}"
-                           class="text-gray-300 hover:bg-accentshade hover:text-white rounded-md px-3 py-2 font-regular">Anxiety</a>
+                           class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-normal">Anxiety</a>
                         <a href="{% url 'about' %}"
-                           class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-regular">About</a>
+                           class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-normal">About</a>
 
                     </div>
                 </div>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {#                <button type="button"#}
-                {#                        class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">#}
-                {#                    <span class="absolute -inset-1.5"></span>#}
-                {#                    <span class="sr-only">View notifications</span>#}
-                {#                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"#}
-                {#                         aria-hidden="true">#}
-                {#                        <path stroke-linecap="round" stroke-linejoin="round"#}
-                {#                              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"></path>#}
-                {#                    </svg>#}
-                {#                </button>#}
+
+
+                <!-- Dark/Light/System mode selection -->
+                <div x-data="{ isThemeMenuOpen: false, currentTheme: localStorage.getItem('theme') || 'system' }"
+                     class="relative ml-3">
+                    <button @click="isThemeMenuOpen = !isThemeMenuOpen" @click.outside="isThemeMenuOpen = false"
+                            type="button"
+                            class="relative flex rounded-full bg-gray-800 text-sm"
+                            aria-expanded="false" aria-haspopup="true">
+                        <span class="absolute -inset-1.5"></span>
+                        <span class="sr-only">Open theme selection menu</span>
+                        <span class="text-textblackdim">
+                            {% comment %}// Whenever the user explicitly chooses light mode
+        localStorage.theme = 'light'
+
+        // Whenever the user explicitly chooses dark mode
+        localStorage.theme = 'dark'
+
+        // Whenever the user explicitly chooses to respect the OS preference
+        localStorage.removeItem('theme'){% endcomment %}
+                            <svg x-show="currentTheme === 'light'"
+                                 class="h-6 w-6 fill-textblackdim mr-2" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3v1m0 16v1m-8-9H3m3.314-5.686L5.5 5.5m12.186.814L18.5 5.5M6.314 17.69l-.814.81m12.186-.81.814.81M21 12h-1m-4 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                            <svg x-show="currentTheme === 'dark'"
+                                 class="h-6 w-6 fill-textblackdim mr-2" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.32 11.684a9 9 0 0 0 17.357 3.348A9 9 0 0 1 8.32 6.683c0-1.18.23-2.32.644-3.353a9.003 9.003 0 0 0-5.645 8.354Z"
+                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <svg x-show="currentTheme === 'system'"
+                                 class="h-6 w-6 fill-textblackdim mr-2" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd"
+                                      d="M2 6a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-6v1h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-1H5a3 3 0 0 1-3-3V6Zm3-1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Z"
+                                ></path>
+                            </svg>
+                        </span>
+
+                    </button>
+
+                    <div x-show="isThemeMenuOpen" class="absolute right-0 z-10 mt-6 w-40
+        origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5
+        focus:outline-none"
+                         role="menu" aria-labelledby="theme-selection-button" tabindex="-1"
+                    >
+                        <a @click="localStorage.setItem('theme', 'light'); currentTheme = 'light';
+                                            document.documentElement.classList.remove('dark')" href="#"
+                           class="flex px-4 py-2 text-sm text-textblackdim hover:bg-primarylight hover:text-black"
+                           role="menuitem" tabindex="-1">
+                            <svg class="h-5 w-5 fill-textblackdim mr-2" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3v1m0 16v1m-8-9H3m3.314-5.686L5.5 5.5m12.186.814L18.5 5.5M6.314 17.69l-.814.81m12.186-.81.814.81M21 12h-1m-4 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round"></path>
+                            </svg>
+                            Light
+                        </a>
+
+                        <a @click="localStorage.setItem('theme', 'dark');
+                         currentTheme = 'dark';
+                        document.documentElement.classList.add('dark')" href="#"
+                           class="flex px-4 py-2 text-sm text-textblackdim hover:bg-primarylight hover:text-black"
+                           role="menuitem" tabindex="-1">
+                            <svg class="h-5 w-5 fill-textblackdim mr-2" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.32 11.684a9 9 0 0 0 17.357 3.348A9 9 0 0 1 8.32 6.683c0-1.18.23-2.32.644-3.353a9.003 9.003 0 0 0-5.645 8.354Z"
+                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            Dark
+                        </a>
+
+                        <a @click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
+                           href="#"
+                           class="flex px-4 py-2 text-sm text-textblackdim hover:bg-primarylight hover:text-black"
+                           role="menuitem" tabindex="-1">
+                            <svg class="h-5 w-5 fill-textblackdim mr-2" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd"
+                                      d="M2 6a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-6v1h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-1H5a3 3 0 0 1-3-3V6Zm3-1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Z"
+                                ></path>
+                            </svg>
+                            System
+                        </a>
+                    </div>
+                </div>
 
                 {% if not user.is_authenticated %}
-
                     <!-- Login button -->
                     <div class="relative ml-3">
-                        <div class="hidden sm:ml-6 sm:block">
+                        <div class="sm:ml-6 sm:block">
                             <div class="flex space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a href="{% url 'account_login' %}"
-                                   class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium">Log in</a>
+                                   class="text-textblackdim hover:bg-primarylight hover:text-black rounded-md px-3 py-2 font-medium">Log
+                                    in</a>
 
                             </div>
                         </div>
                     </div>
                 {% else %}
                     <!-- Profile dropdown -->
-                    <div class="relative ml-3">
+                    <div x-data="{ isUserMenuOpen: false }" class="relative ml-3">
                         <div>
-                            <button type="button"
-                                    class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <button @click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
+                                    type="button"
+                                    class="relative flex rounded-full bg-gray-800 text-sm"
+                                    aria-expanded="false" aria-haspopup="true">
                                 <span class="absolute -inset-1.5"></span>
                                 <span class="sr-only">Open user menu</span>
-                                <img class="h-7 w-7 rounded-full fill-red-50"
-                                     src="../../static/icons/account.svg"
-                                     alt="Account">
+                                <svg class="h-5 w-5 fill-textblackdim" viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.563 18H3.438c-.706 0-1.228-.697-.961-1.338C3.713 13.698 6.617 12 10 12c3.384 0 6.288 1.698 7.524 4.662.267.641-.255 1.338-.961 1.338M5.917 6c0-2.206 1.832-4 4.083-4 2.252 0 4.083 1.794 4.083 4S12.252 10 10 10c-2.251 0-4.083-1.794-4.083-4m14.039 11.636c-.742-3.359-3.064-5.838-6.119-6.963 1.619-1.277 2.563-3.342 2.216-5.603-.402-2.623-2.63-4.722-5.318-5.028C7.023-.381 3.875 2.449 3.875 6c0 1.89.894 3.574 2.289 4.673-3.057 1.125-5.377 3.604-6.12 6.963C-.226 18.857.779 20 2.054 20h15.892c1.276 0 2.28-1.143 2.01-2.364"
+                                    ></path>
+                                </svg>
                             </button>
                         </div>
-
-                        <!--
-                          Dropdown menu, show/hide based on menu state.
-
-                          Entering: "transition ease-out duration-100"
-                            From: "transform opacity-0 scale-95"
-                            To: "transform opacity-100 scale-100"
-                          Leaving: "transition ease-in duration-75"
-                            From: "transform opacity-100 scale-100"
-                            To: "transform opacity-0 scale-95"
-                        -->
-                        <div class="hidden transition ease-linear duration-500 absolute right-0 z-10 mt-2 w-48
+                        <div x-show="isUserMenuOpen" class="absolute right-0 z-10 mt-6 w-40
                         origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5
                         focus:outline-none"
                              role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
-                             id="user-menu">
-                            <!-- Active: "bg-gray-100", Not Active: "" -->
-                            <a href="{% url 'account_details' %}" class="block px-4 py-2 text-sm text-gray-700"
+                        >
+                            <a href="{% url 'account_details' %}"
+                               class="block px-4 py-2 text-sm text-textblackdim hover:bg-primarylight hover:text-black"
                                role="menuitem" tabindex="-1"
                                id="user-menu-item-1">Settings</a>
-                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-sm text-gray-700"
+                            <a href="{% url 'account_logout' %}"
+                               class="block px-4 py-2 text-sm text-textblackdim hover:bg-primarylight hover:text-black"
                                role="menuitem" tabindex="-1"
                                id="user-menu-item-2">Log out</a>
                         </div>
@@ -123,38 +215,17 @@
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="sm:hidden" id="mobile-menu">
+    <div class="hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pb-3 pt-2">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="{% url 'index' %}" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+            <a href="{% url 'index' %}"
+               class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-normal"
                aria-current="page">Home</a>
             <a href="{% url 'anxiety_index' %}"
-               class="text-gray-300 hover:text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 transition ease-out duration-150">Anxiety</a>
+               class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-normal"
+               aria-current="page">Anxiety</a>
             <a href="{% url 'about' %}"
-               class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">About</a>
+               class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-normal"
+               aria-current="page">About</a>
         </div>
     </div>
 </nav>
-
-<script>
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const userMenuButton = document.getElementById('user-menu-button');
-    const userMenu = document.getElementById('user-menu');
-
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        {#mobileMenu.classList.toggle('transition-enter');#}
-        {#mobileMenu.classList.toggle('transition-leave');#}
-        mobileMenuButton.classList.toggle('active');
-    });
-
-    userMenuButton.addEventListener('click', () => {
-        userMenu.classList.toggle('hidden');
-        if (!userMenu.classList.contains('hidden')) {
-            {#userMenu.classList.add('transition-enter');#}
-        } else {
-            {#userMenu.classList.add('transition-leave');#}
-        }
-    });
-</script>

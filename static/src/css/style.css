@@ -6,9 +6,11 @@
 @layer base {
 
     :root {
-        --color-textwhite: 231 244 244;
+        --color-textwhite: 243 243 243;
         --color-textblack: 11 24 24;
-        --color-backg: 236 247 254;
+        --color-white: 255 255 255;
+        --color-black: 0 0 0;
+        --color-backg: 255 255 255;
         --color-primary: 0 82 82;
         --color-secondary: 245 254 255;
         --color-accent: 0 10 10;
@@ -16,10 +18,16 @@
 
     :root[class~="dark"] {
         --color-textwhite: 11 24 24;
-        --color-textblack: 231 244 244;
+        --color-textblack: 243 243 243;
+        --color-white: 0 0 0;
+        --color-black: 255 255 255;
         --color-backg: 1 12 19;
         --color-primary: 173 255 255;
         --color-secondary: 0 9 10;
         --color-accent: 245 255 255;
+    }
+
+    html {
+        font-family: "Poppins", system-ui, sans-serif;
     }
 }

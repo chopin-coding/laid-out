@@ -3,6 +3,7 @@ module.exports = {
   darkMode: "class",
   content: [
     "./templates/*/*.{vue,ts,html,css}",
+      "./templates/*.{vue,ts,html,css}",
     "./anxiety/templates/*/*.{vue,ts,html,css}",
     "./static/src/*/*.{vue,ts,html,css}",
   ],
@@ -10,18 +11,39 @@ module.exports = {
     colors: {
       textwhite: "rgb(var(--color-textwhite) / 1)",
       textwhitedim: "rgb(var(--color-textwhite) / .8)",
+
       textblack: "rgb(var(--color-textblack) / 1)",
+      textblackdim: "rgb(var(--color-textblack) / .9)",
+
+      white: "rgb(var(--color-white) / 1)",
+      black: "rgb(var(--color-black) / 1)",
+
       backg: "rgb(var(--color-backg) / 1)",
+
       primary: "rgb(var(--color-primary) / 1)",
       primaryshade: "rgb(var(--color-primary) / .8)",
+      primarylight: "rgb(var(--color-primary) / .05)",
+
       secondary: "rgb(var(--color-secondary) / 1)",
+
       accent: "rgb(var(--color-accent) / 1)",
       accentshade: "rgb(var(--color-accent) / .2)",
     },
-    fontFamily: {
-      sans: ["Lato", "sans-serif"],
-      serif: ["Merriweather", "serif"],
-    },
+    // fontFamily: {
+    //   sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+    //   serif: ["Poppins", "serif"],
+    // },
+    // fontWeight: {
+    //   thin: "100",
+    //   extralight: "200",
+    //   light: "300",
+    //   normal: "400",
+    //   medium: "500",
+    //   semibold: "600",
+    //   bold: "700",
+    //   extrabold: "800",
+    //   black: "900",
+    // },
     extend: {},
   },
   plugins: [],
