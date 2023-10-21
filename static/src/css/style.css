@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 
+[x-cloak] { display: none !important; }
+
 @layer base {
 
     :root {

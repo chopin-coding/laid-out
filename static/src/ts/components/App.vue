@@ -5,7 +5,7 @@ import { useLocalStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
 import TreeListComponent from "./TreeListComponent.vue";
 
-// FIXME: loggedIn and userTrees error handling
+// TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
   document.getElementById("logged-in").textContent,
 );
@@ -94,7 +94,8 @@ function selectTreeHandler(treeId: string): void {
   <div>
     <div>
       <div>
-        <span v-text="syncIndicator"> </span>
+        <span v-show="!loggedIn">sync warning</span>
+        <span v-text="syncIndicator"></span>
       </div>
       <div>
         <label for="selected-tree-name-input">Tree Name</label>

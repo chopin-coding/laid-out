@@ -22,7 +22,7 @@ module.exports = {
 
       primary: "rgb(var(--color-primary) / 1)",
       primaryshade: "rgb(var(--color-primary) / .8)",
-      primarylight: "rgb(var(--color-primary) / .05)",
+      primarylight: "rgb(var(--color-primary) / .1)",
 
       secondary: "rgb(var(--color-secondary) / 1)",
 
