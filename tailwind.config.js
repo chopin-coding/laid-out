@@ -2,10 +2,11 @@
 module.exports = {
   darkMode: "class",
   content: [
-    "./templates/*/*.{vue,ts,html,css}",
-      "./templates/*.{vue,ts,html,css}",
-    "./anxiety/templates/*/*.{vue,ts,html,css}",
+    "./templates/*/*.{ts,html,css}",
+      "./templates/*.{ts,html,css}",
+    "./anxiety/templates/*/*.{ts,html,css}",
     "./static/src/*/*.{vue,ts,html,css}",
+      "./static/src/ts/*/*.{vue,ts,html,css}",
   ],
   theme: {
     colors: {
@@ -14,6 +15,7 @@ module.exports = {
 
       textblack: "rgb(var(--color-textblack) / 1)",
       textblackdim: "rgb(var(--color-textblack) / .9)",
+      textblackdimmer: "rgb(var(--color-textblack) / .7)",
 
       white: "rgb(var(--color-white) / 1)",
       black: "rgb(var(--color-black) / 1)",
@@ -29,48 +31,7 @@ module.exports = {
       accent: "rgb(var(--color-accent) / 1)",
       accentshade: "rgb(var(--color-accent) / .2)",
     },
-    // fontFamily: {
-    //   sans: ["Poppins", ...defaultTheme.fontFamily.sans],
-    //   serif: ["Poppins", "serif"],
-    // },
-    // fontWeight: {
-    //   thin: "100",
-    //   extralight: "200",
-    //   light: "300",
-    //   normal: "400",
-    //   medium: "500",
-    //   semibold: "600",
-    //   bold: "700",
-    //   extrabold: "800",
-    //   black: "900",
-    // },
     extend: {},
   },
   plugins: [],
 };
-
-// @import url('https://fonts.googleapis.com/css?family=Lato:700|Lato:400');
-//
-// body {
-//   font-family: 'Lato';
-//   font-weight: 400;
-// }
-//
-// h1, h2, h3, h4, h5 {
-//   font-family: 'Lato';
-//   font-weight: 700;
-// }
-//
-// html {font-size: 100%;} /* 16px */
-//
-// h1 {font-size: 3.053rem; /* 48.8px */}
-//
-// h2 {font-size: 2.442rem; /* 39.04px */}
-//
-// h3 {font-size: 1.954rem; /* 31.2px */}
-//
-// h4 {font-size: 1.563rem; /* 24.96px */}
-//
-// h5 {font-size: 1.250rem; /* 20px */}
-//
-// small {font-size: 0.800rem; /* 12.8px */}

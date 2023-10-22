@@ -57,6 +57,8 @@ function deleteBtnHandler(nodeId: string) {
     props.treeNodes.splice(indexToDelete, 1);
   }
 }
+
+// × delete symbol
 </script>
 
 <template>

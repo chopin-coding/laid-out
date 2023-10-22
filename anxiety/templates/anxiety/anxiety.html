@@ -1,9 +1,12 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load django_vite %}
 {% block title %}
     Anxiety
 {% endblock %}
 {% block head %}
+    {% vite_hmr_client %}
+    {% vite_asset 'ts/main.ts' %}
 {% endblock %}
 
 {% block content %}
