@@ -10,6 +10,7 @@ interface TreeNodeProps {
   treeNodes: TreeNode[];
   loggedIn: boolean;
   visibilityToggle: boolean;
+  nodeType: "root" | "child";
 }
 
 // defineProps<TreeNode[]>(); doesn't work
@@ -62,31 +63,36 @@ function deleteBtnHandler(nodeId: string) {
 </script>
 
 <template>
-  <ul>
-    <li
-      v-for="node in treeNodes"
-      :key="node.node_id"
-      v-show="!(node.locked && visibilityToggle)"
-    >
-      <input type="checkbox" v-model="node.locked" />
-      <input
-        v-model="node.title"
-        @keyup.enter.exact="siblingBtnHandler(node.node_id)"
-        @keydown.prevent.tab.exact="childBtnHandler(node.node_id)"
-        :id="`${node.node_id}-titleInput`"
-      />
-      <button @click="childBtnHandler(node.node_id)">Add child</button>
-      <button @click="siblingBtnHandler(node.node_id)">Add sibling</button>
-      <button @click="deleteBtnHandler(node.node_id)">Delete</button>
-      <component
-        v-if="node.children.length > 0"
-        :is="TreeNodeComponent"
-        :tree-nodes="node.children"
-        :logged-in="loggedIn"
-        :visibility-toggle="visibilityToggle"
-      />
-    </li>
-  </ul>
+  <div class="w-60">
+    <ul>
+      <li
+        v-for="node in treeNodes"
+        :key="node.node_id"
+        v-show="!(node.locked && visibilityToggle)"
+      >
+        <input type="checkbox" v-model="node.locked" />
+        <input
+          class="max-w-full rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+          v-model="node.title"
+          type="text"
+          @keyup.enter.exact="siblingBtnHandler(node.node_id)"
+          @keydown.prevent.tab.exact="childBtnHandler(node.node_id)"
+          :id="`${node.node_id}-titleInput`"
+        />
+        <button @click="childBtnHandler(node.node_id)">Add child</button>
+        <button v-show="(treeNodes.length > 1) || nodeType !== 'root'" @click="deleteBtnHandler(node.node_id)">Delete</button>
+        <component
+          v-if="node.children.length > 0"
+          :is="TreeNodeComponent"
+          :tree-nodes="node.children"
+          :logged-in="loggedIn"
+          :visibility-toggle="visibilityToggle"
+          :node-type="'child'"
+        />
+        <button @click="siblingBtnHandler(node.node_id)">Add sibling</button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped></style>

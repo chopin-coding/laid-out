@@ -30,6 +30,8 @@ module.exports = {
 
       accent: "rgb(var(--color-accent) / 1)",
       accentshade: "rgb(var(--color-accent) / .2)",
+
+      warning: "rgb(var(--color-warning) / 1)"
     },
     extend: {},
   },

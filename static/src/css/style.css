@@ -16,6 +16,7 @@
         --color-primary: 0 82 82;
         --color-secondary: 245 254 255;
         --color-accent: 0 10 10;
+        --color-warning: 255 160 0;
     }
 
     :root[class~="dark"] {
@@ -27,6 +28,7 @@
         --color-primary: 173 255 255;
         --color-secondary: 0 9 10;
         --color-accent: 245 255 255;
+        --color-warning: 237 150 0;
     }
 
     html {
