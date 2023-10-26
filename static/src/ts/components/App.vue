@@ -21,7 +21,7 @@ let syncTimer = null;
 let syncIndicator = ref("synced");
 let selectedTreeIndex = ref(0);
 let showTreeList = ref(false);
-let visibilityToggle = ref(false);
+let hideUncontrollable = ref(false);
 
 initializeTrees();
 
@@ -189,7 +189,7 @@ function selectTreeHandler(treeId: string): void {
           <!--   Tree Name   -->
           <div class="text-textblackdim">
             <input
-              class="w-32 rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+              class="w-32 px-2 py-1 rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
               id="selected-tree-name-input"
               type="text"
               maxlength="20"
@@ -200,10 +200,10 @@ function selectTreeHandler(treeId: string): void {
 
         <div class="flex gap-x-2">
           <label for="uncontrollable-visibility toggle">Controllable</label>
-          <button class="text-textblackdim" v-on:click="visibilityToggle = !visibilityToggle">
+          <button class="text-textblackdim" v-on:click="hideUncontrollable = !hideUncontrollable">
             <!-- Not visible -->
             <svg
-              v-show="visibilityToggle"
+              v-show="hideUncontrollable"
               class="h-5 w-5"
               viewBox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +215,7 @@ function selectTreeHandler(treeId: string): void {
 
             <!-- Visible -->
             <svg
-              v-show="!visibilityToggle"
+              v-show="!hideUncontrollable"
               class="h-5 w-5"
               viewBox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
@@ -231,15 +231,16 @@ function selectTreeHandler(treeId: string): void {
         </div>
       </div>
       <!--   Tree   -->
-      <div class="sm:w-44 w-60 mb-10">
+      <div class="sm:w-44 w-60 mb-40 overflow-x-auto">
         <component
           v-if="tempTreeStore.length !== 0"
           :is="TreeComponent"
-          :tree-nodes="tempTreeStore[selectedTreeIndex].tree_data"
+          :nodes="tempTreeStore[selectedTreeIndex].tree_data"
           :logged-in="loggedIn"
-          :hide-uncontrollable="visibilityToggle"
+          :hide-uncontrollable="hideUncontrollable"
+          :node-type="'root'"
         />
-        <div v-else>No trees to show</div>
+        <div v-else class="text-textblackdim font-medium">No trees to show</div>
       </div>
     </div>
   </div>
