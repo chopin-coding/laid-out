@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { nextTick } from "vue";
-import throttle from "lodash/throttle";
+import { nextTick, ref } from "vue";
 
 import * as treeHelpers from "../treeHelpers";
-import TreeNodeComponent from "./TreeNodeComponent.vue";
+import TreeNodeComponent from "./TreeNodeLevelComponent.vue";
 import { TreeNode } from "../interfaces";
 
 interface TreeNodeProps {
@@ -15,6 +14,9 @@ interface TreeNodeProps {
 
 // defineProps<TreeNode[]>(); doesn't work
 let props = defineProps<TreeNodeProps>();
+
+const isHovered = ref(false);
+const isFocused = ref(false);
 
 async function childBtnHandler(nodeId: string) {
   const indexToAddTo = props.treeNodes.findIndex(
@@ -30,10 +32,6 @@ async function childBtnHandler(nodeId: string) {
   await nextTick();
   document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
-
-throttle(function () {
-  // Your code to create a new element goes here
-}, 1000);
 
 async function siblingBtnHandler(nodeId: string) {
   const indexToAddTo =
@@ -58,41 +56,61 @@ function deleteBtnHandler(nodeId: string) {
     props.treeNodes.splice(indexToDelete, 1);
   }
 }
-
-// × delete symbol
 </script>
 
 <template>
-  <div class="w-60">
-    <ul>
-      <li
-        v-for="node in treeNodes"
-        :key="node.node_id"
-        v-show="!(node.locked && visibilityToggle)"
+  <ul class="w-60 list-none" :class="{ 'child-node': nodeType !== 'root' }">
+    <li
+      v-for="node in treeNodes"
+      :key="node.node_id"
+      v-show="!(node.locked && visibilityToggle)"
+    >
+      <div
+        @mouseover="isHovered = true"
+        @mouseleave="isHovered = false"
+        @focus="isFocused = true"
       >
-        <input type="checkbox" v-model="node.locked" />
         <input
-          class="max-w-full rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+          v-show="isHovered || isFocused"
+          type="checkbox"
+          v-model="node.locked"
+        />
+        <input
+          class="w-20 rounded shadow-lg focus:ring-1 focus:ring-primary focus:ring-opacity-5 focus:outline-none"
           v-model="node.title"
           type="text"
           @keyup.enter.exact="siblingBtnHandler(node.node_id)"
           @keydown.prevent.tab.exact="childBtnHandler(node.node_id)"
           :id="`${node.node_id}-titleInput`"
         />
-        <button @click="childBtnHandler(node.node_id)">Add child</button>
-        <button v-show="(treeNodes.length > 1) || nodeType !== 'root'" @click="deleteBtnHandler(node.node_id)">Delete</button>
-        <component
-          v-if="node.children.length > 0"
-          :is="TreeNodeComponent"
-          :tree-nodes="node.children"
-          :logged-in="loggedIn"
-          :visibility-toggle="visibilityToggle"
-          :node-type="'child'"
-        />
-        <button @click="siblingBtnHandler(node.node_id)">Add sibling</button>
-      </li>
-    </ul>
-  </div>
+        <button class="p-1 text-2xl" @click="childBtnHandler(node.node_id)">
+          →
+        </button>
+        <button
+          class="p-1 text-2xl"
+          v-show="treeNodes.length > 1 || nodeType !== 'root'"
+          @click="deleteBtnHandler(node.node_id)"
+        >
+          ⮾
+        </button>
+        <button class="p-1 text-2xl" @click="siblingBtnHandler(node.node_id)">
+          ↓
+        </button>
+      </div>
+      <component
+        v-if="node.children.length > 0"
+        :is="TreeNodeComponent"
+        :tree-nodes="node.children"
+        :logged-in="loggedIn"
+        :visibility-toggle="visibilityToggle"
+        :node-type="'child'"
+      />
+    </li>
+  </ul>
 </template>
 
-<style scoped></style>
+<style scoped>
+.child-node {
+  margin-left: 1rem;
+}
+</style>

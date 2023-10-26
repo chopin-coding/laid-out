@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import TreeNodeComponent from "./TreeNodeComponent.vue";
+import TreeNodeComponent from "./TreeNodeLevelComponent.vue";
 import { TreeNode } from "../interfaces";
 
 interface TreeProps {
@@ -16,9 +16,7 @@ let props = defineProps<TreeProps>();
 </script>
 
 <template>
-
-
-  <component
+  <component class="overflow-hidden"
     :is="TreeNodeComponent"
     :tree-nodes="treeNodes"
     :visibility-toggle="hideUncontrollable"

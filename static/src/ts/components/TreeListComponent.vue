@@ -38,20 +38,15 @@ async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
 </script>
 
 <template>
-
   <div class="divide-y divide-solid divide-primarylight">
     <div class="text-xl text-textblackdim text-center py-1">Trees</div>
     <ul class="list-none">
       <li class="my-1" v-for="tree in trees" :key="tree.tree_id">
-        <div
-          class="flex py-1 px-2 items-center justify-between hover:bg-primarylight hover:text-black rounded-md"
+        <a
+          href="#" class="flex py-1 px-2 items-center justify-between hover:bg-primarylight hover:text-black rounded-md"
+          v-on:click="emit('selectTree', tree.tree_id)"
         >
-          <a
-            href="#"
-            v-text="tree.tree_name"
-            v-on:click="emit('selectTree', tree.tree_id)"
-          >
-          </a>
+          <span v-text="tree.tree_name"> </span>
           <button
             class="text-textblackdim items-end"
             v-show="trees.length > 1"
@@ -73,7 +68,7 @@ async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
               />
             </svg>
           </button>
-        </div>
+        </a>
       </li>
     </ul>
 

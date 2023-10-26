@@ -6,7 +6,6 @@ import TreeComponent from "./TreeComponent.vue";
 import TreeListComponent from "./TreeListComponent.vue";
 import TransitionOutIn from "../transitions/TransitionOutIn.vue";
 
-
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
   document.getElementById("logged-in").textContent,
@@ -95,12 +94,12 @@ function selectTreeHandler(treeId: string): void {
 </script>
 
 <template>
-  <div class="mx-auto px-2 sm:px-6">
+  <div class="mx-auto px-1 sm:px-6">
     <div class="flex flex-col h-full items-center sm:flex-row gap-y-6">
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="sm:w-44 w-60 px-3 py-2 mt-9 rounded-md shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+        class="sm:w-44 w-60 px-3 py-2 mt-8 rounded-md shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
       >
         <component
           :is="TreeListComponent"
@@ -112,7 +111,7 @@ function selectTreeHandler(treeId: string): void {
       </div>
 
       <!--   Info & Controls   -->
-      <div class="flex flex-col w-60 mx-auto px-2 sm:px-6">
+      <div class="flex flex-col w-60 mx-auto sm:px-6 gap-y-2">
         <div class="flex justify-between">
           <div>
             <div class="text-xl text-center py-1">Tree Name</div>
@@ -199,19 +198,40 @@ function selectTreeHandler(treeId: string): void {
           </div>
         </div>
 
-        <div>
-          <label for="uncontrollable-visibility toggle"
-            >Hide Uncontrollable</label
-          >
-          <input
-            id="uncontrollable-visibility toggle"
-            type="checkbox"
-            v-model="visibilityToggle"
-          />
+        <div class="flex gap-x-2">
+          <label for="uncontrollable-visibility toggle">Controllable</label>
+          <button class="text-textblackdim" v-on:click="visibilityToggle = !visibilityToggle">
+            <!-- Not visible -->
+            <svg
+              v-show="visibilityToggle"
+              class="h-5 w-5"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m30.89 16.46.24-.46-.24-.46A17 17 0 0 0 16 6a15.7 15.7 0 0 0-6.91 1.63L4.73 3.27 3.31 4.69l4 4 2.43 2.43L12.58 14l1.5 1.51 2.46 2.46 1.51 1.5 2.87 2.87 2 2.05 4.34 4.35 1.42-1.42-4-4a18.34 18.34 0 0 0 6.21-6.86Zm-12.95 0-2.42-2.42A2.42 2.42 0 0 1 16 14a2 2 0 0 1 2 2 2.42 2.42 0 0 1-.06.48Zm4.39 4.39L19.45 18A4 4 0 0 0 14 12.55l-2.87-2.88a8 8 0 0 1 11.2 11.2Zm2.39 0a10 10 0 0 0 0-9.78A16.47 16.47 0 0 1 28.86 16a16.47 16.47 0 0 1-4.14 4.89ZM19.15 23.35a8 8 0 0 1-10.5-10.5l-1.49-1.49a9.92 9.92 0 0 0 .12 9.53A16.47 16.47 0 0 1 3.14 16a16.23 16.23 0 0 1 4-4.71L5.66 9.86a18.5 18.5 0 0 0-4.55 5.68L.87 16l.24.46A17 17 0 0 0 16 26a15.42 15.42 0 0 0 5-.84Z"
+              />
+            </svg>
+
+            <!-- Visible -->
+            <svg
+              v-show="!visibilityToggle"
+              class="h-5 w-5"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M30.89 15.54A17 17 0 0 0 16 6a17 17 0 0 0-14.89 9.54L.87 16l.24.46A17 17 0 0 0 16 26a17 17 0 0 0 14.89-9.54l.24-.46ZM24 16a8 8 0 1 1-8-8 8 8 0 0 1 8 8ZM3.14 16a16.47 16.47 0 0 1 4.14-4.89 10 10 0 0 0 0 9.78A16.47 16.47 0 0 1 3.14 16Zm21.58 4.89a10 10 0 0 0 0-9.78A16.47 16.47 0 0 1 28.86 16a16.47 16.47 0 0 1-4.14 4.89Z"
+              />
+              <path
+                d="M16 20a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
       <!--   Tree   -->
-      <div class="sm:w-44 w-60 px-3 py-2">
+      <div class="sm:w-44 w-60 mb-10">
         <component
           v-if="tempTreeStore.length !== 0"
           :is="TreeComponent"
