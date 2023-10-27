@@ -111,10 +111,19 @@ function selectTreeHandler(treeId: string): void {
       </div>
 
       <!--   Info & Controls   -->
-      <div class="flex flex-col w-60 mx-auto sm:px-6 gap-y-2">
+      <div class="flex flex-col w-60 mx-auto sm:px-6 gap-y-2 text-textblackdim">
         <div class="flex justify-between">
-          <div>
-            <div class="text-xl text-center py-1">Tree Name</div>
+          <div class="flex">
+            <!--   Tree Name   -->
+            <div class="text-textblackdim">
+              <input
+                class="w-40 px-2 py-0.5 text-xs rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+                id="selected-tree-name-input"
+                type="text"
+                maxlength="20"
+                v-model="tempTreeStore[selectedTreeIndex].tree_name"
+              />
+            </div>
           </div>
 
           <div class="flex items-center gap-x-1">
@@ -123,7 +132,7 @@ function selectTreeHandler(treeId: string): void {
               <TransitionOutIn>
                 <svg
                   v-if="syncIndicator === 'syncing'"
-                  class="h-7 w-7 animate-spin"
+                  class="h-5 w-5 animate-spin"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +147,7 @@ function selectTreeHandler(treeId: string): void {
 
                 <svg
                   v-else-if="syncIndicator === 'synced'"
-                  class="h-7 w-7"
+                  class="h-5 w-5"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +161,7 @@ function selectTreeHandler(treeId: string): void {
                 </svg>
                 <svg
                   v-else-if="syncIndicator === 'failed'"
-                  class="h-7 w-7"
+                  class="h-5 w-5"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +180,7 @@ function selectTreeHandler(treeId: string): void {
             <div class="text-textblackdim">
               <span v-show="!loggedIn">
                 <svg
-                  class="h-5 w-5 fill-warning shadow-md rounded-full"
+                  class="h-4 w-4 fill-warning shadow-md rounded-full"
                   viewBox="0 0 1920 1920"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -185,26 +194,16 @@ function selectTreeHandler(treeId: string): void {
           </div>
         </div>
 
-        <div class="flex">
-          <!--   Tree Name   -->
-          <div class="text-textblackdim">
-            <input
-              class="w-32 px-2 py-1 rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
-              id="selected-tree-name-input"
-              type="text"
-              maxlength="20"
-              v-model="tempTreeStore[selectedTreeIndex].tree_name"
-            />
-          </div>
-        </div>
-
         <div class="flex gap-x-2">
-          <label for="uncontrollable-visibility toggle">Controllable</label>
-          <button class="text-textblackdim" v-on:click="hideUncontrollable = !hideUncontrollable">
+          <span class="text-sm font-medium">Controllable</span>
+          <button
+            class="text-textblackdim"
+            v-on:click="hideUncontrollable = !hideUncontrollable"
+          >
             <!-- Not visible -->
             <svg
               v-show="hideUncontrollable"
-              class="h-5 w-5"
+              class="h-4 w-4"
               viewBox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -216,7 +215,7 @@ function selectTreeHandler(treeId: string): void {
             <!-- Visible -->
             <svg
               v-show="!hideUncontrollable"
-              class="h-5 w-5"
+              class="h-4 w-4"
               viewBox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -231,7 +230,7 @@ function selectTreeHandler(treeId: string): void {
         </div>
       </div>
       <!--   Tree   -->
-      <div class="sm:w-44 w-60 mb-40 overflow-x-auto">
+      <div class="sm:w-44 w-60 h-80 mb-40 overflow-x-auto">
         <component
           v-if="tempTreeStore.length !== 0"
           :is="TreeComponent"

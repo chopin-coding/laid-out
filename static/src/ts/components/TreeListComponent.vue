@@ -39,14 +39,14 @@ async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
 
 <template>
   <div class="divide-y divide-solid divide-primarylight">
-    <div class="text-xl text-textblackdim text-center py-1">Trees</div>
+    <div class="text-sm font-medium text-textblackdim text-center py-1">Trees</div>
     <ul class="list-none">
       <li class="my-1" v-for="tree in trees" :key="tree.tree_id">
         <a
           href="#" class="flex py-1 px-2 items-center justify-between hover:bg-primarylight hover:text-black rounded-md"
           v-on:click="emit('selectTree', tree.tree_id)"
         >
-          <span v-text="tree.tree_name"> </span>
+          <span class="text-xs" v-text="tree.tree_name"> </span>
           <button
             class="text-textblackdim items-end"
             v-show="trees.length > 1"

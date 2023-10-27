@@ -16,6 +16,7 @@ module.exports = {
       textblack: "rgb(var(--color-textblack) / 1)",
       textblackdim: "rgb(var(--color-textblack) / .9)",
       textblackdimmer: "rgb(var(--color-textblack) / .7)",
+      textblackdimmest: "rgb(var(--color-textblack) / .15)",
 
       white: "rgb(var(--color-white) / 1)",
       black: "rgb(var(--color-black) / 1)",
