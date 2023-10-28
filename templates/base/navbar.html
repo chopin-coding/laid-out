@@ -18,7 +18,7 @@
 {% endblock %}
 
 <nav x-cloak x-data="{ isMobileMenuOpen: false }" class="border-b bg-backg border-primary">
-  <div class="mx-auto max-w-screen-2xl px-2 sm:px-6 lg:px-8">
+  <div class="mx-auto px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-20 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
@@ -51,8 +51,8 @@
 
       </div>
       <!-- brand -->
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="flex hidden flex-shrink-0 sm:block sm:items-center">
+      <div class="hidden sm:block items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex flex-shrink-0 sm:block sm:items-center">
           <a href="{% url 'index' %}">
             <img class="h-9 w-auto" src="../../static/images/favicon.png"
                  alt="logo" href="{% url 'index' %}">
@@ -82,7 +82,7 @@
           <!-- Dark/Light/System mode selection -->
           <div x-cloak
                x-data="{ isThemeMenuOpen: false, currentTheme: localStorage.getItem('theme') || 'system' }"
-               class="relative ml-3 z-10">
+               class="relative z-10 ml-3">
             <button @click="isThemeMenuOpen = !isThemeMenuOpen" @click.outside="isThemeMenuOpen = false"
                     type="button"
                     class="relative flex rounded-md text-sm font-medium text-textblackdim hover:bg-primarylight hover:text-black"
@@ -179,7 +179,7 @@
           {% else %}
 
             <!-- Profile dropdown -->
-            <div x-cloak x-data="{ isUserMenuOpen: false }" class="relative ml-3 z-20">
+            <div x-cloak x-data="{ isUserMenuOpen: false }" class="relative z-20 ml-3">
               <button @click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
                       type="button"
                       class="relative flex rounded-md px-3 py-2 text-sm hover:bg-primarylight hover:text-black"
@@ -216,7 +216,7 @@
   </div>
 
 
-  <div x-show="isMobileMenuOpen" class="px-2 sm:px-6">
+  <div x-show="isMobileMenuOpen" class="px-2 sm:px-6 sm:hidden">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <div class="flex h-max items-center space-x-4">
         <a href="{% url 'index' %}" class="">

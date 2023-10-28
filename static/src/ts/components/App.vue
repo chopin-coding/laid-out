@@ -39,6 +39,10 @@ function initializeTrees() {
   }
 }
 
+const selectedTreeId = computed(() => {
+  return tempTreeStore.value[selectedTreeIndex.value].tree_id
+});
+
 function treeWatcher(treeIndex: string) {
   watch(tempTreeStore.value[treeIndex], (newValue, oldValue) => {
     syncIndicator.value = "syncing";
@@ -93,52 +97,57 @@ function selectTreeHandler(treeId: string): void {
 }
 </script>
 
-<template>
-  <div class="mx-auto px-1 sm:px-6">
-    <div class="flex flex-col h-full items-center sm:flex-row gap-y-6">
+<template v-cloak>
+  <!-- removed w-screen from the top div -->
+  <div class="mx-auto px-4 sm:px-6 overflow-x-hidden">
+    <div class="flex h-full flex-col items-center gap-y-10 sm:flex-row">
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="sm:w-44 w-60 px-3 py-2 mt-8 rounded-md shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+        class="mt-8 w-full rounded-md px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none sm:w-44"
       >
         <component
           :is="TreeListComponent"
           :trees="tempTreeStore"
           :logged-in="loggedIn"
+          :selected-tree-id="selectedTreeId"
           @select-tree="(treeId: string) => selectTreeHandler(treeId)"
           @create-tree="(treeId: string) => addTreeWatcher(treeId)"
         />
       </div>
 
       <!--   Info & Controls   -->
-      <div class="flex flex-col w-60 mx-auto sm:px-6 gap-y-2 text-textblackdim">
+      <div
+        class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim sm:px-6"
+      >
         <div class="flex justify-between">
           <div class="flex">
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-40 px-2 py-0.5 text-xs rounded shadow-lg ring-1 ring-primary ring-opacity-5 focus:outline-none"
+                class="w-full rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
-                maxlength="20"
+                maxlength="22"
                 v-model="tempTreeStore[selectedTreeIndex].tree_name"
               />
             </div>
           </div>
 
-          <div class="flex items-center gap-x-1">
+          <div class="flex items-center gap-x-4 mx-4">
             <!--     Sync status     -->
             <div class="text-textblackdim">
               <TransitionOutIn>
                 <svg
                   v-if="syncIndicator === 'syncing'"
-                  class="h-5 w-5 animate-spin"
+                  class="h-8 w-8 animate-spin"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M14.393 5.374c3.632 1.332 5.505 5.378 4.183 9.038a7.008 7.008 0 0 1-5.798 4.597m0 0 1.047-1.754m-1.047 1.754 1.71.991m-4.881-1.374c-3.632-1.332-5.505-5.378-4.183-9.038a7.008 7.008 0 0 1 5.798-4.597m0 0-1.047 1.754m1.047-1.754L9.512 4"
+                    stroke-width="1.5"
                     stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -147,13 +156,14 @@ function selectTreeHandler(treeId: string): void {
 
                 <svg
                   v-else-if="syncIndicator === 'synced'"
-                  class="h-5 w-5"
+                  class="h-8 w-8"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M16.5 5.385a8 8 0 0 1-5.707 14.525M13.16 4.083A8 8 0 0 0 7.405 18.55M13.16 4.083 12.5 3m.66 1.083L12.5 5m-1.707 14.91.963-.91m-.963.91L11.5 21M9 12l2 2 4-4"
+                    stroke-width="1.5"
                     stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -161,13 +171,14 @@ function selectTreeHandler(treeId: string): void {
                 </svg>
                 <svg
                   v-else-if="syncIndicator === 'failed'"
-                  class="h-5 w-5"
+                  class="h-8 w-8"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M15.938 6.12A7.135 7.135 0 0 1 19 12c0 3.927-3.134 7.111-7 7.111-.359 0-.711-.027-1.056-.08m2.07-14.068A6.949 6.949 0 0 0 12 4.89c-3.866 0-7 3.184-7 7.111a7.136 7.136 0 0 0 2.979 5.822m5.036-12.859L12.437 4m.578.963-.578.815M10.944 19.03l.843-.809m-.843.809.618.969M12 9v3.5m0 2v.5"
+                    stroke-width="1.5"
                     stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -180,7 +191,7 @@ function selectTreeHandler(treeId: string): void {
             <div class="text-textblackdim">
               <span v-show="!loggedIn">
                 <svg
-                  class="h-4 w-4 fill-warning shadow-md rounded-full"
+                  class="h-6 w-6 rounded-full shadow-md fill-warning"
                   viewBox="0 0 1920 1920"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -194,8 +205,11 @@ function selectTreeHandler(treeId: string): void {
           </div>
         </div>
 
-        <div class="flex gap-x-2">
-          <span class="text-sm font-medium">Controllable</span>
+        <div class="flex gap-x-3 text-textblackdim">
+          <div>
+            <span class="text-xl text-textblackdim">Controllable</span>
+          </div>
+
           <button
             class="text-textblackdim"
             v-on:click="hideUncontrollable = !hideUncontrollable"
@@ -203,34 +217,39 @@ function selectTreeHandler(treeId: string): void {
             <!-- Not visible -->
             <svg
               v-show="hideUncontrollable"
-              class="h-4 w-4"
-              viewBox="0 0 32 32"
+              class="h-7 w-7 text-textblackdim fill-textblackdim"
+              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="m30.89 16.46.24-.46-.24-.46A17 17 0 0 0 16 6a15.7 15.7 0 0 0-6.91 1.63L4.73 3.27 3.31 4.69l4 4 2.43 2.43L12.58 14l1.5 1.51 2.46 2.46 1.51 1.5 2.87 2.87 2 2.05 4.34 4.35 1.42-1.42-4-4a18.34 18.34 0 0 0 6.21-6.86Zm-12.95 0-2.42-2.42A2.42 2.42 0 0 1 16 14a2 2 0 0 1 2 2 2.42 2.42 0 0 1-.06.48Zm4.39 4.39L19.45 18A4 4 0 0 0 14 12.55l-2.87-2.88a8 8 0 0 1 11.2 11.2Zm2.39 0a10 10 0 0 0 0-9.78A16.47 16.47 0 0 1 28.86 16a16.47 16.47 0 0 1-4.14 4.89ZM19.15 23.35a8 8 0 0 1-10.5-10.5l-1.49-1.49a9.92 9.92 0 0 0 .12 9.53A16.47 16.47 0 0 1 3.14 16a16.23 16.23 0 0 1 4-4.71L5.66 9.86a18.5 18.5 0 0 0-4.55 5.68L.87 16l.24.46A17 17 0 0 0 16 26a15.42 15.42 0 0 0 5-.84Z"
+                d="M4.495 7.44c-.948.678-1.717 1.402-2.306 2.04a3.679 3.679 0 0 0 0 5.04C3.917 16.391 7.19 19 12 19c1.296 0 2.48-.19 3.552-.502l-1.662-1.663A10.77 10.77 0 0 1 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326 12.972 12.972 0 0 1 2.273-1.96L4.495 7.442Z"
+              />
+              <path
+                d="M8.533 11.478a3.5 3.5 0 0 0 3.983 3.983l-3.983-3.983ZM15.466 12.447l-3.919-3.919a3.5 3.5 0 0 1 3.919 3.919Z"
+              />
+              <path
+                d="M18.112 15.093a12.99 12.99 0 0 0 2.23-1.93 1.68 1.68 0 0 0 0-2.326C18.811 9.18 16.032 7 12 7c-.64 0-1.25.055-1.827.154L8.505 5.486A12.623 12.623 0 0 1 12 5c4.811 0 8.083 2.609 9.81 4.48a3.679 3.679 0 0 1 0 5.04c-.58.629-1.334 1.34-2.263 2.008l-1.435-1.435ZM2.008 3.422a1 1 0 1 1 1.414-1.414L22 20.586A1 1 0 1 1 20.586 22L2.008 3.422Z"
               />
             </svg>
 
-            <!-- Visible -->
             <svg
               v-show="!hideUncontrollable"
-              class="h-4 w-4"
-              viewBox="0 0 32 32"
+              class="h-7 w-7 text-textblackdim fill-textblackdim"
+              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M30.89 15.54A17 17 0 0 0 16 6a17 17 0 0 0-14.89 9.54L.87 16l.24.46A17 17 0 0 0 16 26a17 17 0 0 0 14.89-9.54l.24-.46ZM24 16a8 8 0 1 1-8-8 8 8 0 0 1 8 8ZM3.14 16a16.47 16.47 0 0 1 4.14-4.89 10 10 0 0 0 0 9.78A16.47 16.47 0 0 1 3.14 16Zm21.58 4.89a10 10 0 0 0 0-9.78A16.47 16.47 0 0 1 28.86 16a16.47 16.47 0 0 1-4.14 4.89Z"
+                d="M11.994 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm0-2.006a1.494 1.494 0 1 1 0-2.988 1.494 1.494 0 0 1 0 2.988Z"
               />
               <path
-                d="M16 20a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0-6a2 2 0 1 1-2 2 2 2 0 0 1 2-2Z"
+                d="M12 5C7.189 5 3.917 7.609 2.19 9.48a3.679 3.679 0 0 0 0 5.04C3.916 16.391 7.188 19 12 19c4.811 0 8.083-2.609 9.81-4.48a3.679 3.679 0 0 0 0-5.04C20.084 7.609 16.812 5 12 5Zm-8.341 5.837C5.189 9.18 7.967 7 12 7c4.033 0 6.812 2.18 8.341 3.837a1.68 1.68 0 0 1 0 2.326C18.811 14.82 16.033 17 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326Z"
               />
             </svg>
           </button>
         </div>
       </div>
       <!--   Tree   -->
-      <div class="sm:w-44 w-60 h-80 mb-40 overflow-x-auto">
+      <div class="mb-40 w-full">
         <component
           v-if="tempTreeStore.length !== 0"
           :is="TreeComponent"
@@ -238,8 +257,9 @@ function selectTreeHandler(treeId: string): void {
           :logged-in="loggedIn"
           :hide-uncontrollable="hideUncontrollable"
           :node-type="'root'"
+          :parent-node-id="'root'"
         />
-        <div v-else class="text-textblackdim font-medium">No trees to show</div>
+        <div v-else class="text-xl text-textblackdim">No tree to show 🤔</div>
       </div>
     </div>
   </div>

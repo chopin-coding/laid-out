@@ -5,6 +5,7 @@ import { Tree } from "../interfaces";
 interface TreeListProps {
   trees: Tree[];
   loggedIn: boolean;
+  selectedTreeId: string;
 }
 
 const emit = defineEmits(["selectTree", "createTree"]);
@@ -39,21 +40,23 @@ async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
 
 <template>
   <div class="divide-y divide-solid divide-primarylight">
-    <div class="text-sm font-medium text-textblackdim text-center py-1">Trees</div>
+    <div class="py-2 my-1 text-center text-xl text-textblackdim">Trees</div>
     <ul class="list-none">
-      <li class="my-1" v-for="tree in trees" :key="tree.tree_id">
+      <li class="my-2" v-for="tree in trees" :key="tree.tree_id">
         <a
-          href="#" class="flex py-1 px-2 items-center justify-between hover:bg-primarylight hover:text-black rounded-md"
+          href="#" class="flex items-center text-textblackdim justify-between rounded-md px-2 py-2 hover:bg-primarylight hover:text-black"
+          :class="{ 'text-black bg-primarylight': tree.tree_id === selectedTreeId }"
           v-on:click="emit('selectTree', tree.tree_id)"
         >
-          <span class="text-xs" v-text="tree.tree_name"> </span>
+          <span class="" v-text="tree.tree_name"> </span>
           <button
-            class="text-textblackdim items-end"
+            class="items-end text-textblackdim"
             v-show="trees.length > 1"
             @click="deleteBtnHandler(tree.tree_id, loggedIn)"
           >
+          <!-- Delete icon -->
             <svg
-              class="h-6 w-6"
+              class="h-7 w-7"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -74,11 +77,12 @@ async function deleteBtnHandler(treeId: string, loggedIn: boolean) {
 
     <div>
       <button
-        class="my-2 py-1 px-1 hover:bg-primarylight hover:text-black rounded-md"
+        class="my-2 rounded-md px-1 py-2 hover:bg-primarylight hover:text-black"
         @click="newTree(loggedIn)"
       >
+        <!-- New Tree icon -->
         <svg
-          class="h-6 w-6 text-textblackdim"
+          class="h-7 w-7 text-textblackdim"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

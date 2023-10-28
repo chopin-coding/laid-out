@@ -10,6 +10,7 @@ interface TreeProps {
   loggedIn: boolean;
   hideUncontrollable: boolean;
   nodeType: "root" | "child";
+  parentNodeId: string;
 }
 
 // defineProps<TreeNode[]>(); doesn't work
@@ -32,13 +33,33 @@ async function childBtnHandler(nodeId: string) {
   document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
 
-function deleteBtnHandler(nodeId: string) {
+async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
   const indexToDelete = props.nodes.findIndex(
     (node) => node.node_id === nodeId,
   );
 
   if (indexToDelete !== -1) {
     props.nodes.splice(indexToDelete, 1);
+  }
+
+  await nextTick();
+
+  let nodeIdToFocus: string | null = null;
+
+  if (props.nodes.length > 0) {
+    try {
+      nodeIdToFocus = props.nodes[indexToDelete].node_id;
+    } catch {
+      nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
+    } finally {
+      document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
+    }
+  } else if (props.nodes.length === 0) {
+    try {
+      document.getElementById(`${parentNodeId}-titleInput`).focus();
+    } catch (error) {
+      console.log(`couldn't focus parent node: ${error}`);
+    }
   }
 }
 
@@ -58,17 +79,26 @@ async function siblingBtnHandler(nodeId: string) {
 </script>
 
 <template>
-  <ul class="w-60 list-none" :class="{ 'child-node': nodeType === 'child', 'root-node': nodeType === 'root' }">
+  <ul
+    class="flex list-none flex-col gap-y-1.5 divide-y divide-primarylight"
+    :class="{
+      'child-node': nodeType === 'child',
+      'root-node': nodeType === 'root',
+    }"
+  >
     <component
       v-for="node in nodes"
       :is="TreeNodeComponent"
       :node="node"
+      :parent-node-id="parentNodeId"
       :hide-uncontrollable="hideUncontrollable"
       :logged-in="loggedIn"
       :node-type="nodeType"
       :single-node-left="singleNodeLeft"
       @child-btn-handler="(nodeId: string) => childBtnHandler(nodeId)"
-      @delete-btn-handler="(nodeId: string) => deleteBtnHandler(nodeId)"
+      @delete-btn-handler="
+        (nodeId: string) => deleteBtnHandler(nodeId, parentNodeId)
+      "
       @sibling-btn-handler="(nodeId: string) => siblingBtnHandler(nodeId)"
     />
   </ul>

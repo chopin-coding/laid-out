@@ -22,7 +22,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # TODO before prod
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.70', '127.0.0.1']
 
 # Application definition
 
