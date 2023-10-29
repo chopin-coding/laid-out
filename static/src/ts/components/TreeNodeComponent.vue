@@ -13,6 +13,7 @@ interface TreeNodeProps {
   nodeType: "root" | "child";
   singleNodeLeft: boolean;
   parentNodeId: string;
+  parentNodeLocked: boolean
 }
 
 // defineProps<TreeNode[]>(); doesn't work
@@ -105,7 +106,8 @@ onMounted(() => {
                 emit('childBtnHandler', node.node_id)
               "
               @input="nodeResize"
-              class="resize-none rounded w-full px-1 align-middle py-2 placeholder-textblackdimmest focus:outline-none"
+              class="resize-none bg-backg rounded w-full px-1 align-middle py-2 placeholder-textblackdimmer2 focus:outline-none"
+              :class="{ 'text-textblackdimmer2 line-through': parentNodeLocked || node.locked }"
               placeholder="✎..."
               rows="1"
               v-model="node.title"
@@ -187,6 +189,7 @@ onMounted(() => {
           :hide-uncontrollable="hideUncontrollable"
           :node-type="'child'"
           :parent-node-id="node.node_id"
+          :parent-node-locked="parentNodeLocked || node.locked"
         />
       </template>
     </li>
@@ -194,6 +197,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* make this different for mobile and desktop */
 .child-node {
   margin-left: 1em;
 }

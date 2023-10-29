@@ -22,6 +22,7 @@ let syncIndicator = ref("synced");
 let selectedTreeIndex = ref(0);
 let showTreeList = ref(false);
 let hideUncontrollable = ref(false);
+const syncWarningExpanded = ref(false);
 
 initializeTrees();
 
@@ -40,7 +41,7 @@ function initializeTrees() {
 }
 
 const selectedTreeId = computed(() => {
-  return tempTreeStore.value[selectedTreeIndex.value].tree_id
+  return tempTreeStore.value[selectedTreeIndex.value].tree_id;
 });
 
 function treeWatcher(treeIndex: string) {
@@ -95,6 +96,10 @@ function selectTreeHandler(treeId: string): void {
     }
   }
 }
+
+function warningClickOutsideHandler(): void {
+  syncWarningExpanded.value = false;
+}
 </script>
 
 <template v-cloak>
@@ -125,7 +130,7 @@ function selectTreeHandler(treeId: string): void {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
+                class="w-full bg-backg rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
@@ -188,19 +193,37 @@ function selectTreeHandler(treeId: string): void {
             </div>
 
             <!--     Not logged in sync warning     -->
-            <div class="text-textblackdim">
-              <span v-show="!loggedIn">
-                <svg
-                  class="h-6 w-6 rounded-full shadow-md fill-warning"
-                  viewBox="0 0 1920 1920"
-                  xmlns="http://www.w3.org/2000/svg"
+            <div class="text-textblackdim" v-show="!loggedIn">
+              <div
+                class="relative flex items-center text-textblackdim cursor-pointer hover:text-gray-600"
+              >
+                <div
+                  v-show="syncWarningExpanded"
+                  class="absolute top-0 right-0 inline-block w-60 px-4 py-3 mt-14 -ml-32 text-textblackdim bg-white rounded-lg ring-1 ring-opacity-5 ring-warning focus:outline-none"
                 >
-                  <path
-                    d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm-9.838 1342.685c-84.47 0-153.19 68.721-153.19 153.19 0 84.47 68.72 153.192 153.19 153.192s153.19-68.721 153.19-153.191-68.72-153.19-153.19-153.19ZM1153.658 320H746.667l99.118 898.623h208.755L1153.658 320Z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </span>
+                  <span class="inline-block leading-tight"
+                    >Your data has been saved to this device only. Log in to
+                    save and access your data from any device.</span
+                  >
+                </div>
+                <button
+                  v-on:click="syncWarningExpanded = !syncWarningExpanded"
+                  v-click-outside="warningClickOutsideHandler"
+                >
+                  <span>
+                    <svg
+                      class="h-6 w-6 rounded-full drop-shadow-md fill-warning"
+                      viewBox="0 0 1920 1920"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm-9.838 1342.685c-84.47 0-153.19 68.721-153.19 153.19 0 84.47 68.72 153.192 153.19 153.192s153.19-68.721 153.19-153.191-68.72-153.19-153.19-153.19ZM1153.658 320H746.667l99.118 898.623h208.755L1153.658 320Z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

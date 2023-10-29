@@ -11,6 +11,7 @@ interface TreeProps {
   hideUncontrollable: boolean;
   nodeType: "root" | "child";
   parentNodeId: string;
+  parentNodeLocked?: boolean;
 }
 
 // defineProps<TreeNode[]>(); doesn't work
@@ -95,6 +96,7 @@ async function siblingBtnHandler(nodeId: string) {
       :logged-in="loggedIn"
       :node-type="nodeType"
       :single-node-left="singleNodeLeft"
+      :parent-node-locked="parentNodeLocked || node.locked"
       @child-btn-handler="(nodeId: string) => childBtnHandler(nodeId)"
       @delete-btn-handler="
         (nodeId: string) => deleteBtnHandler(nodeId, parentNodeId)
