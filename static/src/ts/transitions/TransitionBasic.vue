@@ -10,13 +10,11 @@
 
 <style scoped>
 .v-enter-active {
-  transition: opacity 0.3s ease-out;
-  animation: grow-in 0.3s;
+  transition: opacity 100ms ease-out;
 }
 
 .v-leave-active {
-  transition: opacity 0.15s ease-out;
-  animation: grow-in 0.15s reverse;
+  transition: opacity 90ms ease-out;
 }
 
 .v-enter-from,

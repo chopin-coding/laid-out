@@ -39,9 +39,13 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
     (node) => node.node_id === nodeId,
   );
 
-  if (indexToDelete !== -1) {
-    props.nodes.splice(indexToDelete, 1);
-  }
+  // let the animation play out before deleting the node
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      props.nodes.splice(indexToDelete, 1);
+      resolve();
+    }, 152);
+  });
 
   await nextTick();
 

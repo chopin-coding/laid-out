@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import * as treeHelpers from "../treeHelpers";
 import { useLocalStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
-import TreeListComponent from "./TreeListComponent.vue";
-import TransitionOutIn from "../transitions/TransitionOutIn.vue";
+import TreeListComponent from "./TreeListItem.vue";
+import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
+import TransitionBasic from "../transitions/TransitionBasic.vue";
+import TransitionSlide from "../transitions/TransitionSlide.vue";
 
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
@@ -34,14 +36,17 @@ function initializeTrees() {
 
     initializeTreeWatchers();
   } else {
-    // syncTimerBaseCount = 1000;
-    // TODO: see if this could cause performance issues
+    // TODO: see if this causes performance issues
     tempTreeStore.value = localTreeStore.value.trees;
   }
 }
 
 const selectedTreeId = computed(() => {
   return tempTreeStore.value[selectedTreeIndex.value].tree_id;
+});
+
+const isLastRemainingTree = computed(() => {
+  return tempTreeStore.value.length === 1;
 });
 
 function treeWatcher(treeIndex: string) {
@@ -97,13 +102,50 @@ function selectTreeHandler(treeId: string): void {
   }
 }
 
+async function deleteTreeHandler(treeId: string) {
+  const deleteResult = await treeHelpers.deleteTree(treeId, loggedIn);
+  const indexToDelete = tempTreeStore.value.findIndex(
+    (tree) => tree.tree_id === treeId,
+  );
+
+  const selectedTreeChangeNeeded = selectedTreeIndex.value === indexToDelete;
+
+  if (deleteResult === 204) {
+    if (indexToDelete !== -1) {
+      tempTreeStore.value.splice(indexToDelete, 1);
+
+      if (selectedTreeChangeNeeded) {
+        selectedTreeIndex.value = 0;
+      }
+
+      // let the animation play out before deleting the tree
+
+      // await new Promise<void>((resolve) => {
+      //   setTimeout(() => {
+      //     tempTreeStore.value.splice(indexToDelete, 1);
+      //     resolve();
+      //   }, 152);
+      // });
+    }
+  }
+}
+
 function warningClickOutsideHandler(): void {
   syncWarningExpanded.value = false;
+}
+
+async function newTree(loggedIn: boolean) {
+  const treeId = await treeHelpers.createTree(loggedIn);
+  const newTree = treeHelpers.defaultTree(treeId);
+
+  tempTreeStore.value.push(newTree);
+  if (loggedIn) {
+    addTreeWatcher(treeId);
+  }
 }
 </script>
 
 <template v-cloak>
-  <!-- removed w-screen from the top div -->
   <div class="mx-auto px-4 sm:px-6 overflow-x-hidden">
     <div class="flex h-full flex-col items-center gap-y-10 sm:flex-row">
       <!--  Tree List  -->
@@ -111,14 +153,46 @@ function warningClickOutsideHandler(): void {
       <div
         class="mt-8 w-full rounded-md px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none sm:w-44"
       >
-        <component
-          :is="TreeListComponent"
-          :trees="tempTreeStore"
-          :logged-in="loggedIn"
-          :selected-tree-id="selectedTreeId"
-          @select-tree="(treeId: string) => selectTreeHandler(treeId)"
-          @create-tree="(treeId: string) => addTreeWatcher(treeId)"
-        />
+        <div class="divide-y divide-solid divide-primarylight">
+          <div class="py-2 my-1 text-center text-xl text-textblackdim">
+            Trees
+          </div>
+          <ul class="list-none">
+            <component
+              v-for="tree in tempTreeStore"
+              :key="tree.tree_id"
+              :is="TreeListComponent"
+              :tree="tree"
+              :selected-tree-id="selectedTreeId"
+              :is-last-remaining-tree="isLastRemainingTree"
+              @select-tree="(treeId: string) => selectTreeHandler(treeId)"
+              @delete-tree="(treeId: string) => deleteTreeHandler(treeId)"
+            />
+          </ul>
+
+          <div>
+            <button
+              class="transition ease-out duration-100 my-2 rounded-md px-1 py-2 hover:bg-primarylight hover:text-black"
+              @click="newTree(loggedIn)"
+            >
+              <!-- New Tree icon -->
+              <svg
+                class="h-7 w-7 text-textblackdim"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="Add Tree"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!--   Info & Controls   -->
@@ -142,7 +216,7 @@ function warningClickOutsideHandler(): void {
           <div class="flex items-center gap-x-4 mx-4">
             <!--     Sync status     -->
             <div class="text-textblackdim">
-              <TransitionOutIn>
+              <TransitionOutInGrow>
                 <svg
                   v-if="syncIndicator === 'syncing'"
                   class="h-8 w-8 animate-spin"
@@ -189,7 +263,7 @@ function warningClickOutsideHandler(): void {
                     stroke-linejoin="round"
                   />
                 </svg>
-              </TransitionOutIn>
+              </TransitionOutInGrow>
             </div>
 
             <!--     Not logged in sync warning     -->
@@ -237,37 +311,39 @@ function warningClickOutsideHandler(): void {
             class="text-textblackdim"
             v-on:click="hideUncontrollable = !hideUncontrollable"
           >
-            <!-- Not visible -->
-            <svg
-              v-show="hideUncontrollable"
-              class="h-7 w-7 text-textblackdim fill-textblackdim"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.495 7.44c-.948.678-1.717 1.402-2.306 2.04a3.679 3.679 0 0 0 0 5.04C3.917 16.391 7.19 19 12 19c1.296 0 2.48-.19 3.552-.502l-1.662-1.663A10.77 10.77 0 0 1 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326 12.972 12.972 0 0 1 2.273-1.96L4.495 7.442Z"
-              />
-              <path
-                d="M8.533 11.478a3.5 3.5 0 0 0 3.983 3.983l-3.983-3.983ZM15.466 12.447l-3.919-3.919a3.5 3.5 0 0 1 3.919 3.919Z"
-              />
-              <path
-                d="M18.112 15.093a12.99 12.99 0 0 0 2.23-1.93 1.68 1.68 0 0 0 0-2.326C18.811 9.18 16.032 7 12 7c-.64 0-1.25.055-1.827.154L8.505 5.486A12.623 12.623 0 0 1 12 5c4.811 0 8.083 2.609 9.81 4.48a3.679 3.679 0 0 1 0 5.04c-.58.629-1.334 1.34-2.263 2.008l-1.435-1.435ZM2.008 3.422a1 1 0 1 1 1.414-1.414L22 20.586A1 1 0 1 1 20.586 22L2.008 3.422Z"
-              />
-            </svg>
-
-            <svg
-              v-show="!hideUncontrollable"
-              class="h-7 w-7 text-textblackdim fill-textblackdim"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.994 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm0-2.006a1.494 1.494 0 1 1 0-2.988 1.494 1.494 0 0 1 0 2.988Z"
-              />
-              <path
-                d="M12 5C7.189 5 3.917 7.609 2.19 9.48a3.679 3.679 0 0 0 0 5.04C3.916 16.391 7.188 19 12 19c4.811 0 8.083-2.609 9.81-4.48a3.679 3.679 0 0 0 0-5.04C20.084 7.609 16.812 5 12 5Zm-8.341 5.837C5.189 9.18 7.967 7 12 7c4.033 0 6.812 2.18 8.341 3.837a1.68 1.68 0 0 1 0 2.326C18.811 14.82 16.033 17 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326Z"
-              />
-            </svg>
+            <TransitionBasic>
+              <!-- Not visible -->
+              <svg
+                v-if="hideUncontrollable"
+                class="h-7 w-7 text-textblackdim fill-textblackdim"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.495 7.44c-.948.678-1.717 1.402-2.306 2.04a3.679 3.679 0 0 0 0 5.04C3.917 16.391 7.19 19 12 19c1.296 0 2.48-.19 3.552-.502l-1.662-1.663A10.77 10.77 0 0 1 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326 12.972 12.972 0 0 1 2.273-1.96L4.495 7.442Z"
+                />
+                <path
+                  d="M8.533 11.478a3.5 3.5 0 0 0 3.983 3.983l-3.983-3.983ZM15.466 12.447l-3.919-3.919a3.5 3.5 0 0 1 3.919 3.919Z"
+                />
+                <path
+                  d="M18.112 15.093a12.99 12.99 0 0 0 2.23-1.93 1.68 1.68 0 0 0 0-2.326C18.811 9.18 16.032 7 12 7c-.64 0-1.25.055-1.827.154L8.505 5.486A12.623 12.623 0 0 1 12 5c4.811 0 8.083 2.609 9.81 4.48a3.679 3.679 0 0 1 0 5.04c-.58.629-1.334 1.34-2.263 2.008l-1.435-1.435ZM2.008 3.422a1 1 0 1 1 1.414-1.414L22 20.586A1 1 0 1 1 20.586 22L2.008 3.422Z"
+                />
+              </svg>
+              <!-- Visible -->
+              <svg
+                v-else-if="!hideUncontrollable"
+                class="h-7 w-7 text-textblackdim fill-textblackdim"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.994 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm0-2.006a1.494 1.494 0 1 1 0-2.988 1.494 1.494 0 0 1 0 2.988Z"
+                />
+                <path
+                  d="M12 5C7.189 5 3.917 7.609 2.19 9.48a3.679 3.679 0 0 0 0 5.04C3.916 16.391 7.188 19 12 19c4.811 0 8.083-2.609 9.81-4.48a3.679 3.679 0 0 0 0-5.04C20.084 7.609 16.812 5 12 5Zm-8.341 5.837C5.189 9.18 7.967 7 12 7c4.033 0 6.812 2.18 8.341 3.837a1.68 1.68 0 0 1 0 2.326C18.811 14.82 16.033 17 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326Z"
+                />
+              </svg>
+            </TransitionBasic>
           </button>
         </div>
       </div>
