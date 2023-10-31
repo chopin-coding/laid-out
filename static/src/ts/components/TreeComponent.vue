@@ -34,6 +34,20 @@ async function childBtnHandler(nodeId: string) {
   document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
 
+async function siblingBtnHandler(nodeId: string) {
+  const indexToAddTo =
+    props.nodes.findIndex((node) => node.node_id === nodeId) + 1;
+
+  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
+
+  if (indexToAddTo !== -1) {
+    props.nodes.splice(indexToAddTo, 0, nodeToAdd);
+  }
+
+  await nextTick();
+  document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
+}
+
 async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
   const indexToDelete = props.nodes.findIndex(
     (node) => node.node_id === nodeId,
@@ -66,20 +80,6 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
       console.log(`couldn't focus parent node: ${error}`);
     }
   }
-}
-
-async function siblingBtnHandler(nodeId: string) {
-  const indexToAddTo =
-    props.nodes.findIndex((node) => node.node_id === nodeId) + 1;
-
-  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
-
-  if (indexToAddTo !== -1) {
-    props.nodes.splice(indexToAddTo, 0, nodeToAdd);
-  }
-
-  await nextTick();
-  document.getElementById(`${nodeToAdd.node_id}-titleInput`).focus();
 }
 </script>
 

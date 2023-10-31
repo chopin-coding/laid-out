@@ -3,10 +3,10 @@ import { ref, watch, computed, nextTick } from "vue";
 import * as treeHelpers from "../treeHelpers";
 import { useLocalStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
-import TreeListComponent from "./TreeListItem.vue";
 import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
 import TransitionBasic from "../transitions/TransitionBasic.vue";
 import TransitionSlide from "../transitions/TransitionSlide.vue";
+import TreeListItemComponent from "./TreeListItemComponent.vue";
 
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
@@ -16,15 +16,15 @@ const loggedIn: boolean = JSON.parse(
 const localTreeStore = useLocalStorage("tree-store", {
   trees: [treeHelpers.defaultTree()],
 });
-let syncTimerBaseCount = 3000;
+let syncTimerBaseCount = 2000;
 
 let tempTreeStore = ref([]);
 let syncTimer = null;
 let syncIndicator = ref("synced");
 let selectedTreeIndex = ref(0);
-let showTreeList = ref(false);
 let hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
+const newTreeLoading = ref(false);
 
 initializeTrees();
 
@@ -41,12 +41,12 @@ function initializeTrees() {
   }
 }
 
-const selectedTreeId = computed(() => {
-  return tempTreeStore.value[selectedTreeIndex.value].tree_id;
+const lastRemainingTree = computed(() => {
+  return tempTreeStore.value.length === 1;
 });
 
-const isLastRemainingTree = computed(() => {
-  return tempTreeStore.value.length === 1;
+const selectedTreeId = computed(() => {
+  return tempTreeStore.value[selectedTreeIndex.value].tree_id;
 });
 
 function treeWatcher(treeIndex: string) {
@@ -102,45 +102,42 @@ function selectTreeHandler(treeId: string): void {
   }
 }
 
-async function deleteTreeHandler(treeId: string) {
-  const deleteResult = await treeHelpers.deleteTree(treeId, loggedIn);
-  const indexToDelete = tempTreeStore.value.findIndex(
-    (tree) => tree.tree_id === treeId,
-  );
-
-  const selectedTreeChangeNeeded = selectedTreeIndex.value === indexToDelete;
-
-  if (deleteResult === 204) {
-    if (indexToDelete !== -1) {
-      tempTreeStore.value.splice(indexToDelete, 1);
-
-      if (selectedTreeChangeNeeded) {
-        selectedTreeIndex.value = 0;
-      }
-
-      // let the animation play out before deleting the tree
-
-      // await new Promise<void>((resolve) => {
-      //   setTimeout(() => {
-      //     tempTreeStore.value.splice(indexToDelete, 1);
-      //     resolve();
-      //   }, 152);
-      // });
-    }
-  }
-}
-
 function warningClickOutsideHandler(): void {
   syncWarningExpanded.value = false;
 }
 
 async function newTree(loggedIn: boolean) {
+  newTreeLoading.value = loggedIn
   const treeId = await treeHelpers.createTree(loggedIn);
   const newTree = treeHelpers.defaultTree(treeId);
 
   tempTreeStore.value.push(newTree);
   if (loggedIn) {
     addTreeWatcher(treeId);
+  }
+  newTreeLoading.value = false
+}
+
+async function deleteTreeHandler(treeId: string) {
+  const indexToDelete = tempTreeStore.value.findIndex(
+    (tree) => tree.tree_id === treeId,
+  );
+
+  if (indexToDelete !== -1) {
+    if (selectedTreeIndex.value !== indexToDelete) {
+      tempTreeStore.value.splice(indexToDelete, 1);
+    } else {
+      if (indexToDelete === 0) {
+        console.log(`selectedTreeIndex: ${selectedTreeIndex.value}`)
+        selectedTreeIndex.value = 1;
+        console.log(`selectedTreeIndex: ${selectedTreeIndex.value}`)
+      } else {
+        selectedTreeIndex.value = 0;
+      }
+      console.log("got here")
+      await nextTick()
+      tempTreeStore.value.splice(indexToDelete, 1);
+    }
   }
 }
 </script>
@@ -161,10 +158,11 @@ async function newTree(loggedIn: boolean) {
             <component
               v-for="tree in tempTreeStore"
               :key="tree.tree_id"
-              :is="TreeListComponent"
+              :is="TreeListItemComponent"
               :tree="tree"
               :selected-tree-id="selectedTreeId"
-              :is-last-remaining-tree="isLastRemainingTree"
+              :last-remaining-tree="lastRemainingTree"
+              :logged-in="loggedIn"
               @select-tree="(treeId: string) => selectTreeHandler(treeId)"
               @delete-tree="(treeId: string) => deleteTreeHandler(treeId)"
             />
@@ -175,21 +173,39 @@ async function newTree(loggedIn: boolean) {
               class="transition ease-out duration-100 my-2 rounded-md px-1 py-2 hover:bg-primarylight hover:text-black"
               @click="newTree(loggedIn)"
             >
-              <!-- New Tree icon -->
-              <svg
-                class="h-7 w-7 text-textblackdim"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="Add Tree"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"
-                  fill="currentColor"
-                />
-              </svg>
+              <TransitionOutInGrow duration="50">
+                <!-- New Tree icon -->
+                <svg
+                  v-if="!newTreeLoading"
+                  class="h-7 w-7 text-textblackdim"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Add Tree"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <!-- Loading icon -->
+                <svg
+                  v-else-if="newTreeLoading"
+                  class="h-7 w-7 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 12a8 8 0 0 1-11.76 7.061"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </TransitionOutInGrow>
             </button>
           </div>
         </div>
@@ -350,7 +366,9 @@ async function newTree(loggedIn: boolean) {
       <!--   Tree   -->
       <div class="mb-40 w-full">
         <component
-          v-if="tempTreeStore.length !== 0"
+          v-show="
+            tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]
+          "
           :is="TreeComponent"
           :nodes="tempTreeStore[selectedTreeIndex].tree_data"
           :logged-in="loggedIn"
@@ -358,7 +376,6 @@ async function newTree(loggedIn: boolean) {
           :node-type="'root'"
           :parent-node-id="'root'"
         />
-        <div v-else class="text-xl text-textblackdim">No tree to show 🤔</div>
       </div>
     </div>
   </div>
