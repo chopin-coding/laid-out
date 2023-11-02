@@ -17,14 +17,14 @@
   </script>
 {% endblock %}
 
-<nav x-cloak x-data="{ isMobileMenuOpen: false }" class="border-b bg-backg border-primary">
+<nav x-cloak x-data="{ isMobileMenuOpen: false }" class="border-b bg-white border-primary">
   <div class="mx-auto px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-20 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
         <button @click="isMobileMenuOpen = !isMobileMenuOpen" @click.outside="isMobileMenuOpen = false"
                 type="button"
-                class="relative inline-flex items-center justify-center rounded-md p-2 text-textblackdim hover:bg-primarylight hover:text-black"
+                class="relative inline-flex items-center justify-center rounded-md p-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                 aria-controls="mobile-menu" aria-expanded="false">
           <span class="absolute -inset-0.5"></span>
           <span class="sr-only">Open main menu</span>
@@ -85,7 +85,7 @@
                class="relative z-10 ml-3">
             <button @click="isThemeMenuOpen = !isThemeMenuOpen" @click.outside="isThemeMenuOpen = false"
                     type="button"
-                    class="relative flex rounded-md text-sm font-medium text-textblackdim hover:bg-primarylight hover:text-black"
+                    class="relative flex rounded-md text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                     aria-expanded="false" aria-haspopup="true">
               <span class="sr-only">Open theme selection menu</span>
               <span class="px-3 py-2">
@@ -185,7 +185,7 @@
             >
               <button @click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
                       type="button"
-                      class="relative flex rounded-md px-3 py-2 text-sm hover:bg-primarylight hover:text-black"
+                      class="relative flex rounded-md px-3 py-2 text-sm transition duration-100 ease-out hover:bg-primarylight hover:text-black"
                       aria-expanded="false" aria-haspopup="true">
                 <span class="absolute -inset-1.5"></span>
                 <span class="sr-only">Open user menu</span>
@@ -201,19 +201,33 @@
                    x-transition:leave="transition ease-in duration-75"
                    x-transition:leave-start="opacity-100 scale-100"
                    x-transition:leave-end="opacity-0 scale-95"
-                   x-show="isUserMenuOpen" class="absolute right-0 mt-9 w-40
+                   x-show="isUserMenuOpen" class="absolute bg-white right-0 mt-9 w-40
                         origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5
                         focus:outline-none"
                    role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
               >
                 <a href="{% url 'account_details' %}"
-                   class="block px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                   class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                    role="menuitem" tabindex="-1"
-                   id="user-menu-item-1">Settings</a>
+                   id="user-menu-item-1">
+                  <svg class="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M13.765 2.152C13.398 2 12.932 2 12 2c-.932 0-1.398 0-1.765.152a2 2 0 0 0-1.083 1.083c-.092.223-.129.484-.143.863a1.617 1.617 0 0 1-.79 1.353 1.617 1.617 0 0 1-1.567.008c-.336-.178-.579-.276-.82-.308a2 2 0 0 0-1.478.396C4.04 5.79 3.806 6.193 3.34 7c-.466.807-.7 1.21-.751 1.605a2 2 0 0 0 .396 1.479c.148.192.355.353.676.555.473.297.777.803.777 1.361 0 .558-.304 1.064-.777 1.36-.321.203-.529.364-.676.556a2 2 0 0 0-.396 1.479c.052.394.285.798.75 1.605.467.807.7 1.21 1.015 1.453a2 2 0 0 0 1.479.396c.24-.032.483-.13.819-.308a1.617 1.617 0 0 1 1.567.008c.483.28.77.795.79 1.353.014.38.05.64.143.863a2 2 0 0 0 1.083 1.083C10.602 22 11.068 22 12 22c.932 0 1.398 0 1.765-.152a2 2 0 0 0 1.083-1.083c.092-.223.129-.483.143-.863.02-.558.307-1.074.79-1.353a1.617 1.617 0 0 1 1.567-.008c.336.178.579.276.819.308a2 2 0 0 0 1.479-.396c.315-.242.548-.646 1.014-1.453.466-.807.7-1.21.751-1.605a2 2 0 0 0-.396-1.479c-.148-.192-.355-.353-.676-.555A1.617 1.617 0 0 1 19.562 12c0-.558.304-1.064.777-1.36.321-.203.529-.364.676-.556a2 2 0 0 0 .396-1.479c-.052-.394-.285-.798-.75-1.605-.467-.807-.7-1.21-1.015-1.453a2 2 0 0 0-1.479-.396c-.24.032-.483.13-.82.308a1.617 1.617 0 0 1-1.566-.008 1.617 1.617 0 0 1-.79-1.353c-.014-.38-.05-.64-.143-.863a2 2 0 0 0-1.083-1.083Z"></path>
+                    </g>
+                  </svg>
+                  Settings</a>
                 <a href="{% url 'account_logout' %}"
-                   class="block px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                   class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                    role="menuitem" tabindex="-1"
-                   id="user-menu-item-2">Log out</a>
+                   id="user-menu-item-2">
+                  <svg class="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                      <path d="M9.002 7c.012-2.175.109-3.353.877-4.121C10.758 2 12.172 2 15 2h1c2.829 0 4.243 0 5.122.879C22 3.757 22 5.172 22 8v8c0 2.828 0 4.243-.878 5.121C20.242 22 18.829 22 16 22h-1c-2.828 0-4.242 0-5.121-.879-.768-.768-.865-1.946-.877-4.121"></path>
+                      <path d="M15 12H2m0 0 3.5-3M2 12l3.5 3" stroke-linejoin="round"></path>
+                    </g>
+                  </svg>
+                  Log out</a>
               </div>
             </div>
           {% endif %}

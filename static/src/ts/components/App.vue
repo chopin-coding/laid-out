@@ -134,6 +134,10 @@ async function deleteTreeHandler(treeId: string) {
     }
   }
 }
+
+function unfocusInput(event) {
+  event.target.blur();
+}
 </script>
 
 <template v-cloak>
@@ -142,7 +146,7 @@ async function deleteTreeHandler(treeId: string) {
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="mt-8 w-full rounded-md px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none sm:w-44"
+        class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div class="my-1 py-2 text-center text-xl text-textblackdim">
@@ -214,11 +218,12 @@ async function deleteTreeHandler(treeId: string) {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 bg-backg ring-primarylight focus:outline-none"
+                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
                 v-model="tempTreeStore[selectedTreeIndex].tree_name"
+                @keydown.enter.exact.prevent.stop="unfocusInput($event)"
               />
             </div>
           </div>

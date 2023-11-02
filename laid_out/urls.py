@@ -27,4 +27,5 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("accounts/", include("allauth.urls")),
     path("accounts/details", views.account_view, name="account_details"),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]

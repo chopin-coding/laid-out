@@ -45,16 +45,17 @@ async function deleteBtnHandler(treeId: string) {
     <li class="my-2 flex justify-between" v-show="!deleted">
       <a
         href="#"
-        class="flex flex-grow items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+        class="flex flex-grow items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim"
         :class="{
-          'text-black bg-primarylight': tree.tree_id === selectedTreeId,
+          'bg-primary text-white': tree.tree_id === selectedTreeId,
+          'hover:bg-primarylight hover:text-black': tree.tree_id !== selectedTreeId
         }"
         v-on:click="emit('selectTree', tree.tree_id)"
       >
         <span v-text="tree.tree_name"> </span>
       </a>
       <button
-        class="mx-3 items-center rounded-md px-2 py-2 text-textblackdim transition duration-100 ease-out hover:bg-primarylight hover:text-black"
+        class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
         v-show="!lastRemainingTree"
         @click="deleteBtnHandler(tree.tree_id)"
       >

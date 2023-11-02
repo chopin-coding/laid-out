@@ -2,16 +2,17 @@ from django.contrib.auth.models import User
 from pydantic import ValidationError
 from rest_framework import serializers
 
-from anxiety.models import (AnxietyTree, TreeData, TreeDataNode,
-                            default_tree_data)
+from anxiety.models import AnxietyTree, TreeData, TreeDataNode, default_tree_data
 
 
 class UserSerializer(serializers.ModelSerializer):
-    anxiety_trees = serializers.PrimaryKeyRelatedField(many=True, queryset=AnxietyTree.objects.all())
+    anxiety_trees = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=AnxietyTree.objects.all()
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'anxiety_trees']
+        fields = ["id", "username", "anxiety_trees"]
 
 
 class AnxietyTreeSerializer(serializers.Serializer):
@@ -48,7 +49,9 @@ class AnxietyTreeSerializer(serializers.Serializer):
         if request and hasattr(request, "user"):
             user = request.user
         else:
-            raise serializers.ValidationError("Trees can only be created by registered users")
+            raise serializers.ValidationError(
+                "Trees can only be created by registered users"
+            )
         created = AnxietyTree.objects.create(owner=user, **validated_data)
         return created
 

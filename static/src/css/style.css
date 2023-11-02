@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
 
 @layer base {
 
@@ -35,3 +37,4 @@
         font-family: "Poppins", system-ui, sans-serif;
     }
 }
+

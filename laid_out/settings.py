@@ -18,11 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # TODO: See how to manage this properly in prod
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# TODO before prod
-DEBUG = True
-
-ALLOWED_HOSTS = ['192.168.0.70', '127.0.0.1']
+ALLOWED_HOSTS = ["192.168.0.70", "127.0.0.1"]
 
 # Application definition
 
@@ -41,6 +37,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "anxiety",
     "django_vite",
+    "django_browser_reload",
 ]
 
 # ***   ALLAUTH   ***
@@ -114,6 +111,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -193,25 +191,21 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # ***   django-vite   ***
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 DJANGO_VITE_DEV_MODE = True
+# SECURITY WARNING: don't run with debug turned on in production!
+# TODO before prod
+DEBUG = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_ROOT = BASE_DIR / "collectedstatic"
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    DJANGO_VITE_ASSETS_PATH
-]
+STATICFILES_DIRS = [BASE_DIR / "static", DJANGO_VITE_ASSETS_PATH]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-
-

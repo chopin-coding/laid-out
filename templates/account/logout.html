@@ -4,18 +4,26 @@
 
 {% block title %}{% trans "Log Out" %}{% endblock title %}
 
+
+
 {% block content %}
-<h1>{% trans "Log Out" %}</h1>
+  <div class="mx-10 my-10">
+    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-3 py-2 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
+      <div class="mt-8 text-3xl">{% trans 'Confirm log out?' %}</div>
 
-<p>{% trans 'Confirm log out?' %}</p>
+      <form class="mb-8" method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button class="rounded px-3 py-2 font-medium ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+                type="submit">{% trans 'Confirm' %}</button>
+      </form>
 
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit">{% trans 'Confirm' %}</button>
-</form>
+    </div>
+  </div>
+
+
 
 
 {% endblock content %}
