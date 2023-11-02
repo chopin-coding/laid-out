@@ -51,7 +51,7 @@
 
       </div>
       <!-- brand -->
-      <div class="hidden sm:block items-center justify-center sm:items-stretch sm:justify-start">
+      <div class="hidden items-center justify-center sm:block sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 sm:block sm:items-center">
           <a href="{% url 'index' %}">
             <img class="h-9 w-auto" src="../../static/images/favicon.png"
@@ -121,7 +121,7 @@
               <a @click="localStorage.setItem('theme', 'light'); currentTheme = 'light';
                                             document.documentElement.classList.remove('dark')" href="#"
                  :class="{ 'bg-primary text-white font-semibold': currentTheme === 'light', 'hover:bg-primarylight hover:text-black': currentTheme !== 'light' }"
-                 class="transition ease-out duration-100 flex px-4 py-2 text-sm font-medium group text-textblackdim "
+                 class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
                  role="menuitem" tabindex="-1">
                 <svg :class="{ 'fill-textwhitedim': currentTheme === 'light' }"
                      class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24" fill="none"
@@ -138,7 +138,7 @@
                                    document.documentElement.classList.add('dark')"
                  href="#"
                  :class="{ 'bg-primary text-white font-semibold': currentTheme === 'dark', 'hover:bg-primarylight hover:text-black': currentTheme !== 'dark' }"
-                 class="transition ease-out duration-100 flex px-4 py-2 text-sm font-medium group text-textblackdim"
+                 class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
                  role="menuitem" tabindex="-1">
                 <svg :class="{ 'fill-textwhitedim': currentTheme === 'dark' }"
                      class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24"
@@ -152,7 +152,7 @@
               <a @click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
                  href="#"
                  :class="{ 'bg-primary text-white font-semibold': currentTheme === 'system', 'hover:bg-primarylight hover:text-black': currentTheme !== 'system' }"
-                 class="transition ease-out duration-100 flex px-4 py-2 text-sm font-medium group text-textblackdim"
+                 class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
                  role="menuitem" tabindex="-1">
                 <svg :class="{ 'fill-textwhitedim': currentTheme === 'system' }"
                      class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24" fill="none"
@@ -207,11 +207,11 @@
                    role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
               >
                 <a href="{% url 'account_details' %}"
-                   class="transition ease-out duration-100 block px-4 py-2 text-sm font-medium text-textblackdim hover:bg-primarylight hover:text-black"
+                   class="block px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                    role="menuitem" tabindex="-1"
                    id="user-menu-item-1">Settings</a>
                 <a href="{% url 'account_logout' %}"
-                   class="transition ease-out duration-100 block px-4 py-2 text-sm font-medium text-textblackdim hover:bg-primarylight hover:text-black"
+                   class="block px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                    role="menuitem" tabindex="-1"
                    id="user-menu-item-2">Log out</a>
               </div>
@@ -225,7 +225,7 @@
   </div>
 
 
-  <div x-transition x-show="isMobileMenuOpen" class="px-2 sm:px-6 sm:hidden">
+  <div x-transition x-show="isMobileMenuOpen" class="px-2 sm:hidden sm:px-6">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <div class="flex h-max items-center space-x-4">
         <a href="{% url 'index' %}" class="">

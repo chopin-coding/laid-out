@@ -57,7 +57,7 @@ onMounted(() => {
           @mouseover="hovered = true"
           @mouseleave="hovered = false"
       >
-        <div class="flex gap-x-1 justify-self-start min-w-0">
+        <div class="flex min-w-0 gap-x-1 justify-self-start">
           <!-- controllable/uncontrollable switch -->
           <div class="flex">
             <button
@@ -110,7 +110,7 @@ onMounted(() => {
                     emit('childBtnHandler', node.node_id)
                   "
                     @input="nodeResize"
-                    class="transition ease-out duration-300 resize-none bg-backg rounded w-full px-1 align-middle py-2 placeholder-textblackdimmer2 focus:outline-none"
+                    class="w-full resize-none rounded px-1 py-2 align-middle transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
                     :class="{
                     'text-textblackdimmer2 line-through':
                       parentNodeLocked || node.locked,

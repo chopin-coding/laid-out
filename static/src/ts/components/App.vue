@@ -107,7 +107,7 @@ function warningClickOutsideHandler(): void {
 }
 
 async function newTree(loggedIn: boolean) {
-  newTreeLoading.value = loggedIn
+  newTreeLoading.value = loggedIn;
   const treeId = await treeHelpers.createTree(loggedIn);
   const newTree = treeHelpers.defaultTree(treeId);
 
@@ -115,7 +115,7 @@ async function newTree(loggedIn: boolean) {
   if (loggedIn) {
     addTreeWatcher(treeId);
   }
-  newTreeLoading.value = false
+  newTreeLoading.value = false;
 }
 
 async function deleteTreeHandler(treeId: string) {
@@ -125,17 +125,11 @@ async function deleteTreeHandler(treeId: string) {
 
   if (indexToDelete !== -1) {
     if (selectedTreeIndex.value !== indexToDelete) {
+      selectedTreeIndex.value = 0;
       tempTreeStore.value.splice(indexToDelete, 1);
     } else {
-      if (indexToDelete === 0) {
-        console.log(`selectedTreeIndex: ${selectedTreeIndex.value}`)
-        selectedTreeIndex.value = 1;
-        console.log(`selectedTreeIndex: ${selectedTreeIndex.value}`)
-      } else {
-        selectedTreeIndex.value = 0;
-      }
-      console.log("got here")
-      await nextTick()
+      selectedTreeIndex.value = 0;
+      // await nextTick()
       tempTreeStore.value.splice(indexToDelete, 1);
     }
   }
@@ -143,7 +137,7 @@ async function deleteTreeHandler(treeId: string) {
 </script>
 
 <template v-cloak>
-  <div class="mx-auto px-4 sm:px-6 overflow-x-hidden">
+  <div class="mx-auto overflow-x-hidden px-4 sm:px-6">
     <div class="flex h-full flex-col items-center gap-y-10 sm:flex-row">
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
@@ -151,7 +145,7 @@ async function deleteTreeHandler(treeId: string) {
         class="mt-8 w-full rounded-md px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none sm:w-44"
       >
         <div class="divide-y divide-solid divide-primarylight">
-          <div class="py-2 my-1 text-center text-xl text-textblackdim">
+          <div class="my-1 py-2 text-center text-xl text-textblackdim">
             Trees
           </div>
           <ul class="list-none">
@@ -170,7 +164,7 @@ async function deleteTreeHandler(treeId: string) {
 
           <div>
             <button
-              class="transition ease-out duration-100 my-2 rounded-md px-1 py-2 hover:bg-primarylight hover:text-black"
+              class="my-2 rounded-md px-1 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
               @click="newTree(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
@@ -220,7 +214,7 @@ async function deleteTreeHandler(treeId: string) {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full bg-backg rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
+                class="w-full rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 bg-backg ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
@@ -229,7 +223,7 @@ async function deleteTreeHandler(treeId: string) {
             </div>
           </div>
 
-          <div class="flex items-center gap-x-4 mx-4">
+          <div class="mx-4 flex items-center gap-x-4">
             <!--     Sync status     -->
             <div class="text-textblackdim">
               <TransitionOutInGrow>
@@ -285,11 +279,11 @@ async function deleteTreeHandler(treeId: string) {
             <!--     Not logged in sync warning     -->
             <div class="text-textblackdim" v-show="!loggedIn">
               <div
-                class="relative flex items-center text-textblackdim cursor-pointer hover:text-gray-600"
+                class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
               >
                 <div
                   v-show="syncWarningExpanded"
-                  class="absolute top-0 right-0 inline-block w-60 px-4 py-3 mt-14 -ml-32 text-textblackdim bg-white rounded-lg ring-1 ring-opacity-5 ring-warning focus:outline-none"
+                  class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
                 >
                   <span class="inline-block leading-tight"
                     >Your data has been saved to this device only. Log in to

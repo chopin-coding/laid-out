@@ -200,10 +200,6 @@ DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 DJANGO_VITE_DEV_MODE = True
 
-
-
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
