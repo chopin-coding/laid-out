@@ -74,15 +74,6 @@
       //
 
 
-      function addClassesToElement(elementId, classString) {
-          const element = document.getElementById(elementId);
-
-          if (element) {
-              const classesToAdd = classString.split(" ");
-              element.classList.add(...classesToAdd);
-          }
-      }
-
       const loginLabel = document.querySelector(`label[for="id_login"]`);
       loginLabel.textContent = "Login";
 

@@ -5,18 +5,50 @@
 {% block title %}{% trans "Signup" %}{% endblock title %}
 
 {% block content %}
+  <div class="mx-2 my-6">
+    <div class="my-auto flex h-full w-full max-w-sm sm:max-w-screen-xl flex-col gap-y-6 bg-white px-3 py-2 text-textblackdim focus:outline-none">
+      <div class="text-2xl">{% trans "Sign Up" %}</div>
+      <div class="flex gap-x-1 text-sm text-textblackdimmer">
+        {% blocktranslate %}
+          <span class="">
+              Already have an account? Then please
+            </span>
+          <div class="flex">
+            <a class="rounded-none transition duration-200 group button secondaryAction focus:outline-none"
+               href="{{ login_url }}">sign in.
+              <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
+            </a>
+          </div>
 
-<h1>{% trans "Sign Up" %}</h1>
+        {% endblocktranslate %}
+      </div>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+      <form class="signup flex flex-col gap-y-4" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <div>
+          <button class="rounded px-3 py-2 ring-1 ring-opacity-5 font-normal transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+                  type="submit">{% trans "Sign Up" %}</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+
+  <script>
+      const newPasswordInput = document.querySelector(`input[id="id_password1"]`);
+      const changePassForm = newPasswordInput.parentElement.parentElement
+      changePassForm.classList.add('allauth-change-pass')
+      const labels = document.querySelectorAll(`.allauth-change-pass > p > label`)
+      for (const label of labels) {
+          label.remove()
+      }
+  </script>
 
 {% endblock content %}

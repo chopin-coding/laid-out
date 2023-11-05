@@ -19,6 +19,7 @@
         --color-secondary: 245 254 255;
         --color-accent: 0 10 10;
         --color-warning: 255 160 0;
+        --color-danger: 168 27 27;
     }
 
     :root[class~="dark"] {
@@ -31,12 +32,14 @@
         --color-secondary: 0 9 10;
         --color-accent: 245 255 255;
         --color-warning: 237 150 0;
+        --color-danger: 228 88 88;
     }
 
     html {
         font-family: "Poppins", system-ui, sans-serif;
     }
 
+    /* allauth login */
     .allauth-login-and-password {
         @apply flex flex-col w-full gap-y-1 justify-between
     }
@@ -57,7 +60,40 @@
         @apply hidden
     }
 
+    /* /allauth login */
+    /* allauth change email */
+    .allauth-change-email {
+        @apply flex w-full text-textblackdimmer
+    }
 
+    .allauth-change-email > input[type="email"] {
+        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+    }
+
+    /* allauth change email */
+    /* allauth change pass */
+    .allauth-change-pass > p > input {
+        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+    }
+
+    .allauth-change-pass > ul {
+        @apply text-sm
+    }
+    /* allauth change pass */
+
+
+    /* allauth reset pass */
+    .allauth-reset-pass > p > input {
+        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+    }
+    /* allauth reset pass */
+
+
+    /* allauth error text */
+    ul[class="errorlist"] > li {
+        @apply text-danger
+    }
+    /* allauth error text */
 }
 
 

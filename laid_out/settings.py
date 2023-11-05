@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",  # FIXME: remove before prod
+    "debug_toolbar",
     "rest_framework",
     "anxiety",
     "django_vite",
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 # ***   ALLAUTH   ***
 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 15
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 
 ACCOUNT_EMAIL_REQUIRED = True
