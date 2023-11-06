@@ -67,7 +67,7 @@ onMounted(() => {
               <!-- Locked icon -->
               <svg
                   v-if="node.locked"
-                  class="h-6 w-6"
+                  class="h-6 w-6 text-textblackdimmer2"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +84,7 @@ onMounted(() => {
               <svg
                   v-else-if="!node.locked"
                   class="h-6 w-6"
+                  :class="{ 'text-textblackdimmer2': parentNodeLocked }"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

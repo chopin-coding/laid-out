@@ -18,7 +18,7 @@
 {% endblock %}
 <div class="border-b bg-white border-primarylight">
   <nav x-cloak x-data="{ isMobileMenuOpen: false }"
-       class="mx-auto bg-white max-w-screen-xl">
+       class="mx-auto max-w-screen-xl bg-white">
     <div class="mx-auto px-2 sm:px-6">
       <div class="relative flex h-20 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -236,7 +236,13 @@
     </div>
 
 
-    <div x-transition x-show="isMobileMenuOpen" class="px-2 sm:hidden sm:px-6">
+    <div x-transition:enter="transition ease-out duration-100"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-100"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         x-show="isMobileMenuOpen" class="px-2 sm:hidden sm:px-6">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <div class="flex h-max items-center space-x-4">
           <a href="{% url 'index' %}" class="">
