@@ -4,7 +4,7 @@ module.exports = {
     content: [
         "./templates/*/*.{ts,html,css}",
         "./templates/*.{ts,html,css}",
-        "./anxiety/templates/*/*.{ts,html,css}",
+        "./anxiety/templates/**/*.{html,css}",
         "./static/src/*/*.{vue,ts,html,css}",
         "./static/src/ts/*/*.{vue,ts,html,css}",
     ],

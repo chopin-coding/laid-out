@@ -9,7 +9,7 @@
 {% block content %}
 
   <div class="mx-4 my-10">
-    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col justify-center items-center gap-y-8 rounded-md bg-white px-3 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
+    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col justify-center items-center gap-y-8 rounded-md px-3 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
       <div class="text-2xl">{% trans "Confirm Email Address" %}</div>
 
       {% if confirmation %}
@@ -18,11 +18,11 @@
 
         {% if can_confirm %}
           <p>{% blocktrans with confirmation.email_address.email as email %}Confirm email address
-            <a href="mailto:{{ email }}">{{ email }}</a> for user {{ user_display }}?{% endblocktrans %}</p>
+            <a>{{ email }}</a> for user {{ user_display }}?{% endblocktrans %}</p>
 
           <form class="" method="post" action="{% url 'account_confirm_email' confirmation.key %}">
             {% csrf_token %}
-            <button class="rounded px-3 py-2 font-medium ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+            <button class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
                     type="submit">{% trans 'Confirm' %}</button>
           </form>
         {% else %}
