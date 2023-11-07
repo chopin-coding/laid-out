@@ -39,6 +39,21 @@
         font-family: "Poppins", system-ui, sans-serif;
     }
 
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .main-content {
+        flex: 1; /* Fill remaining space */
+    }
+
+    nav, footer {
+        height: auto; /* Let content determine height */
+    }
+
     /* allauth login */
     .allauth-login-and-password {
         @apply flex flex-col w-full gap-y-1 justify-between
@@ -79,20 +94,19 @@
     .allauth-change-pass > ul {
         @apply text-sm
     }
+
     /* allauth change pass */
-
-
     /* allauth reset pass */
     .allauth-reset-pass > p > input {
         @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
     }
+
     /* allauth reset pass */
-
-
     /* allauth error text */
     ul[class="errorlist"] > li {
         @apply text-danger
     }
+
     /* allauth error text */
 }
 

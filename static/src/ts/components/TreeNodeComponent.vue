@@ -57,7 +57,7 @@ onMounted(() => {
           @mouseover="hovered = true"
           @mouseleave="hovered = false"
       >
-        <div class="flex min-w-0 gap-x-1 justify-self-start">
+        <div class="flex min-w-0 gap-x-1 justify-self-start w-full">
           <!-- controllable/uncontrollable switch -->
           <div class="flex">
             <button
@@ -101,7 +101,7 @@ onMounted(() => {
           </div>
 
           <!-- node text -->
-          <div class="flex">
+          <div class="flex w-full">
             <TransitionBasic>
                 <textarea
                     @keydown.enter.exact.prevent.stop="
@@ -111,7 +111,9 @@ onMounted(() => {
                     emit('childBtnHandler', node.node_id)
                   "
                     @input="nodeResize"
-                    class="w-full resize-none rounded px-1 py-2 align-middle transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
+                    class="w-full resize-none rounded px-1 py-2 align-middle
+                    transition duration-300 ease-out bg-backg
+                    placeholder-textblackdimmer2 focus:outline-none"
                     :class="{
                     'text-textblackdimmer2 line-through':
                       parentNodeLocked || node.locked,
@@ -209,5 +211,11 @@ onMounted(() => {
 /* make this different for mobile and desktop */
 .child-node {
   margin-left: 1em;
+}
+
+@media (min-width: 640px) {
+  .child-node {
+    margin-left: 1.7em;
+  }
 }
 </style>

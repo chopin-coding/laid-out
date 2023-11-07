@@ -141,12 +141,14 @@ function unfocusInput(event) {
 </script>
 
 <template v-cloak>
-  <div class="mx-auto overflow-x-hidden px-4 sm:px-6">
-    <div class="flex h-full flex-col items-center gap-y-10 sm:flex-row">
+  <div class="mx-auto overflow-x-hidden px-4 my-2">
+    <div
+      class="flex h-full flex-col items-center lg:items-start gap-y-10 lg:flex-row"
+    >
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
+        class="mt-8 lg:w-96 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div class="my-1 py-2 text-center text-xl text-textblackdim">
@@ -211,7 +213,7 @@ function unfocusInput(event) {
 
       <!--   Info & Controls   -->
       <div
-        class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim sm:px-6"
+        class="mx-auto lg:my-8 flex w-full flex-col gap-y-6 text-textblackdim lg:px-6"
       >
         <div class="flex justify-between">
           <div class="flex">
@@ -282,19 +284,27 @@ function unfocusInput(event) {
             </div>
 
             <!--     Not logged in sync warning     -->
-            <div class="text-textblackdim" v-show="!loggedIn">
+            <div
+              class="text-textblackdim"
+              v-show="!loggedIn"
+              @mouseover="syncWarningExpanded = true"
+              @mouseleave="syncWarningExpanded = false"
+            >
               <div
                 class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
               >
-                <div
-                  v-show="syncWarningExpanded"
-                  class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
-                >
-                  <span class="inline-block leading-tight"
-                    >Your data has been saved to this device only. Log in to
-                    save and access your data from any device.</span
+                <TransitionBasic duration="100">
+                  <div
+                    v-show="syncWarningExpanded"
+                    class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
                   >
-                </div>
+                    <span class="inline-block leading-tight"
+                      >Your data has been saved to this device only. Log in to
+                      save and access your data from any device.</span
+                    >
+                  </div>
+                </TransitionBasic>
+
                 <button
                   v-on:click="syncWarningExpanded = !syncWarningExpanded"
                   v-click-outside="warningClickOutsideHandler"
@@ -319,7 +329,7 @@ function unfocusInput(event) {
 
         <div class="flex gap-x-3 text-textblackdim">
           <div>
-            <span class="text-xl text-textblackdim">Controllable</span>
+            <span class="text-xl text-textblackdim">Uncontrollable</span>
           </div>
 
           <button
@@ -361,20 +371,21 @@ function unfocusInput(event) {
             </TransitionBasic>
           </button>
         </div>
-      </div>
-      <!--   Tree   -->
-      <div class="mb-40 w-full">
-        <component
-          v-show="
-            tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]
-          "
-          :is="TreeComponent"
-          :nodes="tempTreeStore[selectedTreeIndex].tree_data"
-          :logged-in="loggedIn"
-          :hide-uncontrollable="hideUncontrollable"
-          :node-type="'root'"
-          :parent-node-id="'root'"
-        />
+
+        <!--   Tree   -->
+        <div class="mb-40 lg:mb:0 w-full">
+          <component
+            v-show="
+              tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]
+            "
+            :is="TreeComponent"
+            :nodes="tempTreeStore[selectedTreeIndex].tree_data"
+            :logged-in="loggedIn"
+            :hide-uncontrollable="hideUncontrollable"
+            :node-type="'root'"
+            :parent-node-id="'root'"
+          />
+        </div>
       </div>
     </div>
   </div>

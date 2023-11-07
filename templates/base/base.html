@@ -32,12 +32,15 @@
 {% block navbar %}
   {% include 'base/navbar.html' %}
 {% endblock %}
-<div class="mx-auto h-screen max-w-screen-xl">
+<div class="mx-auto max-w-screen-xl main-content">
   {% block content %}
 
   {% endblock %}
 </div>
 
 <!-- Shout out to svgrepo.com for tons of free SVGs <3 -->
+{% block footer %}
+  {% include 'base/footer.html' %}
+{% endblock %}
 </body>
 </html>

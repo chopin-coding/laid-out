@@ -1,0 +1,38 @@
+<footer class="bg-white mt-auto border-t border-primarylight">
+  <div class="max-w-2xl mx-auto text-textblackdim py-6">
+    <div class="text-center">
+      <p> made with ♥️ by chopin </p>
+    </div>
+    <div class="mt-6  flex flex-col md:flex-row md:justify-between items-center text-sm text-textblackdimmer">
+      <p class="order-2 md:order-1 mt-6 md:mt-0">laid out {% now "Y" %} &copy;</p>
+      <div class="order-1 md:order-2 divide-x divide-primarylight flex">
+        <div class="flex px-2 hover:text-black">
+          <a href="{% url 'index' %}"
+             class="rounded-none transition duration-200 group focus:outline-none"
+             aria-current="page">
+            Home
+            <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span></a>
+
+        </div>
+
+        <div class="flex px-2 hover:text-black">
+          <a href="{% url 'anxiety_index' %}"
+             class="rounded-none transition duration-200 group focus:outline-none"
+          >
+            Anxiety
+            <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span></a>
+
+        </div>
+
+        <div class="flex px-2 hover:text-black">
+          <a href="{% url 'about' %}"
+             class="rounded-none transition duration-200 group focus:outline-none">
+            About
+            <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span></a>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</footer>

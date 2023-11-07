@@ -85,7 +85,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
 
 <template>
   <ul
-    class="flex list-none flex-col gap-y-1.5 divide-y divide-primarylight"
+    class="flex list-none flex-col gap-y-1.5 "
     :class="{
       'child-node': nodeType === 'child',
       'root-node': nodeType === 'root',
@@ -94,6 +94,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
     <component
       v-for="node in nodes"
       :is="TreeNodeComponent"
+      class=""
       :node="node"
       :parent-node-id="parentNodeId"
       :hide-uncontrollable="hideUncontrollable"
