@@ -141,9 +141,9 @@ function unfocusInput(event) {
 </script>
 
 <template v-cloak>
-  <div class="mx-auto overflow-x-hidden px-4 my-2">
+  <div class="mx-auto w-full overflow-x-hidden px-4 my-2">
     <div
-      class="flex h-full flex-col items-center lg:items-start gap-y-10 lg:flex-row"
+      class="flex h-full w-full flex-col items-center lg:items-start gap-y-10 lg:gap-x-5 lg:flex-row"
     >
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->

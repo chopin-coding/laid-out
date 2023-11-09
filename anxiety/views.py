@@ -81,8 +81,6 @@ class AnxietyTreeViewSet(
         user = self.request.user
         return user.anxiety_trees.all()
 
-        # return AnxietyTree.objects.all()
-
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["tree_id"])
         self.check_object_permissions(self.request, obj)

@@ -9,4 +9,6 @@ export interface Tree {
   tree_id: string;
   tree_name: string;
   tree_data: TreeNode[];
+  date_created: string;
+  date_modified: string;
 }
