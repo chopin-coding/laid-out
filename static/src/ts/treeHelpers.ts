@@ -1,129 +1,127 @@
-import {v4 as uuidv4} from "uuid";
-import {Tree, TreeNode} from "./interfaces";
+import { v4 as uuidv4 } from "uuid";
+import { Tree, TreeNode } from "./models";
+import * as timeUtils from "./timeUtils";
 import axios from "axios";
 
 const API_BASE_URL: string = "http://127.0.0.1:8000/anxiety/api/trees/";
 
 const getCookieValue = (name: string): string =>
-    // case sensitive
-    document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
+  // case sensitive
+  document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
 
 export function defaultTreeNode(): TreeNode {
-    const newNodeId: string = uuidv4();
-    return {
-        title: "",
-        locked: false,
-        node_id: newNodeId,
-        children: [],
-    };
+  const newNodeId: string = uuidv4();
+  return {
+    title: "",
+    locked: false,
+    node_id: newNodeId,
+    children: [],
+  };
 }
 
 function defaultTreeData(): TreeNode[] {
-    return [defaultTreeNode()];
+  return [defaultTreeNode()];
 }
 
 export function defaultTree(
-    treeId: string = null,
-    treeName: string = null,
-    treeData: TreeNode[] = null,
+  treeId: string = null,
+  treeName: string = null,
+  treeData: TreeNode[] = null,
 ): Tree {
-    const newTreeId: string = uuidv4();
-    return {
-        tree_id: treeId || newTreeId,
-        tree_name: treeName || "New Tree",
-        tree_data: treeData || defaultTreeData(),
-    };
+  const newTreeId: string = uuidv4();
+  return {
+    tree_id: treeId || newTreeId,
+    tree_name: treeName || "New Tree",
+    tree_data: treeData || defaultTreeData(),
+    date_modified: timeUtils.toDjangoTimeString(new Date()),
+    date_created: timeUtils.toDjangoTimeString(new Date()),
+  };
 }
 
 export async function createTree(loggedIn: boolean) {
-    if (loggedIn) {
-        try {
-            const {data, status} = await axios.post(
-                API_BASE_URL,
-                {},
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "X-CSRFTOKEN": getCookieValue("csrftoken"),
-                    },
-                    withCredentials: true,
-                },
-            );
+  if (loggedIn) {
+    try {
+      const { data, status } = await axios.post(
+        API_BASE_URL,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRFTOKEN": getCookieValue("csrftoken"),
+          },
+          withCredentials: true,
+        },
+      );
 
-            return data.tree_id;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log("error message: ", error.message);
-                return error.message;
-            } else {
-                console.log("unexpected error: ", error);
-                return "An unexpected error occurred";
-            }
-        }
-    } else {
-        const newTree: Tree = defaultTree()
-        return newTree.tree_id
+      return data.tree_id;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("error message: ", error.message);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error occurred";
+      }
     }
+  } else {
+    const newTree: Tree = defaultTree();
+    return newTree.tree_id;
+  }
 }
 
 export async function updateTree(tree: Tree, loggedIn: boolean) {
-    if (loggedIn) {
-        try {
-            const {status} = await axios.patch(
-                API_BASE_URL + tree.tree_id,
-                {tree_name: tree.tree_name, tree_data: tree.tree_data},
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        "X-CSRFTOKEN": getCookieValue("csrftoken"),
-                    },
-                    withCredentials: true,
-                },
-            );
+  if (loggedIn) {
+    try {
+      const { status } = await axios.patch(
+        API_BASE_URL + tree.tree_id,
+        { tree_name: tree.tree_name, tree_data: tree.tree_data },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRFTOKEN": getCookieValue("csrftoken"),
+          },
+          withCredentials: true,
+        },
+      );
 
-            return status;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log("error message: ", error.message);
-                return error.message;
-            } else {
-                console.log("unexpected error: ", error);
-                return "An unexpected error occurred";
-            }
-        }
-    } else {
-        return 200
+      return status;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("error message: ", error.message);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error occurred";
+      }
     }
+  } else {
+    return 200;
+  }
 }
 
-
 export async function deleteTree(treeId: string, loggedIn: boolean) {
-    if (loggedIn) {
-        try {
-            const {status} = await axios.delete(
-                API_BASE_URL + treeId,
-                {
-                    headers: {
-                        "X-CSRFTOKEN": getCookieValue("csrftoken"),
-                    },
-                    withCredentials: true,
-                },
-            );
+  if (loggedIn) {
+    try {
+      const { status } = await axios.delete(API_BASE_URL + treeId, {
+        headers: {
+          "X-CSRFTOKEN": getCookieValue("csrftoken"),
+        },
+        withCredentials: true,
+      });
 
-            return status;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                return error.message;
-            } else {
-                console.log('unexpected error: ', error);
-                return 'An unexpected error occurred';
-            }
-        }
-    } else {
-        return 204
+      return status;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("error message: ", error.message);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error occurred";
+      }
     }
-
+  } else {
+    return 204;
+  }
 }

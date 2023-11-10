@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import * as treeHelpers from "../treeHelpers";
-import { Tree } from "../interfaces";
+import * as timeUtils from "../timeUtils";
+import { Tree } from "../models";
 import TransitionSlide from "../transitions/TransitionSlide.vue";
 import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
 
@@ -18,6 +19,7 @@ const emit = defineEmits(["selectTree", "deleteTree"]);
 let props = defineProps<TreeListProps>();
 const deleted = ref(false);
 const loading = ref(false);
+
 
 async function deleteBtnHandler(treeId: string) {
   loading.value = true;
@@ -43,17 +45,28 @@ async function deleteBtnHandler(treeId: string) {
 <template>
   <TransitionSlide>
     <li class="my-2 flex justify-between" v-show="!deleted">
+      <!-- Tree name -->
       <a
         href="#"
-        class="flex flex-grow items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim"
+        class="flex flex-grow flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim"
         :class="{
           'bg-primary text-white': tree.tree_id === selectedTreeId,
-          'hover:bg-primarylight hover:text-black': tree.tree_id !== selectedTreeId
+          'hover:bg-primarylight hover:text-black':
+            tree.tree_id !== selectedTreeId,
         }"
         v-on:click="emit('selectTree', tree.tree_id)"
       >
-        <span v-text="tree.tree_name"> </span>
+        <span v-text="tree.tree_name"></span>
+      <!-- FIXME: displays UTC when a tree is first created -->
+        <div v-if="loggedIn"
+          class="text-xs text-textblackdimmer2"
+          :class="{
+            'text-textwhitedimmer2': tree.tree_id === selectedTreeId,
+          }"
+          v-text="`${timeUtils.formatTimeShort(tree.date_modified)}`"
+        ></div>
       </a>
+
       <button
         class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
         v-show="!lastRemainingTree"

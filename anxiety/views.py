@@ -25,7 +25,7 @@ def anxiety_view(request):
     #  app down since this is not async
 
     if request.user.is_authenticated:
-        queryset = request.user.anxiety_trees.all()
+        queryset = request.user.anxiety_trees.all().order_by('-date_modified')
         if not queryset.exists():
             AnxietyTree.objects.create(owner=request.user)
 

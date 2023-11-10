@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, nextTick } from "vue";
 import * as treeHelpers from "../treeHelpers";
+import * as timeUtils from "../timeUtils";
 import { useLocalStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
 import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
@@ -18,11 +19,11 @@ const localTreeStore = useLocalStorage("tree-store", {
 });
 let syncTimerBaseCount = 2000;
 
-let tempTreeStore = ref([]);
+const tempTreeStore = ref([]);
 let syncTimer = null;
-let syncIndicator = ref("synced");
-let selectedTreeIndex = ref(0);
-let hideUncontrollable = ref(false);
+const syncIndicator = ref("synced");
+const selectedTreeIndex = ref(0);
+const hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
 const newTreeLoading = ref(false);
 
@@ -50,7 +51,9 @@ const selectedTreeId = computed(() => {
 });
 
 function treeWatcher(treeIndex: string) {
-  watch(tempTreeStore.value[treeIndex], (newValue, oldValue) => {
+  const treeInQuestion = tempTreeStore.value[treeIndex];
+
+  watch(treeInQuestion, (newValue, oldValue) => {
     syncIndicator.value = "syncing";
 
     // reset the sync timer
@@ -61,7 +64,7 @@ function treeWatcher(treeIndex: string) {
     // start the sync timer
     syncTimer = setTimeout(async () => {
       const updateStatus = await treeHelpers.updateTree(
-        tempTreeStore.value[treeIndex],
+        treeInQuestion,
         loggedIn,
       );
 
@@ -111,7 +114,7 @@ async function newTree(loggedIn: boolean) {
   const treeId = await treeHelpers.createTree(loggedIn);
   const newTree = treeHelpers.defaultTree(treeId);
 
-  tempTreeStore.value.push(newTree);
+  tempTreeStore.value.splice(0, 0, newTree);
   if (loggedIn) {
     addTreeWatcher(treeId);
   }
@@ -141,33 +144,19 @@ function unfocusInput(event) {
 </script>
 
 <template v-cloak>
-  <div class="mx-auto w-full overflow-x-hidden px-4 my-2">
+  <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
     <div
-      class="flex h-full w-full flex-col items-center lg:items-start gap-y-10 lg:gap-x-5 lg:flex-row"
+      class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
     >
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="mt-8 lg:w-96 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
+        class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div class="my-1 py-2 text-center text-xl text-textblackdim">
             Trees
           </div>
-          <ul class="list-none">
-            <component
-              v-for="tree in tempTreeStore"
-              :key="tree.tree_id"
-              :is="TreeListItemComponent"
-              :tree="tree"
-              :selected-tree-id="selectedTreeId"
-              :last-remaining-tree="lastRemainingTree"
-              :logged-in="loggedIn"
-              @select-tree="(treeId: string) => selectTreeHandler(treeId)"
-              @delete-tree="(treeId: string) => deleteTreeHandler(treeId)"
-            />
-          </ul>
-
           <div>
             <button
               class="my-2 rounded-md px-1 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
@@ -208,12 +197,25 @@ function unfocusInput(event) {
               </TransitionOutInGrow>
             </button>
           </div>
+          <ul class="list-none">
+            <component
+              v-for="tree in tempTreeStore"
+              :key="tree.tree_id"
+              :is="TreeListItemComponent"
+              :tree="tree"
+              :selected-tree-id="selectedTreeId"
+              :last-remaining-tree="lastRemainingTree"
+              :logged-in="loggedIn"
+              @select-tree="(treeId: string) => selectTreeHandler(treeId)"
+              @delete-tree="(treeId: string) => deleteTreeHandler(treeId)"
+            />
+          </ul>
         </div>
       </div>
 
       <!--   Info & Controls   -->
       <div
-        class="mx-auto lg:my-8 flex w-full flex-col gap-y-6 text-textblackdim lg:px-6"
+        class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:my-8 lg:px-6"
       >
         <div class="flex justify-between">
           <div class="flex">
@@ -373,7 +375,7 @@ function unfocusInput(event) {
         </div>
 
         <!--   Tree   -->
-        <div class="mb-40 lg:mb:0 w-full">
+        <div class="mb-40 w-full lg:mb:0">
           <component
             v-show="
               tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]

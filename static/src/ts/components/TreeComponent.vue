@@ -2,7 +2,7 @@
 import { nextTick, ref, computed } from "vue";
 
 import TreeNodeComponent from "./TreeNodeComponent.vue";
-import { TreeNode } from "../interfaces";
+import { TreeNode } from "../models";
 import * as treeHelpers from "../treeHelpers";
 
 interface TreeProps {
@@ -85,7 +85,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
 
 <template>
   <ul
-    class="flex list-none flex-col gap-y-1.5 "
+    class="flex list-none flex-col gap-y-1.5"
     :class="{
       'child-node': nodeType === 'child',
       'root-node': nodeType === 'root',

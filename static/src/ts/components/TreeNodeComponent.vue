@@ -3,7 +3,7 @@ import { ref, onMounted, nextTick } from "vue";
 
 import * as treeHelpers from "../treeHelpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
-import { TreeNode } from "../interfaces";
+import { TreeNode } from "../models";
 import TreeComponent from "./TreeComponent.vue";
 import TransitionBasic from "../transitions/TransitionBasic.vue";
 import TransitionSlide from "../transitions/TransitionSlide.vue";
@@ -57,7 +57,7 @@ onMounted(() => {
           @mouseover="hovered = true"
           @mouseleave="hovered = false"
       >
-        <div class="flex min-w-0 gap-x-1 justify-self-start w-full">
+        <div class="flex w-full min-w-0 gap-x-1 justify-self-start">
           <!-- controllable/uncontrollable switch -->
           <div class="flex">
             <button

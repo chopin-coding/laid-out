@@ -36,14 +36,14 @@ class AnxietyTree(models.Model):
     tree_name = models.CharField(
         max_length=50, null=True, blank=True, default="New Tree"
     )
-    date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)
+    date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)  # UTC
     owner = models.ForeignKey(
         to="auth.User",
         related_name="anxiety_trees",
         on_delete=models.SET_NULL,
         null=True,
     )
-    date_modified = models.DateTimeField(auto_now=True)
+    date_modified = models.DateTimeField(auto_now=True)  # UTC
 
     tree_data = ArrayField(
         base_field=models.JSONField(null=True, blank=True, default=default_tree_node),

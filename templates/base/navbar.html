@@ -64,12 +64,12 @@
           <div class="mr-3 hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <a href="{% url 'index' %}"
-                 class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium"
+                 class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium"
                  aria-current="page">Home</a>
               <a href="{% url 'anxiety_index' %}"
-                 class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">Anxiety</a>
+                 class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">Anxiety</a>
               <a href="{% url 'about' %}"
-                 class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">About</a>
+                 class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">About</a>
 
             </div>
           </div>
