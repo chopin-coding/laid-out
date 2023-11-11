@@ -195,7 +195,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
-DJANGO_VITE_DEV_MODE = True
+DJANGO_VITE_DEV_MODE = False
 # SECURITY WARNING: don't run with debug turned on in production!
 # TODO before prod
 DEBUG = True

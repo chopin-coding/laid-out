@@ -8,7 +8,6 @@
   {{ user_trees|json_script:"user-trees" }}
     {{ logged_in|json_script:"logged-in" }}
     {{ ANXIETY_API_BASE_URL|json_script:"ANXIETY-API-BASE-URL" }}
-    {% vite_hmr_client %}
     {% vite_asset 'ts/main.ts' %}
 {% endblock %}
 

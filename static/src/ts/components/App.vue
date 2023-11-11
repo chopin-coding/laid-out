@@ -145,7 +145,7 @@ async function deleteTreeHandler(treeId: string) {
       tempTreeStore.value.splice(indexToDelete, 1);
     } else {
       selectedTreeIndex.value = 0;
-      // await nextTick()
+
       tempTreeStore.value.splice(indexToDelete, 1);
     }
   }

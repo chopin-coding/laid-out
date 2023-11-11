@@ -57,7 +57,6 @@ async function deleteBtnHandler(treeId: string) {
         v-on:click="emit('selectTree', tree.tree_id)"
       >
         <span v-text="tree.tree_name"></span>
-      <!-- FIXME: displays UTC when a tree is first created -->
         <div v-if="loggedIn"
           class="text-xs text-textblackdimmer2"
           :class="{
