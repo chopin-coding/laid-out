@@ -4,7 +4,7 @@
     {% if message.tags == 'success' %}
       <div x-transition x-data="{dismissed: false}" x-show="!dismissed"
            x-init="setTimeout(() => dismissed = true, 3000)"
-           class="fixed flex w-full translate-y-5 items-center justify-center p-4 transition duration-300 ease-out">
+           class="fixed flex w-full translate-y-12 items-center justify-center p-4 transition duration-300 ease-out">
         <div id="toast-default"
              class="flex w-full max-w-xs items-center rounded-lg bg-white p-4 shadow text-textblackdim"
              role="alert">

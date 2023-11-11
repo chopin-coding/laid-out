@@ -195,7 +195,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
-DJANGO_VITE_DEV_MODE = False
+DJANGO_VITE_DEV_MODE = True
 # SECURITY WARNING: don't run with debug turned on in production!
 # TODO before prod
 DEBUG = True
@@ -204,7 +204,8 @@ DEBUG = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_ROOT = BASE_DIR / "collectedstatic"
-STATIC_URL = "/static/"
+STATIC_URL = "/static/"  # dev
+# STATIC_URL = "/static/dist/"  # prod?
 STATICFILES_DIRS = [BASE_DIR / "static", DJANGO_VITE_ASSETS_PATH]
 
 # Default primary key field type

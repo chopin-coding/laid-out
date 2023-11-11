@@ -26,6 +26,7 @@ const selectedTreeIndex = ref(0);
 const hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
 const newTreeLoading = ref(false);
+const maxNumberOfTrees = 150;  // the browser would probably shit itself before 150 trees anyway :D
 
 initializeTrees();
 
@@ -48,6 +49,10 @@ const lastRemainingTree = computed(() => {
 
 const selectedTreeId = computed(() => {
   return tempTreeStore.value[selectedTreeIndex.value].tree_id;
+});
+
+const numberOfTrees = computed(() => {
+  return tempTreeStore.value.length
 });
 
 window.addEventListener("beforeunload", function (e) {
@@ -167,18 +172,16 @@ function unfocusInput(event) {
         class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
-          <div class="my-1 py-2 text-center text-xl text-textblackdim">
-            Trees
-          </div>
           <div>
             <button
-              class="my-2 rounded-md px-1 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
+              class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
               v-on:click="newTree(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
+
                 <!-- New Tree icon -->
                 <svg
-                  v-if="!newTreeLoading"
+                  v-if="!newTreeLoading && numberOfTrees < maxNumberOfTrees"
                   class="h-7 w-7 text-textblackdim"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -192,6 +195,7 @@ function unfocusInput(event) {
                     fill="currentColor"
                   />
                 </svg>
+
                 <!-- Loading icon -->
                 <svg
                   v-else-if="newTreeLoading"
@@ -207,6 +211,10 @@ function unfocusInput(event) {
                     stroke-linecap="round"
                   />
                 </svg>
+
+                <div v-else-if="numberOfTrees >= maxNumberOfTrees" class="text-danger">
+                  Maximum number of trees reached
+                </div>
               </TransitionOutInGrow>
             </button>
           </div>
@@ -235,7 +243,7 @@ function unfocusInput(event) {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none"
+                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition ease-out duration-100 ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
@@ -324,20 +332,19 @@ function unfocusInput(event) {
                   v-on:click="syncWarningExpanded = !syncWarningExpanded"
                   v-click-outside="warningClickOutsideHandler"
                 >
-                  <span>
-                    <svg
+                  <!-- Warning icon -->
+                  <svg
                       class="h-8 w-8 fill-warning"
                       viewBox="0 0 24 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
+                  >
+                    <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
                         d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
-                      />
-                    </svg>
-                  </span>
+                    />
+                  </svg>
                 </button>
               </div>
             </div>

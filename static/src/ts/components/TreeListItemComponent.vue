@@ -19,7 +19,19 @@ const emit = defineEmits(["selectTree", "deleteTree"]);
 let props = defineProps<TreeListProps>();
 const deleted = ref(false);
 const loading = ref(false);
+const deleteConfirmed = ref(false);
 
+async function deleteInTwoStages(treeId: string) {
+  if (deleteConfirmed.value) {
+    await deleteBtnHandler(treeId);
+    deleteConfirmed.value = false;
+  } else {
+    deleteConfirmed.value = true;
+    setTimeout(() => {
+      deleteConfirmed.value = false;
+    }, 2000);
+  }
+}
 
 async function deleteBtnHandler(treeId: string) {
   loading.value = true;
@@ -30,6 +42,7 @@ async function deleteBtnHandler(treeId: string) {
     deleted.value = true;
 
     await new Promise<void>((resolve) => {
+      // for the animation goes through before deleting the tree
       setTimeout(() => {
         emit("deleteTree", treeId);
         resolve();
@@ -57,7 +70,8 @@ async function deleteBtnHandler(treeId: string) {
         v-on:click="emit('selectTree', tree.tree_id)"
       >
         <span v-text="tree.tree_name"></span>
-        <div v-if="loggedIn"
+        <div
+          v-if="loggedIn"
           class="text-xs text-textblackdimmer2"
           :class="{
             'text-textwhitedimmer2': tree.tree_id === selectedTreeId,
@@ -69,12 +83,12 @@ async function deleteBtnHandler(treeId: string) {
       <button
         class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
         v-show="!lastRemainingTree"
-        v-on:click="deleteBtnHandler(tree.tree_id)"
+        v-on:click="deleteInTwoStages(tree.tree_id)"
       >
         <TransitionOutInGrow duration="50">
           <!-- Delete icon -->
           <svg
-            v-if="!loading"
+            v-if="!loading && !deleteConfirmed"
             class="h-7 w-7 text-textblackdim"
             viewBox="0 0 24 24"
             fill="none"
@@ -89,6 +103,20 @@ async function deleteBtnHandler(treeId: string) {
               stroke-linejoin="round"
             />
           </svg>
+          <!-- Warning icon -->
+          <svg v-else-if="deleteConfirmed"
+            class="h-7 w-7 fill-warning"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
+            />
+          </svg>
+
           <!-- Loading icon -->
           <svg
             v-else-if="loading"

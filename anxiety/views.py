@@ -22,7 +22,7 @@ def index_view(request):
 
 
 def anxiety_view(request):
-    # FIXME: This view for a user with a large number of large-sized trees would slow the whole
+    # FIXME: This view for a user with a large number of large-sized trees could slow the whole
     #  app down since this is not async
 
     if request.user.is_authenticated:
@@ -64,6 +64,7 @@ def about_view(request):
     context = {
         "current_page": "about",
     }
+    messages.success(request, 'please be in the center')  # TODO: remove before prod
 
     return render(request, "about.html", context=context)
 
@@ -87,6 +88,10 @@ class AnxietyTreeViewSet(
         user = self.request.user
         return user.anxiety_trees.all()
 
+    def get_user_tree_count(self):
+        user = self.request.user
+        return user.anxiety_trees.count()
+
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["tree_id"])
         self.check_object_permissions(self.request, obj)
@@ -109,11 +114,19 @@ class AnxietyTreeViewSet(
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+        user_tree_count = self.get_user_tree_count()
+        if user_tree_count > 150:
+            return Response(
+                data={"detail": f"You've reached the maximum number of trees allowed per user. "
+                                f"This limit is just to fight bots. Please don't hesitate to contact me if you'd "
+                                f"like to be able to register more trees!"},
+                status=400)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return_string = {"tree_id": serializer.data.get("tree_id")}
-        return Response(return_string, status=201)
+        return_detail = {"tree_id": serializer.data.get("tree_id")}
+
+        return Response(data=return_detail, status=201)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
