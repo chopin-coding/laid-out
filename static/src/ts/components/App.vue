@@ -282,7 +282,7 @@ function unfocusInput(event) {
                 </svg>
                 <svg
                   v-else-if="syncStatus === 'failed'"
-                  class="h-8 w-8"
+                  class="h-8 w-8 text-danger"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

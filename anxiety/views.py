@@ -39,6 +39,7 @@ def anxiety_view(request):
         "current_page": "anxiety",
         "user_trees": user_trees,
         "logged_in": request.user.is_authenticated,
+        "ANXIETY_API_BASE_URL": "http://127.0.0.1:8000/anxiety/api/trees/"  # FIXME
     }
 
     return render(request, "anxiety/anxiety.html", context=context)
@@ -63,7 +64,6 @@ def about_view(request):
     context = {
         "current_page": "about",
     }
-    messages.error(request, f"You're user {request.user}")
 
     return render(request, "about.html", context=context)
 

@@ -39,7 +39,7 @@ export function formatTimeShort(djangoTimeString: string): string {
   const parsedYear = new Date(parsedTimeNumber).getFullYear();
   const currentYear = new Date().getFullYear();
 
-  console.log(formatterThisYear.format(parsedTimeNumber))
+  // console.log(formatterThisYear.format(parsedTimeNumber))
 
   if (currentYear === parsedYear) {
     return formatterPastYearOrOlder.format(parsedTimeNumber);

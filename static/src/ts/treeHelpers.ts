@@ -3,7 +3,15 @@ import { Tree, TreeNode } from "./models";
 import * as timeUtils from "./timeUtils";
 import axios from "axios";
 
-const API_BASE_URL: string = "http://127.0.0.1:8000/anxiety/api/trees/";
+let API_BASE_URL: string = null;
+
+try {
+  API_BASE_URL = JSON.parse(
+    document.getElementById("ANXIETY-API-BASE-URL").textContent,
+  );
+} catch (error) {
+  console.log(`Couldn't parse ANXIETY-API-BASE-URL: ${error}`);
+}
 
 const getCookieValue = (name: string): string =>
   // case sensitive
@@ -57,10 +65,10 @@ export async function createTree(loggedIn: boolean) {
       return data.tree_id;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("error message: ", error.message);
+        console.log("Error while creating tree: ", error.message);
         return error.message;
       } else {
-        console.log("unexpected error: ", error);
+        console.log("Error while creating tree: ", error);
         return "An unexpected error occurred";
       }
     }
@@ -89,10 +97,10 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
       return status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("error message: ", error.message);
+        console.log("Error while updating tree: ", error.message);
         return error.message;
       } else {
-        console.log("unexpected error: ", error);
+        console.log("Unexpected error while updating tree: ", error);
         return "An unexpected error occurred";
       }
     }
@@ -114,10 +122,10 @@ export async function deleteTree(treeId: string, loggedIn: boolean) {
       return status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("error message: ", error.message);
+        console.log("Error while deleting tree: ", error.message);
         return error.message;
       } else {
-        console.log("unexpected error: ", error);
+        console.log("Unexpected error while deleting tree: ", error);
         return "An unexpected error occurred";
       }
     }
