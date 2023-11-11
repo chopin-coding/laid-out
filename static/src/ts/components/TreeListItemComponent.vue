@@ -70,7 +70,7 @@ async function deleteBtnHandler(treeId: string) {
       <button
         class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
         v-show="!lastRemainingTree"
-        @click="deleteBtnHandler(tree.tree_id)"
+        v-on:click="deleteBtnHandler(tree.tree_id)"
       >
         <TransitionOutInGrow duration="50">
           <!-- Delete icon -->

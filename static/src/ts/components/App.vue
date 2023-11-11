@@ -21,7 +21,7 @@ let syncTimerBaseCount = 2000;
 
 const tempTreeStore = ref([]);
 let syncTimer = null;
-const syncIndicator = ref("synced");
+const syncStatus = ref("synced");
 const selectedTreeIndex = ref(0);
 const hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
@@ -50,11 +50,24 @@ const selectedTreeId = computed(() => {
   return tempTreeStore.value[selectedTreeIndex.value].tree_id;
 });
 
+window.addEventListener("beforeunload", function (e) {
+  if (loggedIn && syncStatus.value === "syncing") {
+    const confirmationMessage =
+      "You have unsaved changes. Are you sure you want to leave?";
+
+    // Standard for most browsers
+    e.returnValue = confirmationMessage;
+
+    // For some older browsers
+    return confirmationMessage;
+  }
+});
+
 function treeWatcher(treeIndex: string) {
   const treeInQuestion = tempTreeStore.value[treeIndex];
 
   watch(treeInQuestion, (newValue, oldValue) => {
-    syncIndicator.value = "syncing";
+    syncStatus.value = "syncing";
 
     // reset the sync timer
     if (syncTimer) {
@@ -69,9 +82,9 @@ function treeWatcher(treeIndex: string) {
       );
 
       if (updateStatus === 200) {
-        syncIndicator.value = "synced";
+        syncStatus.value = "synced";
       } else {
-        syncIndicator.value = "failed";
+        syncStatus.value = "failed";
       }
     }, syncTimerBaseCount);
   });
@@ -160,7 +173,7 @@ function unfocusInput(event) {
           <div>
             <button
               class="my-2 rounded-md px-1 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
-              @click="newTree(loggedIn)"
+              v-on:click="newTree(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
                 <!-- New Tree icon -->
@@ -237,7 +250,7 @@ function unfocusInput(event) {
             <div class="text-textblackdim">
               <TransitionOutInGrow>
                 <svg
-                  v-if="syncIndicator === 'syncing'"
+                  v-if="syncStatus === 'syncing'"
                   class="h-8 w-8 animate-spin"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -253,7 +266,7 @@ function unfocusInput(event) {
                 </svg>
 
                 <svg
-                  v-else-if="syncIndicator === 'synced'"
+                  v-else-if="syncStatus === 'synced'"
                   class="h-8 w-8"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -268,7 +281,7 @@ function unfocusInput(event) {
                   />
                 </svg>
                 <svg
-                  v-else-if="syncIndicator === 'failed'"
+                  v-else-if="syncStatus === 'failed'"
                   class="h-8 w-8"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -313,13 +326,15 @@ function unfocusInput(event) {
                 >
                   <span>
                     <svg
-                      class="h-6 w-6 rounded-full drop-shadow-md fill-warning"
-                      viewBox="0 0 1920 1920"
+                      class="h-8 w-8 fill-warning"
+                      viewBox="0 0 24 24"
+                      fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm-9.838 1342.685c-84.47 0-153.19 68.721-153.19 153.19 0 84.47 68.72 153.192 153.19 153.192s153.19-68.721 153.19-153.191-68.72-153.19-153.19-153.19ZM1153.658 320H746.667l99.118 898.623h208.755L1153.658 320Z"
                         fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
                       />
                     </svg>
                   </span>

@@ -29,3 +29,5 @@ urlpatterns = [
     path("accounts/details", views.account_view, name="account_details"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
+
+# handler404 = 'anxiety.views.error_404_view'

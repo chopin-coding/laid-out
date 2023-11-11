@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -62,8 +63,13 @@ def about_view(request):
     context = {
         "current_page": "about",
     }
+    messages.error(request, f"You're user {request.user}")
 
     return render(request, "about.html", context=context)
+
+
+def error_404_view(request, exception):
+    return render(request, 'base/404.html')
 
 
 class AnxietyTreeViewSet(

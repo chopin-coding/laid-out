@@ -92,6 +92,10 @@
     }
 
     .allauth-change-pass > ul {
+        @apply text-textblackdimmer flex flex-col gap-y-2
+    }
+
+    .allauth-change-pass > ul {
         @apply text-sm
     }
 
@@ -103,8 +107,8 @@
 
     /* allauth reset pass */
     /* allauth error text */
-    ul[class="errorlist"] > li {
-        @apply text-danger
+    .errorlist {
+        @apply text-danger text-sm
     }
 
     /* allauth error text */

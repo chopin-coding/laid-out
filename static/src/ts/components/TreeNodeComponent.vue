@@ -133,7 +133,7 @@ onMounted(() => {
         <!-- child, sibling, and delete buttons -->
         <div class="flex" v-show="hovered || focused">
           <!-- Sibling node button -->
-          <button class="" @click="emit('siblingBtnHandler', node.node_id)">
+          <button class="" v-on:click="emit('siblingBtnHandler', node.node_id)">
             <svg
                 viewBox="0 0 24 24"
                 class="h-8 w-8"
@@ -151,7 +151,7 @@ onMounted(() => {
           </button>
 
           <!-- Child node button -->
-          <button class="" @click="emit('childBtnHandler', node.node_id)">
+          <button class="" v-on:click="emit('childBtnHandler', node.node_id)">
             <svg
                 viewBox="0 0 24 24"
                 class="h-8 w-8"
@@ -172,7 +172,7 @@ onMounted(() => {
           <button
               v-show="!singleNodeLeft || nodeType !== 'root'"
               class=""
-              @click="emit('deleteBtnHandler', node.node_id); deleted = true"
+              v-on:click="emit('deleteBtnHandler', node.node_id); deleted = true"
           >
             <svg
                 viewBox="0 0 24 24"

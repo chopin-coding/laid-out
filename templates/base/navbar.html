@@ -23,7 +23,7 @@
       <div class="relative flex h-20 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
-          <button @click="isMobileMenuOpen = !isMobileMenuOpen" @click.outside="isMobileMenuOpen = false"
+          <button x-on:click="isMobileMenuOpen = !isMobileMenuOpen" x-on:click.outside="isMobileMenuOpen = false"
                   type="button"
                   class="relative inline-flex items-center justify-center rounded-md p-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
                   aria-controls="mobile-menu" aria-expanded="false">
@@ -34,7 +34,8 @@
 
               Menu open: "hidden", Menu closed: "block"
             -->
-            <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            <svg x-show="!isMobileMenuOpen" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor"
                  aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
@@ -44,7 +45,8 @@
 
               Menu open: "block", Menu closed: "hidden"
             -->
-            <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            <svg x-show="isMobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor"
                  aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -64,12 +66,12 @@
           <div class="mr-3 hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <a href="{% url 'index' %}"
-                 class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium"
+                 class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium"
                  aria-current="page">Home</a>
               <a href="{% url 'anxiety_index' %}"
-                 class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">Anxiety</a>
+                 class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">Anxiety</a>
               <a href="{% url 'about' %}"
-                 class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim  rounded-md px-3 py-2 font-medium">About</a>
+                 class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">About</a>
 
             </div>
           </div>
@@ -79,15 +81,15 @@
             <div x-cloak
                  x-data="{ isThemeMenuOpen: false, currentTheme: localStorage.getItem('theme') || 'system' }"
                  class="relative z-10 ml-3">
-              <button @click="isThemeMenuOpen = !isThemeMenuOpen" @click.outside="isThemeMenuOpen = false"
+              <button x-on:click="isThemeMenuOpen = !isThemeMenuOpen" x-on:click.outside="isThemeMenuOpen = false"
                       type="button"
-                      class="relative flex rounded-md text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                      class="relative flex rounded-md text-sm font-medium transition duration-100 ease-out group text-textblackdimmer hover:bg-primarylight hover:text-black"
                       aria-expanded="false" aria-haspopup="true">
                 <span class="sr-only">Open theme selection menu</span>
                 <span class="px-3 py-1.5">
                 <!-- If system preference is light or light is explicitly set -->
                   <svg x-show="currentTheme === 'system' ? window.matchMedia('(prefers-color-scheme: light)').matches : localStorage.theme === 'light'"
-                       class="h-6 w-6 fill-textblackdim" viewBox="0 0 24 24" fill="none"
+                       class="h-6 w-6 fill-textblackdimmer group-hover:fill-textblack" viewBox="0 0 24 24" fill="none"
                        xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 3v1m0 16v1m-8-9H3m3.314-5.686L5.5 5.5m12.186.814L18.5 5.5M6.314 17.69l-.814.81m12.186-.81.814.81M21 12h-1m-4 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -95,7 +97,7 @@
                   </svg>
                   <!-- If system preference is dark or dark is explicitly set -->
                   <svg x-show="currentTheme === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : localStorage.theme === 'dark'"
-                       class="h-6 w-6 fill-textblackdim" viewBox="0 0 24 24"
+                       class="h-6 w-6 fill-textblackdimmer group-hover:fill-textblack" viewBox="0 0 24 24"
                        xmlns="http://www.w3.org/2000/svg">
                   <path d="M3.32 11.684a9 9 0 0 0 17.357 3.348A9 9 0 0 1 8.32 6.683c0-1.18.23-2.32.644-3.353a9.003 9.003 0 0 0-5.645 8.354Z"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -114,10 +116,10 @@
         origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5"
                    role="menu" aria-labelledby="theme-selection-button" tabindex="-1"
               >
-                <a @click="localStorage.setItem('theme', 'light'); currentTheme = 'light';
+                <a x-on:click="localStorage.setItem('theme', 'light'); currentTheme = 'light';
                                             document.documentElement.classList.remove('dark')" href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'light', 'hover:bg-primarylight hover:text-black': currentTheme !== 'light' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
+                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
                    role="menuitem" tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'light' }"
                        class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24" fill="none"
@@ -129,12 +131,12 @@
                   Light
                 </a>
 
-                <a @click="localStorage.setItem('theme', 'dark');
+                <a x-on:click="localStorage.setItem('theme', 'dark');
                                    currentTheme = 'dark';
                                    document.documentElement.classList.add('dark')"
                    href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'dark', 'hover:bg-primarylight hover:text-black': currentTheme !== 'dark' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
+                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
                    role="menuitem" tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'dark' }"
                        class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24"
@@ -145,10 +147,10 @@
                   Dark
                 </a>
 
-                <a @click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
+                <a x-on:click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
                    href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'system', 'hover:bg-primarylight hover:text-black': currentTheme !== 'system' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdim"
+                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
                    role="menuitem" tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'system' }"
                        class="mr-2 h-5 w-5 fill-textblackdim" viewBox="0 0 24 24" fill="none"
@@ -168,7 +170,7 @@
                 <div class="sm:block">
                   <div class="flex space-x-4">
                     <a href="{% url 'account_login' %}"
-                       class="rounded-md px-3 py-2 font-medium text-textblackdim hover:bg-primarylight hover:text-black">Log
+                       class="rounded-md px-3 py-2 font-medium text-textblackdimmer hover:bg-primarylight hover:text-black">Log
                       in</a>
 
                   </div>
@@ -179,13 +181,13 @@
               <!-- Profile dropdown -->
               <div x-cloak x-data="{ isUserMenuOpen: false }" class="relative z-20 ml-3"
               >
-                <button @click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
+                <button x-on:click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
                         type="button"
-                        class="relative flex rounded-md px-3 py-2 text-sm transition duration-100 ease-out hover:bg-primarylight hover:text-black"
+                        class="relative flex rounded-md px-3 py-2 group text-sm transition duration-100 ease-out hover:bg-primarylight hover:text-black"
                         aria-expanded="false" aria-haspopup="true">
                   <span class="absolute -inset-1.5"></span>
                   <span class="sr-only">Open user menu</span>
-                  <svg class="h-5 w-5 fill-textblackdim" viewBox="0 0 20 20"
+                  <svg class="h-5 w-5 fill-textblackdimmer group-hover:fill-textblack" viewBox="0 0 20 20"
                        xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.563 18H3.438c-.706 0-1.228-.697-.961-1.338C3.713 13.698 6.617 12 10 12c3.384 0 6.288 1.698 7.524 4.662.267.641-.255 1.338-.961 1.338M5.917 6c0-2.206 1.832-4 4.083-4 2.252 0 4.083 1.794 4.083 4S12.252 10 10 10c-2.251 0-4.083-1.794-4.083-4m14.039 11.636c-.742-3.359-3.064-5.838-6.119-6.963 1.619-1.277 2.563-3.342 2.216-5.603-.402-2.623-2.63-4.722-5.318-5.028C7.023-.381 3.875 2.449 3.875 6c0 1.89.894 3.574 2.289 4.673-3.057 1.125-5.377 3.604-6.12 6.963C-.226 18.857.779 20 2.054 20h15.892c1.276 0 2.28-1.143 2.01-2.364"
 
