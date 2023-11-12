@@ -96,12 +96,9 @@
     }
 
     .allauth-change-pass > ul {
-        @apply text-textblackdimmer flex flex-col gap-y-2
+        @apply text-textblackdimmer flex flex-col gap-y-2 text-sm self-center
     }
 
-    .allauth-change-pass > ul {
-        @apply text-sm
-    }
 
     /* allauth change pass */
     /* allauth reset pass */

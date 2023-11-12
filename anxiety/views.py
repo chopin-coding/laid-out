@@ -78,6 +78,10 @@ def error_404_view(request, exception):
     return render(request, 'base/404.html')
 
 
+def error_500_view(request, exception):
+    return render(request, 'base/500.html')
+
+
 class AnxietyTreeViewSet(
     viewsets.GenericViewSet,
 ):
@@ -102,65 +106,66 @@ class AnxietyTreeViewSet(
         self.check_object_permissions(self.request, obj)
         return obj
 
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
     def create(self, request, *args, **kwargs):
-        user_tree_count = self.get_user_tree_count()
-        if user_tree_count > 150:
-            return Response(
-                data={"detail": f"You've reached the maximum number of trees allowed per user. "
-                                f"This limit is just to fight bots. Please don't hesitate to contact me if you'd "
-                                f"like to be able to register more trees!"},
-                status=400)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return_detail = {"tree_id": serializer.data.get("tree_id")}
+        try:
+            user_tree_count = self.get_user_tree_count()
+            if user_tree_count > 150:
+                return Response(
+                    data={"detail": f"You've reached the maximum number of trees allowed per user. "
+                                    f"This limit is just to fight bots. Please don't hesitate to contact me if you'd "
+                                    f"like to be able to register more trees!"},
+                    status=400)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return_detail = {"tree_id": serializer.data.get("tree_id")}
 
-        return Response(data=return_detail, status=201)
+            return Response(data=return_detail, status=201)
+        except Exception as e:
+            print(f"Unexpected error while trying to create tree: {e}")
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop("partial", False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        try:
+            partial = kwargs.pop("partial", False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
 
-        if getattr(instance, "_prefetched_objects_cache", None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
+            if getattr(instance, "_prefetched_objects_cache", None):
+                # If 'prefetch_related' has been applied to a queryset, we need to
+                # forcibly invalidate the prefetch cache on the instance.
+                instance._prefetched_objects_cache = {}
 
-        return Response(status=200)
+            return Response(status=200)
+
+        #  TODO: handle more specific exceptions?
+        except Exception as e:
+            print(f"Unexpected error while updating tree: {e}")
 
     def perform_update(self, serializer):
-        serializer.save()
+        try:
+            serializer.save()
+        except Exception as e:
+            print(f"Unexpected error while performing tree update: {e}")
 
     def partial_update(self, request, *args, **kwargs):
-        kwargs["partial"] = True
-        return self.update(request, *args, **kwargs)
+        try:
+            kwargs["partial"] = True
+            return self.update(request, *args, **kwargs)
+        except Exception as e:
+            print(f"Unexpected error while partially updating tree: {e}")
 
     def destroy(self, request, *args, **kwargs):
         try:
-            instance = self.get_object()
-            instance.delete()
-        except Http404:
-            # this is to handle get_object() gracefully in case the instance doesn't exist
-            # the default destroy function from mixins.DestroyModelMixin didn't handle this and returned HTTP 500
-            pass
+            try:
+                instance = self.get_object()
+                instance.delete()
+            except Http404:
+                # this is to handle get_object() gracefully in case the instance doesn't exist
+                # the default destroy function from mixins.DestroyModelMixin didn't handle this and returned HTTP 500
+                pass
 
-        return Response(status=204)
+            return Response(status=204)
+        except Exception as e:
+            print(f"Unexpected error while deleting tree: {e}")

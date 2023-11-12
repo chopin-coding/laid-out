@@ -5,16 +5,6 @@ from rest_framework import serializers
 from anxiety.models import AnxietyTree, TreeData, TreeDataNode, default_tree_data
 
 
-class UserSerializer(serializers.ModelSerializer):
-    anxiety_trees = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=AnxietyTree.objects.all()
-    )
-
-    class Meta:
-        model = User
-        fields = ["id", "username", "anxiety_trees"]
-
-
 class AnxietyTreeSerializer(serializers.Serializer):
     tree_id = serializers.UUIDField(read_only=True)
     tree_name = serializers.CharField(max_length=50, required=False)
@@ -58,8 +48,11 @@ class AnxietyTreeSerializer(serializers.Serializer):
             print(e)
 
     def update(self, instance, validated_data):
-        instance.tree_data = validated_data.get("tree_data")
-        instance.tree_name = validated_data.get("tree_name")
-        instance.save()
+        try:
+            instance.tree_data = validated_data.get("tree_data")
+            instance.tree_name = validated_data.get("tree_name")
+            instance.save()
 
-        return instance
+            return instance
+        except Exception as e:
+            print(f"Unexpected error when serializing PATCH/PUT: {e}")
