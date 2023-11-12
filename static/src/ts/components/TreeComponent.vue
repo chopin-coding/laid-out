@@ -85,7 +85,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
 
 <template>
   <ul
-    class="flex list-none flex-col gap-y-1.5"
+    class="flex list-none flex-col"
     :class="{
       'child-node': nodeType === 'child',
       'root-node': nodeType === 'root',

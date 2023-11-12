@@ -59,6 +59,10 @@
         @apply flex flex-col w-full gap-y-1 justify-between
     }
 
+    .allauth-login-and-password > span[class='helptext'] {
+        @apply hidden
+    }
+
     .allauth-remember {
         @apply flex w-full gap-x-2 items-center text-textblackdimmer text-sm
     }

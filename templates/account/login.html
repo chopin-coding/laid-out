@@ -17,7 +17,7 @@
               Don't have an account?
             </span>
           <div class="flex">
-            <a class="rounded-none transition duration-200 group button secondaryAction focus:outline-none hover:text-black"
+            <a class="rounded-none transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
                href="{{ signup_url }}">Sign up!
               <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
             </a>
@@ -34,7 +34,7 @@
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
         <div class="flex text-sm">
-          <a class="my-0 rounded-none py-1 transition duration-200 group button secondaryAction text-textblackdimmer focus:outline-none"
+          <a class="my-0 rounded-none py-1 transition duration-200 group button secondaryAction text-textblackdimmer hover:text-black focus:outline-none"
              href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}
             <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span></a>
         </div>

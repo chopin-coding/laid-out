@@ -61,7 +61,7 @@ async function deleteBtnHandler(treeId: string) {
       <!-- Tree name -->
       <a
         href="#"
-        class="flex flex-grow flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim"
+        class="flex flex-grow flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer"
         :class="{
           'bg-primary text-white': tree.tree_id === selectedTreeId,
           'hover:bg-primarylight hover:text-black':
@@ -81,7 +81,7 @@ async function deleteBtnHandler(treeId: string) {
       </a>
 
       <button
-        class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+        class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
         v-show="!lastRemainingTree"
         v-on:click="deleteInTwoStages(tree.tree_id)"
       >
@@ -89,7 +89,7 @@ async function deleteBtnHandler(treeId: string) {
           <!-- Delete icon -->
           <svg
             v-if="!loading && !deleteConfirmed"
-            class="h-7 w-7 text-textblackdim"
+            class="h-7 w-7"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

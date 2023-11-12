@@ -174,7 +174,7 @@ function unfocusInput(event) {
         <div class="divide-y divide-solid divide-primarylight">
           <div>
             <button
-              class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out hover:bg-primarylight hover:text-black"
+              class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
               v-on:click="newTree(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
@@ -182,7 +182,7 @@ function unfocusInput(event) {
                 <!-- New Tree icon -->
                 <svg
                   v-if="!newTreeLoading && numberOfTrees < maxNumberOfTrees"
-                  class="h-7 w-7 text-textblackdim"
+                  class="h-6 w-6"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +199,7 @@ function unfocusInput(event) {
                 <!-- Loading icon -->
                 <svg
                   v-else-if="newTreeLoading"
-                  class="h-7 w-7 animate-spin"
+                  class="h-6 w-6animate-spin"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -243,7 +243,7 @@ function unfocusInput(event) {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition ease-out duration-100 ring-primarylight focus:outline-none"
+                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
@@ -255,7 +255,7 @@ function unfocusInput(event) {
 
           <div class="mx-4 flex items-center gap-x-4">
             <!--     Sync status     -->
-            <div class="text-textblackdim">
+            <div class="text-textblackdimmer">
               <TransitionOutInGrow>
                 <svg
                   v-if="syncStatus === 'syncing'"
@@ -312,6 +312,7 @@ function unfocusInput(event) {
               v-show="!loggedIn"
               @mouseover="syncWarningExpanded = true"
               @mouseleave="syncWarningExpanded = false"
+
             >
               <div
                 class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
@@ -321,7 +322,7 @@ function unfocusInput(event) {
                     v-show="syncWarningExpanded"
                     class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
                   >
-                    <span class="inline-block leading-tight"
+                    <span class="inline-block text-sm leading-tight"
                       >Your data has been saved to this device only. Log in to
                       save and access your data from any device.</span
                     >
@@ -329,8 +330,6 @@ function unfocusInput(event) {
                 </TransitionBasic>
 
                 <button
-                  v-on:click="syncWarningExpanded = !syncWarningExpanded"
-                  v-click-outside="warningClickOutsideHandler"
                 >
                   <!-- Warning icon -->
                   <svg
@@ -353,18 +352,18 @@ function unfocusInput(event) {
 
         <div class="flex gap-x-3 text-textblackdim">
           <div>
-            <span class="text-xl text-textblackdim">Uncontrollable</span>
+            <span class="text-lg text-textblackdim">Uncontrollable</span>
           </div>
 
           <button
-            class="text-textblackdim"
+            class="text-textblackdim fill-textblackdimmer"
             v-on:click="hideUncontrollable = !hideUncontrollable"
           >
             <TransitionBasic>
               <!-- Not visible -->
               <svg
                 v-if="hideUncontrollable"
-                class="h-7 w-7 text-textblackdim fill-textblackdim"
+                class="h-7 w-7 "
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -381,7 +380,7 @@ function unfocusInput(event) {
               <!-- Visible -->
               <svg
                 v-else-if="!hideUncontrollable"
-                class="h-7 w-7 text-textblackdim fill-textblackdim"
+                class="h-7 w-7 "
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >

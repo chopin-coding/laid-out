@@ -1,145 +1,142 @@
 {% if messages %}
-  {% for message in messages %}
+  <ul class="fixed flex flex-col top-16 translate-y-5  items-center sm:max-w-md max-w-full w-screen  transition duration-300 ease-out">
+    {% for message in messages %}
 
-    {% if message.tags == 'success' %}
-      <div x-transition x-data="{dismissed: false}" x-show="!dismissed"
-           x-init="setTimeout(() => dismissed = true, 3000)"
-           class="fixed flex w-full translate-y-12 items-center justify-center p-4 transition duration-300 ease-out">
-        <div id="toast-default"
-             class="flex w-full max-w-xs items-center rounded-lg bg-white p-4 shadow text-textblackdim"
-             role="alert">
-          <div class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center text-primary">
+      {% if message.tags == 'success' %}
+        <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
+            x-init="setTimeout(() => dismissed = true, 3000)"
+            class="flex self-start px-4 py-3 min-w-full">
+          <div id="toast-default"
+               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               role="alert">
+            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
 
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10Z"></path>
-                <path d="m7.75 12 2.83 2.83 5.67-5.66"></path>
-              </g>
-            </svg>
-            <span class="sr-only">Fire icon</span>
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10Z"></path>
+                  <path d="m7.75 12 2.83 2.83 5.67-5.66"></path>
+                </g>
+              </svg>
+              <span class="sr-only">Fire icon</span>
+            </div>
+            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <button x-on:click="dismissed = true" type="button"
+                    class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
+                    data-dismiss-target="#toast-default" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+              </svg>
+            </button>
           </div>
-          <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
-          <button x-on:click="dismissed = true" type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white transition duration-100 ease-out text-textblackdimmer ms-auto -mx-1.5 -my-1.5 p-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
-                  data-dismiss-target="#toast-default" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
+        </li>
 
-    {% elif message.tags == 'warning' %}
-      <div x-transition x-data="{dismissed: false}" x-show="!dismissed"
-           x-init="setTimeout(() => dismissed = true, 3000)"
-           class="fixed flex w-full translate-y-5 items-center justify-center p-4 transition duration-300 ease-out">
-        <div id="toast-default"
-             class="flex w-full max-w-xs items-center rounded-lg bg-white p-4 shadow text-textblackdim"
-             role="alert">
-          <div class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center text-primary">
+      {% elif message.tags == 'warning' %}
+        <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
+            x-init="setTimeout(() => dismissed = true, 3000)"
+            class="flex self-start px-4 py-3 min-w-full">
+          <div id="toast-default"
+               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               role="alert">
+            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
 
-            <svg
-                    class="h-8 w-8 fill-warning"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"></path>
-            </svg>
-            <span class="sr-only">Fire icon</span>
+              <svg
+                      class="h-8 w-8 fill-warning"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"></path>
+              </svg>
+              <span class="sr-only">Warning icon</span>
+            </div>
+            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <button x-on:click="dismissed = true" type="button"
+                    class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
+                    data-dismiss-target="#toast-default" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+              </svg>
+            </button>
           </div>
-          <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
-          <button x-on:click="dismissed = true" type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white transition duration-100 ease-out text-textblackdimmer ms-auto -mx-1.5 -my-1.5 p-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
-                  data-dismiss-target="#toast-default" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
+        </li>
 
-    {% elif message.tags == 'error' %}
-      <div x-transition x-data="{dismissed: false}" x-show="!dismissed"
-           x-init="setTimeout(() => dismissed = true, 3000)"
-           class="fixed flex w-full translate-y-5 items-center justify-center p-4 transition duration-300 ease-out">
-        <div id="toast-default"
-             class="flex w-full max-w-xs items-center rounded-lg bg-white p-4 shadow text-textblackdim"
-             role="alert">
-          <div class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center text-primary">
+      {% elif message.tags == 'error' %}
+        <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
+            x-init="setTimeout(() => dismissed = true, 3000)"
+            class="flex self-start px-4 py-3 min-w-full">
+          <div id="toast-default"
+               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               role="alert">
+            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
 
-            <svg
-                    class="h-8 w-8 fill-danger"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"></path>
-            </svg>
-            <span class="sr-only">Fire icon</span>
+              <svg
+                      class="h-8 w-8 fill-danger"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"></path>
+              </svg>
+              <span class="sr-only">Error icon</span>
+            </div>
+            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <button x-on:click="dismissed = true" type="button"
+                    class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
+                    data-dismiss-target="#toast-default" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+              </svg>
+            </button>
           </div>
-          <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
-          <button x-on:click="dismissed = true" type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white transition duration-100 ease-out text-textblackdimmer ms-auto -mx-1.5 -my-1.5 p-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
-                  data-dismiss-target="#toast-default" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
+        </li>
 
+      {% else %} <!-- info or any other tag -->
+        <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
+            x-init="setTimeout(() => dismissed = true, 3000)"
+            class="flex self-start px-4 py-3 min-w-full">
+          <div id="toast-default"
+               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               role="alert">
+            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
 
-    {% else %} <!-- info or any other tag -->
-      <div x-transition x-data="{dismissed: false}" x-show="!dismissed"
-           x-init="setTimeout(() => dismissed = true, 3000)"
-           class="fixed flex w-full translate-y-5 items-center justify-center p-4 transition duration-300 ease-out">
-        <div id="toast-default"
-             class="flex w-full max-w-xs items-center rounded-lg bg-white p-4 shadow text-textblackdim"
-             role="alert">
-          <div class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center text-primary">
-
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
-              <path d="M12 17v-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-              <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="currentColor"></circle>
-            </svg>
-            <span class="sr-only">Fire icon</span>
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
+                <path d="M12 17v-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="currentColor"></circle>
+              </svg>
+              <span class="sr-only">Info icon</span>
+            </div>
+            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <button x-on:click="dismissed = true" type="button"
+                    class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
+                    data-dismiss-target="#toast-default" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+              </svg>
+            </button>
           </div>
-          <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
-          <button x-on:click="dismissed = true" type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white transition duration-100 ease-out text-textblackdimmer ms-auto -mx-1.5 -my-1.5 p-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
-                  data-dismiss-target="#toast-default" aria-label="Close">
-            <span class="sr-only">Close</span>
-            <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 14 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-    {% endif %}
-
-
-  {% endfor %}
-
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
 {% endif %}
 
 

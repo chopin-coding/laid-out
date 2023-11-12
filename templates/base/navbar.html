@@ -25,7 +25,7 @@
           <!-- Mobile menu button-->
           <button x-on:click="isMobileMenuOpen = !isMobileMenuOpen" x-on:click.outside="isMobileMenuOpen = false"
                   type="button"
-                  class="relative inline-flex items-center justify-center rounded-md p-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                  class="relative inline-flex items-center justify-center rounded-md p-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
                   aria-controls="mobile-menu" aria-expanded="false">
             <span class="absolute -inset-0.5"></span>
             <span class="sr-only">Open main menu</span>
@@ -183,7 +183,7 @@
               >
                 <button x-on:click="isUserMenuOpen = !isUserMenuOpen" @click.outside="isUserMenuOpen = false"
                         type="button"
-                        class="relative flex rounded-md px-3 py-2 group text-sm transition duration-100 ease-out hover:bg-primarylight hover:text-black"
+                        class="relative flex rounded-md px-3 py-2 text-sm transition duration-100 ease-out group hover:bg-primarylight hover:text-black"
                         aria-expanded="false" aria-haspopup="true">
                   <span class="absolute -inset-1.5"></span>
                   <span class="sr-only">Open user menu</span>
@@ -206,7 +206,7 @@
                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
                 >
                   <a href="{% url 'account_details' %}"
-                     class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                     class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
                      role="menuitem" tabindex="-1"
                      id="user-menu-item-1">
                     <svg class="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -217,7 +217,7 @@
                     </svg>
                     Settings</a>
                   <a href="{% url 'account_logout' %}"
-                     class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+                     class="flex items-center px-4 py-2 text-sm font-medium transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
                      role="menuitem" tabindex="-1"
                      id="user-menu-item-2">
                     <svg class="mr-2 h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -257,13 +257,13 @@
 
 
         <a href="{% url 'index' %}"
-           class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-medium"
+           class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">Home</a>
         <a href="{% url 'anxiety_index' %}"
-           class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-medium"
+           class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">Anxiety</a>
         <a href="{% url 'about' %}"
-           class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdim block rounded-md px-3 py-2 font-medium"
+           class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">About</a>
       </div>
     </div>
