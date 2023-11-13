@@ -26,7 +26,7 @@ const selectedTreeIndex = ref(0);
 const hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
 const newTreeLoading = ref(false);
-const maxNumberOfTrees = 150;  // the browser would probably shit itself before 150 trees anyway :D
+const maxNumberOfTrees = 150; // the browser would probably shit itself before 150 trees anyway :D
 
 initializeTrees();
 
@@ -52,7 +52,7 @@ const selectedTreeId = computed(() => {
 });
 
 const numberOfTrees = computed(() => {
-  return tempTreeStore.value.length
+  return tempTreeStore.value.length;
 });
 
 window.addEventListener("beforeunload", function (e) {
@@ -123,20 +123,18 @@ function selectTreeHandler(treeId: string): void {
   }
 }
 
-function warningClickOutsideHandler(): void {
-  syncWarningExpanded.value = false;
-}
-
 async function newTree(loggedIn: boolean) {
-  newTreeLoading.value = loggedIn;
-  const treeId = await treeHelpers.createTree(loggedIn);
-  const newTree = treeHelpers.defaultTree(treeId);
+  if (numberOfTrees.value < maxNumberOfTrees) {
+    newTreeLoading.value = loggedIn;
+    const treeId = await treeHelpers.createTree(loggedIn);
+    const newTree = treeHelpers.defaultTree(treeId);
 
-  tempTreeStore.value.splice(0, 0, newTree);
-  if (loggedIn) {
-    addTreeWatcher(treeId);
+    tempTreeStore.value.splice(0, 0, newTree);
+    if (loggedIn) {
+      addTreeWatcher(treeId);
+    }
+    newTreeLoading.value = false;
   }
-  newTreeLoading.value = false;
 }
 
 async function deleteTreeHandler(treeId: string) {
@@ -178,7 +176,6 @@ function unfocusInput(event) {
               v-on:click="newTree(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
-
                 <!-- New Tree icon -->
                 <svg
                   v-if="!newTreeLoading && numberOfTrees < maxNumberOfTrees"
@@ -212,7 +209,10 @@ function unfocusInput(event) {
                   />
                 </svg>
 
-                <div v-else-if="numberOfTrees >= maxNumberOfTrees" class="text-danger">
+                <div
+                  v-else-if="numberOfTrees >= maxNumberOfTrees"
+                  class="text-danger"
+                >
                   Maximum number of trees reached
                 </div>
               </TransitionOutInGrow>
@@ -312,7 +312,6 @@ function unfocusInput(event) {
               v-show="!loggedIn"
               @mouseover="syncWarningExpanded = true"
               @mouseleave="syncWarningExpanded = false"
-
             >
               <div
                 class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
@@ -329,19 +328,18 @@ function unfocusInput(event) {
                   </div>
                 </TransitionBasic>
 
-                <button
-                >
+                <button>
                   <!-- Warning icon -->
                   <svg
-                      class="h-8 w-8 fill-warning"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 fill-warning"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
                     />
                   </svg>
                 </button>
@@ -363,7 +361,7 @@ function unfocusInput(event) {
               <!-- Not visible -->
               <svg
                 v-if="hideUncontrollable"
-                class="h-7 w-7 "
+                class="h-7 w-7"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -380,7 +378,7 @@ function unfocusInput(event) {
               <!-- Visible -->
               <svg
                 v-else-if="!hideUncontrollable"
-                class="h-7 w-7 "
+                class="h-7 w-7"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >

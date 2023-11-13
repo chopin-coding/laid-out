@@ -16,6 +16,7 @@ router.register(r"trees", views.AnxietyTreeViewSet, basename="tree")
 
 urlpatterns = [
     path("", views.anxiety_view, name="anxiety_index"),
+    path("account/delete", views.account_delete_view, name="account_delete"),
 ]
 
 htmx_urlpatterns = [

@@ -16,8 +16,8 @@
         Email: {{ user.email }}
       </div>
       <div class="w-80">
-        <div class="flex flex-col w-full divide-y divide-primarylight
-                        rounded py-1 shadow-lg ring-1 ring-black ring-opacity-5
+        <div class="flex flex-col w-full bg-white divide-y divide-primarylight
+                        rounded py-1 shadow-lg ring-1 ring-primarylight ring-opacity-5
                         focus:outline-none"
              role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
         >
@@ -36,10 +36,10 @@
              role="menuitem" tabindex="-1">
             Set or change password</a>
 
-          <a href="#"
-             class="flex items-center px-4 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+          <a href="{% url 'account_delete' %}"
+             class="flex items-center px-4 py-2 transition duration-100 ease-out text-warning hover:bg-primarylight hover:text-black"
              role="menuitem" tabindex="-1">
-            Delete account (TBA)</a>
+            Delete account</a>
 
         </div>
       </div>

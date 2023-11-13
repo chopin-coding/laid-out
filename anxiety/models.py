@@ -40,7 +40,8 @@ class AnxietyTree(models.Model):
     owner = models.ForeignKey(
         to="auth.User",
         related_name="anxiety_trees",
-        on_delete=models.SET_NULL,
+        # TODO: change on_delete to models.SET_NULL if I start using Celery
+        on_delete=models.CASCADE,
         null=True,
     )
     date_modified = models.DateTimeField(auto_now=True)  # UTC

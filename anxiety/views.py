@@ -1,10 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 
 from rest_framework import viewsets
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -74,6 +75,40 @@ def about_view(request):
     return render(request, "about.html", context=context)
 
 
+def account_delete_view(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse("account_login"))
+    elif request.method == 'POST':
+        # TODO: maybe set the account inactive instead of deleting it?
+
+        try:
+            user = User.objects.get(username=request.user.username)
+        except User.DoesNotExist:
+            print("The user trying to be deleted does not exist")
+            return redirect(reverse("index"))
+        except Exception as e:
+            print(f"Unexpected error while fetching user to delete: {e}")
+            messages.error(request, "Unexpected error. Please try again.")
+            return redirect(reverse("index"))
+
+        if user:
+            try:
+                user.delete()
+                messages.success(request, "Your account has been deleted.")
+                return redirect(reverse("index"))
+            except Exception as e:
+                print(f"Unexpected error while deleting user: {e}")
+                messages.error(request,
+                               "Error while trying to delete user. Please try again or contact the administrator.")
+                return redirect(reverse("index"))
+
+    context = {
+        "current_page": "account_delete",
+    }
+
+    return render(request, "account/delete.html", context=context)
+
+
 def error_404_view(request, exception):
     return render(request, 'base/404.html')
 
@@ -102,7 +137,7 @@ class AnxietyTreeViewSet(
         return user.anxiety_trees.count()
 
     def get_object(self):
-        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["tree_id"])
+        obj = drf_get_object_or_404(self.get_queryset(), pk=self.kwargs["tree_id"])
         self.check_object_permissions(self.request, obj)
         return obj
 
