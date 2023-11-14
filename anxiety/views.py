@@ -77,6 +77,7 @@ def about_view(request):
 
 def account_delete_view(request):
     if not request.user.is_authenticated:
+
         return redirect(reverse("account_login"))
     elif request.method == 'POST':
         # TODO: maybe set the account inactive instead of deleting it?

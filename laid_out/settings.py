@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+import logging
+
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
@@ -20,7 +23,9 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["192.168.0.70", "127.0.0.1"]
 
-# Application definition
+##############
+# apps #
+##############
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -40,7 +45,9 @@ INSTALLED_APPS = [
     "django_browser_reload",
 ]
 
-# ***   ALLAUTH   ***
+##############
+# allauth #
+##############
 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 15
@@ -83,15 +90,72 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# ***   DRF   ***
+##############
+# Logging #
+##############
+
+LOGGING = {
+    "version": 1,
+    # This will leave the default Django logging behavior in place
+    "disable_existing_loggers": False,
+    # Custom handler config that gets log messages and outputs them to console
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": LOG_LEVEL,
+        },
+    },
+    "loggers": {
+        # Send everything to console
+        "": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+        },
+    },
+}
+
+
+# # For Prod
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {"class": "logging.StreamHandler"},
+#         # A null handler ignores the mssage
+#         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
+#     },
+#     "loggers": {
+#         "": {
+#             "handlers": ["console"],
+#             "level": LOG_LEVEL,
+#         },
+#         "django.security.DisallowedHost": {
+#             # Redirect these messages to null handler
+#             "handlers": ["null"],
+#             # Don't let them reach the root-level handler
+#             "propagate": False,
+#         },
+#     },
+# }
+
+
+
+##############
+# DRF #
+##############
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 # Session lifetime in seconds
@@ -138,7 +202,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "laid_out.wsgi.application"
 
-# Database
+##############
+# Database #
+##############
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
@@ -191,7 +257,9 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# ***   django-vite   ***
+##############
+# django-vite #
+##############
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 

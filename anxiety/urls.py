@@ -25,7 +25,6 @@ htmx_urlpatterns = [
 
 api_urlpatterns = [
     path("api/", include(router.urls)),
-    # path("docs/", include_docs_urls(title='Anxiety Tree API')),  # TODO: remove before prod
 ]
 
 urlpatterns += htmx_urlpatterns
