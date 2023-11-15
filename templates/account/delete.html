@@ -7,7 +7,7 @@
 
 {% block content %}
   <div x-cloak x-data="{ confirmation: '' }" class="mx-4 my-10">
-    <div class="mx-auto my-auto flex h-full w-full max-w-sm text-center flex-col items-center justify-center gap-y-8 rounded-md bg-white px-3 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
+    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-3 py-8 text-center align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
       <div class="text-2xl">
         Delete Account
       </div>
@@ -21,12 +21,12 @@
       </div>
       <label class="sr-only" for="confirmation-input">Account Deletion Confirmation</label>
       <input id="confirmation-input" x-model="confirmation"
-             class="w-48 rounded px-3 py-2 bg-white ring-1 ring-opacity-5 text-center transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none"
+             class="w-48 rounded bg-white px-3 py-2 text-center ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none"
              type="text"/>
       <form method="post" action="{% url 'account_delete' %}">
         {% csrf_token %}
         <input :disabled="confirmation !== 'confirm deletion'"
-               class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-500 ease-out ring-primarylight enabled:text-textblackdim enabled:hover:bg-danger enabled:hover:text-black focus:outline-none text-textblackdimmer2"
+               class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-500 ease-out ring-primarylight enabled:text-textblackdim text-textblackdimmer2 enabled:hover:bg-danger enabled:hover:text-black focus:outline-none"
                type="submit" value="Delete account forever">
       </form>
     </div>

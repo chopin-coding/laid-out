@@ -177,21 +177,38 @@ function unfocusInput(event) {
             >
               <TransitionOutInGrow duration="50">
                 <!-- New Tree icon -->
-                <svg
+                <div
                   v-if="!newTreeLoading && numberOfTrees < maxNumberOfTrees"
-                  class="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-label="Add Tree"
+                  class="flex gap-x-3"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"
-                    fill="currentColor"
-                  />
-                </svg>
+                  <svg
+                    class="h-6 w-6"
+                    viewBox="0 0 32 32"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M30 28c0 1.1-.896 2-2 2H4c-1.104 0-2-.9-2-2V4c0-1.1.896-2 2-2h24c1.104 0 2 .9 2 2v24ZM28 0H4a4 4 0 0 0-4 4v24a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4Zm-6 15h-5v-5c0-.55-.448-1-1-1s-1 .45-1 1v5h-5c-.552 0-1 .45-1 1s.448 1 1 1h5v5c0 .55.448 1 1 1s1-.45 1-1v-5h5c.552 0 1-.45 1-1s-.448-1-1-1Z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                  <span> Create new </span>
+
+                  <!--                  <svg-->
+                  <!--                    class="h-6 w-6"-->
+                  <!--                    viewBox="0 0 24 24"-->
+                  <!--                    fill="none"-->
+                  <!--                    xmlns="http://www.w3.org/2000/svg"-->
+                  <!--                    aria-label="Add Tree"-->
+                  <!--                  >-->
+                  <!--                    <path-->
+                  <!--                      fill-rule="evenodd"-->
+                  <!--                      clip-rule="evenodd"-->
+                  <!--                      d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"-->
+                  <!--                      fill="currentColor"-->
+                  <!--                    />-->
+                  <!--                  </svg>-->
+                </div>
 
                 <!-- Loading icon -->
                 <svg
@@ -218,7 +235,7 @@ function unfocusInput(event) {
               </TransitionOutInGrow>
             </button>
           </div>
-          <ul class="list-none">
+          <ul class="list-none max-h-80 sm:max-h-96 overflow-y-scroll">
             <component
               v-for="tree in tempTreeStore"
               :key="tree.tree_id"
@@ -394,7 +411,7 @@ function unfocusInput(event) {
         </div>
 
         <!--   Tree   -->
-        <div class="mb-40 w-full lg:mb:0">
+        <div class="mb-40 sm:mb-0 w-full lg:mb:0">
           <component
             v-show="
               tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]

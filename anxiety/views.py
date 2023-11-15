@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
@@ -13,8 +15,11 @@ from anxiety.models import AnxietyTree
 from anxiety.permissions import IsOwner
 from anxiety.serializers import AnxietyTreeSerializer
 
+log = getLogger(__name__)
+
 
 def index_view(request):
+    log.info(f"Home page served")
     context = {
         "current_page": "home",
     }

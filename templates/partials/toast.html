@@ -1,15 +1,15 @@
 {% if messages %}
-  <ul class="fixed flex flex-col top-16 translate-y-5  items-center sm:max-w-md max-w-full w-screen  transition duration-300 ease-out">
+  <ul class="fixed top-16 flex w-screen max-w-full translate-y-5 flex-col items-center transition duration-300 ease-out sm:max-w-md">
     {% for message in messages %}
 
       {% if message.tags == 'success' %}
         <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
             x-init="setTimeout(() => dismissed = true, 3000)"
-            class="flex self-start px-4 py-3 min-w-full">
+            class="flex min-w-full self-start px-4 py-3">
           <div id="toast-default"
-               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               class="flex min-w-full items-center rounded-lg bg-white p-4 shadow text-textblackdim"
                role="alert">
-            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
+            <div class="inline-flex h-8 w-8 flex-shrink-0 items-center text-primary">
 
               <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -19,7 +19,7 @@
               </svg>
               <span class="sr-only">Fire icon</span>
             </div>
-            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
             <button x-on:click="dismissed = true" type="button"
                     class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
                     data-dismiss-target="#toast-default" aria-label="Close">
@@ -36,11 +36,11 @@
       {% elif message.tags == 'warning' %}
         <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
             x-init="setTimeout(() => dismissed = true, 3000)"
-            class="flex self-start px-4 py-3 min-w-full">
+            class="flex min-w-full self-start px-4 py-3">
           <div id="toast-default"
-               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               class="flex min-w-full items-center rounded-lg bg-white p-4 shadow text-textblackdim"
                role="alert">
-            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
+            <div class="inline-flex h-8 w-8 flex-shrink-0 items-center text-primary">
 
               <svg
                       class="h-8 w-8 fill-warning"
@@ -55,7 +55,7 @@
               </svg>
               <span class="sr-only">Warning icon</span>
             </div>
-            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
             <button x-on:click="dismissed = true" type="button"
                     class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
                     data-dismiss-target="#toast-default" aria-label="Close">
@@ -72,11 +72,11 @@
       {% elif message.tags == 'error' %}
         <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
             x-init="setTimeout(() => dismissed = true, 3000)"
-            class="flex self-start px-4 py-3 min-w-full">
+            class="flex min-w-full self-start px-4 py-3">
           <div id="toast-default"
-               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               class="flex min-w-full items-center rounded-lg bg-white p-4 shadow text-textblackdim"
                role="alert">
-            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
+            <div class="inline-flex h-8 w-8 flex-shrink-0 items-center text-primary">
 
               <svg
                       class="h-8 w-8 fill-danger"
@@ -91,7 +91,7 @@
               </svg>
               <span class="sr-only">Error icon</span>
             </div>
-            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
             <button x-on:click="dismissed = true" type="button"
                     class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
                     data-dismiss-target="#toast-default" aria-label="Close">
@@ -108,11 +108,11 @@
       {% else %} <!-- info or any other tag -->
         <li x-transition.duration.200ms x-data="{dismissed: false}" x-show="!dismissed"
             x-init="setTimeout(() => dismissed = true, 3000)"
-            class="flex self-start px-4 py-3 min-w-full">
+            class="flex min-w-full self-start px-4 py-3">
           <div id="toast-default"
-               class="flex items-center min-w-full rounded-lg bg-white p-4 shadow text-textblackdim"
+               class="flex min-w-full items-center rounded-lg bg-white p-4 shadow text-textblackdim"
                role="alert">
-            <div class="inline-flex flex-shrink-0 h-8 w-8 items-center text-primary">
+            <div class="inline-flex h-8 w-8 flex-shrink-0 items-center text-primary">
 
               <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
@@ -121,7 +121,7 @@
               </svg>
               <span class="sr-only">Info icon</span>
             </div>
-            <div class="mr-2 text-sm font-normal ms-3 ">{{ message }}</div>
+            <div class="mr-2 text-sm font-normal ms-3">{{ message }}</div>
             <button x-on:click="dismissed = true" type="button"
                     class="flex items-center rounded-lg bg-white transition duration-100 ease-out p-2.5 text-textblackdimmer ms-auto -mx-1.5 -my-1.5 hover:bg-primarylight hover:text-black focus:outline-none"
                     data-dismiss-target="#toast-default" aria-label="Close">
