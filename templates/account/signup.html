@@ -8,23 +8,24 @@
   <div class="mx-4 my-10">
     <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-4 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
       <div class="text-2xl">{% trans "Sign Up" %}</div>
-      <div class="flex gap-x-1 text-sm text-textblackdimmer">
+      <div class="flex flex-col sm:flex-row gap-x-1 text-center text-sm text-textblackdimmer">
         {% blocktranslate %}
-          <span class="">
-              Already have an account? Then please
-            </span>
-          <div class="flex">
-            <a class="rounded-none transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
-               href="{{ login_url }}">log in.
+          Already have an account? Then please
+          <div>
+          <a class="rounded-none transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+             href="{{ login_url }}">log in.
               <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
             </a>
           </div>
+
+
 
         {% endblocktranslate %}
       </div>
 
 
-      <form class="flex flex-col items-center gap-y-4 signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      <form class="flex flex-col items-center gap-y-4 signup" id="signup_form" method="post"
+            action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form.as_p }}
         {% if redirect_field_value %}
@@ -44,9 +45,9 @@
 
   <script>
       const newPasswordInput = document.querySelector(`input[id="id_password1"]`);
-      const changePassForm = newPasswordInput.parentElement.parentElement
-      changePassForm.classList.add('allauth-change-pass')
-      const labels = document.querySelectorAll(`.allauth-change-pass > p > label`)
+      const signupForm = newPasswordInput.parentElement.parentElement
+      signupForm.classList.add('allauth-signup-form')
+      const labels = document.querySelectorAll(`.allauth-signup-form > p > label`)
       for (const label of labels) {
           label.remove()
       }

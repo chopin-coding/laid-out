@@ -260,7 +260,7 @@ function unfocusInput(event) {
             <!--   Tree Name   -->
             <div class="text-textblackdim">
               <input
-                class="w-full rounded bg-white px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight focus:outline-none"
+                class="rounded bg-backg px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"

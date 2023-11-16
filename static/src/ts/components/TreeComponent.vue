@@ -93,6 +93,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
   >
     <component
       v-for="node in nodes"
+      :key="node.node_id"
       :is="TreeNodeComponent"
       class=""
       :node="node"

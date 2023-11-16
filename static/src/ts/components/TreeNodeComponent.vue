@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
 
 import * as treeHelpers from "../treeHelpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
@@ -177,7 +177,7 @@ onMounted(() => {
             v-show="!singleNodeLeft || nodeType !== 'root'"
             class=""
             v-on:click="
-              emit('deleteBtnHandler', node.node_id);
+              emit('deleteBtnHandler', props.node.node_id);
               deleted = true;
             "
           >

@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% block title %}
-  Account
+  Settings
 {% endblock %}
 
 
@@ -8,13 +8,16 @@
 {% block content %}
   <div class="mx-2 my-4">
     <div class="my-auto flex h-full w-full max-w-sm flex-col gap-y-6 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-xl">
-      <div class="text-2xl">Account</div>
+      <div class="text-2xl">Settings</div>
       <div>
-        Username: {{ user.get_username }}
+        <div>
+          {{ user.get_username }}
+        </div>
+        <div class="text-sm text-textblackdimmer">
+          {{ user.email }}
+        </div>
       </div>
-      <div>
-        Email: {{ user.email }}
-      </div>
+
       <div class="w-80">
         <div class="flex flex-col w-full bg-white divide-y divide-primarylight
                         rounded py-1 shadow-lg ring-1 ring-primarylight ring-opacity-5
