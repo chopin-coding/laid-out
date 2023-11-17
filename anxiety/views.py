@@ -19,7 +19,6 @@ log = getLogger(__name__)
 
 
 def index_view(request):
-    log.info(f"Home page served")
     context = {
         "current_page": "home",
     }
@@ -30,16 +29,18 @@ def index_view(request):
 def anxiety_view(request):
     # FIXME: This view for a user with a large number of large-sized trees could slow the whole
     #  app down since this is not async
+    user_trees = None
 
-    if request.user.is_authenticated:
-        queryset = request.user.anxiety_trees.all().order_by('-date_modified')
-        if not queryset.exists():
-            AnxietyTree.objects.create(owner=request.user)
+    try:
+        if request.user.is_authenticated:
+            queryset = request.user.anxiety_trees.all().order_by('-date_modified')
+            if not queryset.exists():
+                AnxietyTree.objects.create(owner=request.user)
 
-        serializer = AnxietyTreeSerializer(queryset, many=True)
-        user_trees = serializer.data
-    else:
-        user_trees = None
+            serializer = AnxietyTreeSerializer(queryset, many=True)
+            user_trees = serializer.data
+    except Exception as e:
+        log.error(f"Unexpected error while fetching user trees or creating a tree for the user: {e}")
 
     context = {
         "current_page": "anxiety",
@@ -116,10 +117,24 @@ def account_delete_view(request):
 
 
 def error_404_view(request, exception):
+    log.warning(
+        f"A user hit a 404\n"
+        f"request URL: {request.path}\n"
+        f"request method: {request.method}"
+        f"user: {request.user}\n"
+        f"exception: {exception}"
+    )
     return render(request, 'base/404.html')
 
 
 def error_500_view(request, exception):
+    log.error(
+        f"We hit a 500\n"
+        f"request URL: {request.path}\n"
+        f"request method: {request.method}"
+        f"user: {request.user}\n"
+        f"exception: {exception}"
+    )
     return render(request, 'base/500.html')
 
 
@@ -163,7 +178,7 @@ class AnxietyTreeViewSet(
 
             return Response(data=return_detail, status=201)
         except Exception as e:
-            print(f"Unexpected error while trying to create tree: {e}")
+            log.error(f"Unexpected error while trying to create tree: {e}")
 
     def update(self, request, *args, **kwargs):
         try:
@@ -182,20 +197,20 @@ class AnxietyTreeViewSet(
 
         #  TODO: handle more specific exceptions?
         except Exception as e:
-            print(f"Unexpected error while updating tree: {e}")
+            log.error(f"Unexpected error while updating tree: {e}")
 
     def perform_update(self, serializer):
         try:
             serializer.save()
         except Exception as e:
-            print(f"Unexpected error while performing tree update: {e}")
+            log.error(f"Unexpected error while performing tree update: {e}")
 
     def partial_update(self, request, *args, **kwargs):
         try:
             kwargs["partial"] = True
             return self.update(request, *args, **kwargs)
         except Exception as e:
-            print(f"Unexpected error while partially updating tree: {e}")
+            log.error(f"Unexpected error while partially updating tree: {e}")
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -209,4 +224,4 @@ class AnxietyTreeViewSet(
 
             return Response(status=204)
         except Exception as e:
-            print(f"Unexpected error while deleting tree: {e}")
+            log.error(f"Unexpected error while deleting tree: {e}")

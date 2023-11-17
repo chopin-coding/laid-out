@@ -4,12 +4,11 @@ from pathlib import Path
 from dotenv import load_dotenv
 import logging
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
-load_dotenv(dev_env_file_path)
+if not load_dotenv(dev_env_file_path):
+    raise Exception("Couldn't load environment variables.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -94,15 +93,24 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ##############
 
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+
 LOGGING = {
     "version": 1,
     # This will leave the default Django logging behavior in place
     "disable_existing_loggers": False,
+    'formatters': {
+        'first_formatter': {
+            'format': "{asctime} - {levelname} - {module} - {message}",
+            'style': "{",
+        }
+    },
     # Custom handler config that gets log messages and outputs them to console
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": LOG_LEVEL,
+            'formatter': 'first_formatter',
         },
     },
     "loggers": {
@@ -113,7 +121,6 @@ LOGGING = {
         },
     },
 }
-
 
 # # For Prod
 # LOGGING = {
@@ -137,7 +144,6 @@ LOGGING = {
 #         },
 #     },
 # }
-
 
 
 ##############
@@ -264,6 +270,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 DJANGO_VITE_DEV_MODE = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # TODO before prod
 DEBUG = True
