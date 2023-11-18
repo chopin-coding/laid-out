@@ -30,4 +30,5 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 
-# handler404 = 'anxiety.views.error_404_view'
+handler404 = 'anxiety.views.error_404_view'
+handler500 = 'anxiety.views.error_500_view'

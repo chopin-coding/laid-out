@@ -93,7 +93,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ##############
 
-LOG_LEVEL = "INFO"
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
 
 LOGGING = {
     "version": 1,
@@ -105,15 +105,18 @@ LOGGING = {
         }
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-        # A null handler ignores the mssage
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": LOG_LEVEL,
+            'formatter': 'first_formatter',
+        },
+        # A null handler ignores the message
         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
     },
     "loggers": {
         "": {
             "handlers": ["console"],
             "level": LOG_LEVEL,
-            'formatter': 'first_formatter',
         },
         "django.security.DisallowedHost": {
             # Redirect these messages to null handler
@@ -261,7 +264,8 @@ STATIC_ROOT = BASE_DIR / "collectedstatic"
 STATIC_URL = "/static/"  # dev
 # STATIC_URL = "/static/dist/"  # prod?
 STATICFILES_DIRS = [BASE_DIR / "static", DJANGO_VITE_ASSETS_PATH]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # TODO: do I wanna use this instead?
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

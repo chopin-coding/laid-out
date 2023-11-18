@@ -2,7 +2,7 @@ from logging import getLogger
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 
@@ -127,13 +127,12 @@ def error_404_view(request, exception):
     return render(request, 'base/404.html')
 
 
-def error_500_view(request, exception):
+def error_500_view(request):
     log.error(
         f"We hit a 500\n"
         f"request URL: {request.path}\n"
         f"request method: {request.method}"
         f"user: {request.user}\n"
-        f"exception: {exception}"
     )
     return render(request, 'base/500.html')
 

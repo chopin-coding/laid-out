@@ -93,7 +93,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ##############
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.DEBUG)
 
 LOGGING = {
     "version": 1,
