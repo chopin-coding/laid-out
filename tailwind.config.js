@@ -2,6 +2,7 @@
 module.exports = {
     darkMode: "class",
     content: [
+        '!**/node_modules',
         "./templates/*/*.{ts,html,css}",
         "./templates/*.{ts,html,css}",
         "./anxiety/templates/**/*.{html,css}",

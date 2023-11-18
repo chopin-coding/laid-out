@@ -4,8 +4,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import logging
 
-
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
@@ -95,11 +93,10 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ##############
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+LOG_LEVEL = "INFO"
 
 LOGGING = {
     "version": 1,
-    # This will leave the default Django logging behavior in place
     "disable_existing_loggers": False,
     'formatters': {
         'first_formatter': {
@@ -107,46 +104,25 @@ LOGGING = {
             'style': "{",
         }
     },
-    # Custom handler config that gets log messages and outputs them to console
     "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": LOG_LEVEL,
-            'formatter': 'first_formatter',
-        },
+        "console": {"class": "logging.StreamHandler"},
+        # A null handler ignores the mssage
+        "null": {"level": "DEBUG", "class": "logging.NullHandler"},
     },
     "loggers": {
-        # Send everything to console
         "": {
             "handlers": ["console"],
             "level": LOG_LEVEL,
+            'formatter': 'first_formatter',
+        },
+        "django.security.DisallowedHost": {
+            # Redirect these messages to null handler
+            "handlers": ["null"],
+            # Don't let them reach the root-level handler
+            "propagate": False,
         },
     },
 }
-
-# # For Prod
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {"class": "logging.StreamHandler"},
-#         # A null handler ignores the mssage
-#         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
-#     },
-#     "loggers": {
-#         "": {
-#             "handlers": ["console"],
-#             "level": LOG_LEVEL,
-#         },
-#         "django.security.DisallowedHost": {
-#             # Redirect these messages to null handler
-#             "handlers": ["null"],
-#             # Don't let them reach the root-level handler
-#             "propagate": False,
-#         },
-#     },
-# }
-
 
 ##############
 # DRF #
@@ -167,7 +143,7 @@ REST_FRAMEWORK = {
 }
 
 # Session lifetime in seconds
-# <seconds> * <minutes> * <hours> * <days>
+#                   <ss> <mm> <hh> <dd>
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 # FIXME: remove before prod?
@@ -230,7 +206,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
+    # Needed to log in by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -272,11 +248,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
-DJANGO_VITE_DEV_MODE = True
+DJANGO_VITE_DEV_MODE = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # TODO before prod
-DEBUG = True
+DEBUG = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -285,6 +261,7 @@ STATIC_ROOT = BASE_DIR / "collectedstatic"
 STATIC_URL = "/static/"  # dev
 # STATIC_URL = "/static/dist/"  # prod?
 STATICFILES_DIRS = [BASE_DIR / "static", DJANGO_VITE_ASSETS_PATH]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
