@@ -53,6 +53,30 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
     (node) => node.node_id === nodeId,
   );
 
+  let nodeIdToFocus: string | null = null;
+
+  if (props.nodes.length > 1) {
+    if (indexToDelete === 0) {
+      nodeIdToFocus = props.nodes[indexToDelete + 1].node_id;
+    } else {
+      nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
+    }
+    document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
+    // try {
+    //   nodeIdToFocus = props.nodes[indexToDelete].node_id;
+    // } catch {
+    //   nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
+    // } finally {
+    //   document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
+    // }
+  } else if (props.nodes.length === 1) {
+    try {
+      document.getElementById(`${parentNodeId}-titleInput`).focus();
+    } catch (error) {
+      console.log(`couldn't focus parent node: ${error}`);
+    }
+  }
+
   // let the animation play out before deleting the node
   await new Promise<void>((resolve) => {
     setTimeout(() => {
@@ -61,25 +85,33 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
     }, 152);
   });
 
-  await nextTick();
-
-  let nodeIdToFocus: string | null = null;
-
-  if (props.nodes.length > 0) {
-    try {
-      nodeIdToFocus = props.nodes[indexToDelete].node_id;
-    } catch {
-      nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
-    } finally {
-      document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
-    }
-  } else if (props.nodes.length === 0) {
-    try {
-      document.getElementById(`${parentNodeId}-titleInput`).focus();
-    } catch (error) {
-      console.log(`couldn't focus parent node: ${error}`);
-    }
-  }
+  // // let the animation play out before deleting the node
+  // await new Promise<void>((resolve) => {
+  //   setTimeout(() => {
+  //     props.nodes.splice(indexToDelete, 1);
+  //     resolve();
+  //   }, 152);
+  // });
+  //
+  // await nextTick();
+  //
+  // let nodeIdToFocus: string | null = null;
+  //
+  // if (props.nodes.length > 0) {
+  //   try {
+  //     nodeIdToFocus = props.nodes[indexToDelete].node_id;
+  //   } catch {
+  //     nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
+  //   } finally {
+  //     document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
+  //   }
+  // } else if (props.nodes.length === 0) {
+  //   try {
+  //     document.getElementById(`${parentNodeId}-titleInput`).focus();
+  //   } catch (error) {
+  //     console.log(`couldn't focus parent node: ${error}`);
+  //   }
+  // }
 }
 </script>
 

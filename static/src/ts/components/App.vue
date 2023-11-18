@@ -25,8 +25,9 @@ const syncStatus = ref("synced");
 const selectedTreeIndex = ref(0);
 const hideUncontrollable = ref(false);
 const syncWarningExpanded = ref(false);
+const syncFailedExpanded = ref(false);
 const newTreeLoading = ref(false);
-const maxNumberOfTrees = 150; // the browser would probably shit itself before 150 trees anyway :D
+const maxNumberOfTrees = 150; // the browser may shit itself before 150 trees:D
 
 initializeTrees();
 
@@ -193,21 +194,6 @@ function unfocusInput(event) {
                     />
                   </svg>
                   <span> Create new </span>
-
-                  <!--                  <svg-->
-                  <!--                    class="h-6 w-6"-->
-                  <!--                    viewBox="0 0 24 24"-->
-                  <!--                    fill="none"-->
-                  <!--                    xmlns="http://www.w3.org/2000/svg"-->
-                  <!--                    aria-label="Add Tree"-->
-                  <!--                  >-->
-                  <!--                    <path-->
-                  <!--                      fill-rule="evenodd"-->
-                  <!--                      clip-rule="evenodd"-->
-                  <!--                      d="M10 1a1 1 0 0 0-.707.293l-6 6A1 1 0 0 0 3 8v12a3 3 0 0 0 3 3h8a1 1 0 1 0 0-2H6a1 1 0 0 1-1-1V9h5a1 1 0 0 0 1-1V3h7a1 1 0 0 1 1 1v4a1 1 0 1 0 2 0V4a3 3 0 0 0-3-3h-8ZM9 7H6.414L9 4.414V7Zm11 5a1 1 0 1 0-2 0v3h-3a1 1 0 1 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3v-3Z"-->
-                  <!--                      fill="currentColor"-->
-                  <!--                    />-->
-                  <!--                  </svg>-->
                 </div>
 
                 <!-- Loading icon -->
@@ -228,9 +214,13 @@ function unfocusInput(event) {
 
                 <div
                   v-else-if="numberOfTrees >= maxNumberOfTrees"
-                  class="text-danger"
+                  class=""
                 >
-                  Maximum number of trees reached
+                  <div class="text-danger">Maximum number of trees reached</div>
+                  <div>
+                    This limit is just to prevent spam. You're awesome for reaching this limit! Please do contact me if
+                    you'd like to have more trees at once!
+                  </div>
                 </div>
               </TransitionOutInGrow>
             </button>
@@ -255,24 +245,22 @@ function unfocusInput(event) {
       <div
         class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:my-8 lg:px-6"
       >
-        <div class="flex justify-between">
-          <div class="flex">
-            <!--   Tree Name   -->
-            <div class="text-textblackdim">
-              <input
+        <div class="flex flex-col gap-y-3 sm:flex-row sm:justify-between">
+          <!--   Tree Name   -->
+          <div class="flex text-textblackdim">
+            <input
                 class="rounded bg-backg px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
                 v-model="tempTreeStore[selectedTreeIndex].tree_name"
                 @keydown.enter.exact.prevent.stop="unfocusInput($event)"
-              />
-            </div>
+            />
           </div>
 
-          <div class="mx-4 flex items-center gap-x-4">
+          <div class="sm:mx-4 mx-1 flex items-center gap-x-1">
             <!--     Sync status     -->
-            <div class="text-textblackdimmer">
+            <div class="relative text-textblackdimmer ">
               <TransitionOutInGrow>
                 <svg
                   v-if="syncStatus === 'syncing'"
@@ -306,6 +294,8 @@ function unfocusInput(event) {
                   />
                 </svg>
                 <svg
+                  @mouseover="syncFailedExpanded = true"
+                  @mouseleave="syncFailedExpanded = false"
                   v-else-if="syncStatus === 'failed'"
                   class="h-8 w-8 text-danger"
                   viewBox="0 0 24 24"
@@ -321,6 +311,17 @@ function unfocusInput(event) {
                   />
                 </svg>
               </TransitionOutInGrow>
+              <TransitionBasic duration="150">
+                <div
+                  v-show="syncStatus === 'failed' && syncFailedExpanded"
+                  class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-danger focus:outline-none"
+                >
+                  <span class="inline-block text-sm leading-tight"
+                    >Couldn't save tree data to your account. If a refresh
+                    doesn't solve the issue, please contact the admin.</span
+                  >
+                </div>
+              </TransitionBasic>
             </div>
 
             <!--     Not logged in sync warning     -->
@@ -333,7 +334,7 @@ function unfocusInput(event) {
               <div
                 class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
               >
-                <TransitionBasic duration="100">
+                <TransitionBasic duration="150">
                   <div
                     v-show="syncWarningExpanded"
                     class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
@@ -371,7 +372,7 @@ function unfocusInput(event) {
           </div>
 
           <button
-            class="text-textblackdim fill-textblackdimmer"
+            class="fill-textblackdimmer transition duration-100 ease-out hover:fill-black"
             v-on:click="hideUncontrollable = !hideUncontrollable"
           >
             <TransitionBasic>
@@ -411,7 +412,7 @@ function unfocusInput(event) {
         </div>
 
         <!--   Tree   -->
-        <div class="mb-40 sm:mb-0 w-full lg:mb:0">
+        <div class="mb-40 sm:mb-10 w-full lg:mb:20">
           <component
             v-show="
               tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]

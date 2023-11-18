@@ -67,7 +67,7 @@ onMounted(() => {
           <!-- controllable/uncontrollable switch -->
           <div class="flex">
             <button
-              class="text-textblackdimmer"
+              class="text-textblackdimmer transition duration-100 ease-out hover:text-black"
               v-on:click="node.locked = !node.locked"
             >
               <!-- Locked icon -->
@@ -117,10 +117,11 @@ onMounted(() => {
                   emit('childBtnHandler', node.node_id)
                 "
                 @input="nodeResize"
-                class="w-full resize-none rounded px-1 py-2 align-middle text-sm transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
+                class="w-full resize-none rounded px-2 py-2 align-middle text-sm transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
                 :class="{
                   'text-textblackdimmer2 line-through':
                     parentNodeLocked || node.locked,
+                    'bg-primarylight': focused
                 }"
                 placeholder="✎..."
                 rows="1"
@@ -137,7 +138,7 @@ onMounted(() => {
         <!-- child, sibling, and delete buttons -->
         <div class="flex text-textblackdimmer" v-show="hovered || focused">
           <!-- Sibling node button -->
-          <button class="" v-on:click="emit('siblingBtnHandler', node.node_id)">
+          <button class="transition duration-100 ease-out hover:text-black" v-on:click="emit('siblingBtnHandler', node.node_id)">
             <svg
               viewBox="0 0 24 24"
               class="h-8 w-8"
@@ -155,7 +156,7 @@ onMounted(() => {
           </button>
 
           <!-- Child node button -->
-          <button class="" v-on:click="emit('childBtnHandler', node.node_id)">
+          <button class="transition duration-100 ease-out hover:text-black" v-on:click="emit('childBtnHandler', node.node_id)">
             <svg
               viewBox="0 0 24 24"
               class="h-8 w-8"
@@ -175,7 +176,7 @@ onMounted(() => {
           <!-- Delete node button -->
           <button
             v-show="!singleNodeLeft || nodeType !== 'root'"
-            class=""
+            class="transition duration-100 ease-out hover:text-black"
             v-on:click="
               emit('deleteBtnHandler', props.node.node_id);
               deleted = true;

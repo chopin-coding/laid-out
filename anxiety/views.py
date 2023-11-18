@@ -1,7 +1,9 @@
 from logging import getLogger
+from time import sleep
 
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.http import Http404, HttpResponse, HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
@@ -14,6 +16,7 @@ from rest_framework.response import Response
 from anxiety.models import AnxietyTree
 from anxiety.permissions import IsOwner
 from anxiety.serializers import AnxietyTreeSerializer
+from anxiety.tasks import send_feedback_email_task
 
 log = getLogger(__name__)
 
@@ -77,6 +80,10 @@ def about_view(request):
                               'The quick brown fox jumps over the lazy dog. ')  # TODO: remove before prod
     messages.error(request, 'second toast')  # TODO: remove before prod
     messages.info(request, 'second toast')  # TODO: remove before prod
+
+    # if request.user.is_authenticated:
+    #     send_feedback_email_task.delay(email_address=request.user.email, message="asd")
+    #
 
     return render(request, "about.html", context=context)
 

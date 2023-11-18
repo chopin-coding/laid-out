@@ -22,10 +22,6 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["*"]
 
-##############
-# apps #
-##############
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "allauth",
@@ -44,9 +40,9 @@ INSTALLED_APPS = [
     "django_browser_reload",
 ]
 
-##############
+###########
 # allauth #
-##############
+###########
 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 15
@@ -89,9 +85,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-##############
+###########
 # Logging #
-##############
+###########
 
 LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.DEBUG)
 
@@ -146,9 +142,9 @@ LOGGING = {
 # }
 
 
-##############
+#######
 # DRF #
-##############
+#######
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -209,9 +205,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "laid_out.wsgi.application"
 
-##############
+##########
+# Celery #
+##########
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+############
 # Database #
-##############
+############
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
@@ -264,9 +267,9 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-##############
+###############
 # django-vite #
-##############
+###############
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
