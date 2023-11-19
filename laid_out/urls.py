@@ -18,17 +18,23 @@ from django.contrib import admin
 from django.urls import include, path
 
 from anxiety import views
+from laid_out import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index_view, name="index"),
     path("anxiety/", include("anxiety.urls")),
     path("about/", views.about_view, name="about"),
-    path("__debug__/", include("debug_toolbar.urls")),
     path("accounts/", include("allauth.urls")),
     path("accounts/details", views.account_view, name="account_details"),
-    path("__reload__/", include("django_browser_reload.urls")),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]
 
 handler404 = 'anxiety.views.error_404_view'
 handler500 = 'anxiety.views.error_500_view'

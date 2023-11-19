@@ -7,8 +7,11 @@ import logging
 current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
-if not load_dotenv(dev_env_file_path):
-    raise Exception("Couldn't load environment variables.")
+is_env_variables_already_loaded = True if os.environ.get("ENV_VARIABLES_ALREADY_LOADED") else False
+
+if not is_env_variables_already_loaded:
+    if not load_dotenv(dev_env_file_path):
+        raise Exception("Couldn't load environment variables.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,6 +25,10 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["*"]
 
+# SECURITY WARNING: don't run with debug turned on in production!
+# TODO before prod
+DEBUG = True if os.environ["DEBUG"] == "True" else False
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "allauth",
@@ -33,12 +40,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",
     "rest_framework",
     "anxiety",
     "django_vite",
-    "django_browser_reload",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        "django_browser_reload",
+
+    ]
 
 ###########
 # allauth #
@@ -89,7 +101,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ###########
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.DEBUG)
+LOG_LEVEL = logging.DEBUG if os.environ["DEBUG"] == "True" else logging.INFO
 
 LOGGING = {
     "version": 1,
@@ -108,6 +120,7 @@ LOGGING = {
             "level": LOG_LEVEL,
             'formatter': 'first_formatter',
         },
+        "null": {"level": "DEBUG", "class": "logging.NullHandler"},
     },
     "loggers": {
         # Send everything to console
@@ -117,30 +130,6 @@ LOGGING = {
         },
     },
 }
-
-# # For Prod
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {"class": "logging.StreamHandler"},
-#         # A null handler ignores the mssage
-#         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
-#     },
-#     "loggers": {
-#         "": {
-#             "handlers": ["console"],
-#             "level": LOG_LEVEL,
-#         },
-#         "django.security.DisallowedHost": {
-#             # Redirect these messages to null handler
-#             "handlers": ["null"],
-#             # Don't let them reach the root-level handler
-#             "propagate": False,
-#         },
-#     },
-# }
-
 
 #######
 # DRF #
@@ -161,14 +150,13 @@ REST_FRAMEWORK = {
 }
 
 # Session lifetime in seconds
-# <seconds> * <minutes> * <hours> * <days>
+#                   <ss> <mm> <hh> <dd>
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 # FIXME: remove before prod?
 INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",  # must come before most but after gzip
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -178,8 +166,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE + [
+        "django_browser_reload.middleware.BrowserReloadMiddleware"]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
@@ -209,8 +200,9 @@ WSGI_APPLICATION = "laid_out.wsgi.application"
 # Celery #
 ##########
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+# Redis
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 ############
 # Database #
@@ -220,10 +212,12 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ["DB_NAME"],
-        "USER": os.environ["DB_USER"],
-        "PASSWORD": os.environ["DB_USER_PASS"],
-        "HOST": os.environ["DB_HOST"],
+        "NAME": os.environ["POSTGRES_DB"],
+        "USER": os.environ["POSTGRES_USER"],
+        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        # "HOST": os.environ["DB_HOST"],
+        "HOST": 'db',
+        "PORT": 5432
     }
 }
 
@@ -273,11 +267,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
-DJANGO_VITE_DEV_MODE = True
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# TODO before prod
-DEBUG = True
+DJANGO_VITE_DEV_MODE = DEBUG
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

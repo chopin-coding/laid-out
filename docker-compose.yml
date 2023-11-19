@@ -1,0 +1,43 @@
+version: '3.11'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+
+  db:
+    env_file: settings.env
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    # env variables for postgres passed through settings.env above
+    container_name: postgres_db
+
+  app:
+    env_file: settings.env
+    environment:
+      - ENV_VARIABLES_ALREADY_LOADED=1
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - 8000:8000
+    image: app:django
+    container_name: django_app
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A laid_out worker -l INFO
+    volumes:
+      - .:/django
+    container_name: celery
+    depends_on:
+      - db
+      - redis
+      - app

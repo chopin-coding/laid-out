@@ -81,9 +81,9 @@ def about_view(request):
     messages.error(request, 'second toast')  # TODO: remove before prod
     messages.info(request, 'second toast')  # TODO: remove before prod
 
-    # if request.user.is_authenticated:
-    #     send_feedback_email_task.delay(email_address=request.user.email, message="asd")
-    #
+    if request.user.is_authenticated:
+        send_feedback_email_task.delay(email_address=request.user.email, message="asd")
+
 
     return render(request, "about.html", context=context)
 
