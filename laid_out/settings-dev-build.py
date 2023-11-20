@@ -1,4 +1,4 @@
-# this is to run the project in docker containers using prod-like settings
+# this is to run the project locally using prod-like settings
 
 import os
 from pathlib import Path
@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-# TODO
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
 if not load_dotenv(dev_env_file_path):
@@ -20,10 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# TODO
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-# TODO
 ALLOWED_HOSTS = ["*"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -121,16 +118,6 @@ LOGGING = {
             "handlers": ["console"],
             "level": LOG_LEVEL,
         },
-        "gunicorn.error": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": True,
-        },
-        "gunicorn.access": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": True,
-        },
     },
 }
 
@@ -156,7 +143,6 @@ REST_FRAMEWORK = {
 #                   <ss> <mm> <hh> <dd>
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
-# TODO
 INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
@@ -204,8 +190,8 @@ WSGI_APPLICATION = "laid_out.wsgi.application"
 # Celery #
 ##########
 
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = "redis://0.0.0.0:6379"
+CELERY_RESULT_BACKEND = "redis://0.0.0.0:6379"
 
 ############
 # Database #
@@ -218,8 +204,7 @@ DATABASES = {
         "NAME": os.environ["POSTGRES_DB"],
         "USER": os.environ["POSTGRES_USER"],
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": 'db',
-        "PORT": 5432
+        "HOST": os.environ["DB_HOST"],
     }
 }
 
@@ -233,7 +218,6 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-# TODO
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",

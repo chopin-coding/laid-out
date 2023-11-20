@@ -10,24 +10,21 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    # env variables for postgres passed through settings.env above
     container_name: postgres_db
 
   app:
     env_file: settings.env
-    environment:
-      - ENV_VARIABLES_ALREADY_LOADED=1
     build: .
     volumes:
       - .:/django
     ports:
-      - 8000:8000
+      - "8005:8005"
     image: app:django
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+#    command: python manage.py runserver 0.0.0.0:8005
+    command: sh entrypoint.sh
     depends_on:
       - db
-
 
   celery:
     restart: always

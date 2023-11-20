@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
+
 from django.contrib import admin
 from django.urls import include, path
 
@@ -30,7 +32,7 @@ urlpatterns = [
 
 ]
 
-if settings.DEBUG:
+if os.environ.get("DEBUG_MODE"):
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
         path("__reload__/", include("django_browser_reload.urls")),

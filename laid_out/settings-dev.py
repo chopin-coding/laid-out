@@ -1,4 +1,4 @@
-# this is to run the project in docker containers using prod-like settings
+# this is to run the project locally using dev settings
 
 import os
 from pathlib import Path
@@ -7,11 +7,10 @@ from dotenv import load_dotenv
 import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-# TODO
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
 if not load_dotenv(dev_env_file_path):
-    raise Exception("Couldn't load environment variables.")
+    raise Exception(f"Couldn't load environment variables in {__file__}.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# TODO
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-# TODO
 ALLOWED_HOSTS = ["*"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
+# to let urls.py know
+os.environ["DEBUG_MODE"] = "True"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "anxiety",
     "django_vite",
+    "debug_toolbar",
+    "django_browser_reload",
 ]
 
 ###########
@@ -94,7 +96,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # Logging #
 ###########
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 
 LOGGING = {
     "version": 1,
@@ -121,16 +123,6 @@ LOGGING = {
             "handlers": ["console"],
             "level": LOG_LEVEL,
         },
-        "gunicorn.error": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": True,
-        },
-        "gunicorn.access": {
-            "handlers": ["console"],
-            "level": LOG_LEVEL,
-            "propagate": True,
-        },
     },
 }
 
@@ -156,10 +148,10 @@ REST_FRAMEWORK = {
 #                   <ss> <mm> <hh> <dd>
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
-# TODO
 INTERNAL_IPS = ["127.0.0.1"]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -169,6 +161,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -204,8 +197,8 @@ WSGI_APPLICATION = "laid_out.wsgi.application"
 # Celery #
 ##########
 
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = "redis://0.0.0.0:6379"
+CELERY_RESULT_BACKEND = "redis://0.0.0.0:6379"
 
 ############
 # Database #
@@ -218,8 +211,7 @@ DATABASES = {
         "NAME": os.environ["POSTGRES_DB"],
         "USER": os.environ["POSTGRES_USER"],
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": 'db',
-        "PORT": 5432
+        "HOST": os.environ["DB_HOST"],
     }
 }
 
@@ -233,7 +225,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-# TODO
+# TODO: Configure these before prod
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -269,7 +261,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
-DJANGO_VITE_DEV_MODE = False
+DJANGO_VITE_DEV_MODE = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
