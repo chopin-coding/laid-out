@@ -168,7 +168,7 @@ function unfocusInput(event) {
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
       <div
-        class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
+        class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div>
@@ -225,7 +225,7 @@ function unfocusInput(event) {
               </TransitionOutInGrow>
             </button>
           </div>
-          <ul class="list-none max-h-80 sm:max-h-96 overflow-y-scroll">
+          <ul class="max-h-80 list-none overflow-y-scroll sm:max-h-96">
             <component
               v-for="tree in tempTreeStore"
               :key="tree.tree_id"
@@ -249,7 +249,7 @@ function unfocusInput(event) {
           <!--   Tree Name   -->
           <div class="flex text-textblackdim">
             <input
-                class="rounded bg-backg px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight focus:outline-none"
+                class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
@@ -258,9 +258,9 @@ function unfocusInput(event) {
             />
           </div>
 
-          <div class="sm:mx-4 mx-1 flex items-center gap-x-1">
+          <div class="mx-1 flex items-center gap-x-1 sm:mx-4">
             <!--     Sync status     -->
-            <div class="relative text-textblackdimmer ">
+            <div class="relative text-textblackdimmer">
               <TransitionOutInGrow>
                 <svg
                   v-if="syncStatus === 'syncing'"
@@ -372,7 +372,7 @@ function unfocusInput(event) {
           </div>
 
           <button
-            class="fill-textblackdimmer transition duration-100 ease-out hover:fill-black"
+            class="transition duration-100 ease-out fill-textblackdimmer hover:fill-black"
             v-on:click="hideUncontrollable = !hideUncontrollable"
           >
             <TransitionBasic>
@@ -412,7 +412,7 @@ function unfocusInput(event) {
         </div>
 
         <!--   Tree   -->
-        <div class="mb-40 sm:mb-10 w-full lg:mb:20">
+        <div class="mb-40 w-full sm:mb-10 lg:mb:20">
           <component
             v-show="
               tempTreeStore.length !== 0 && tempTreeStore[selectedTreeIndex]

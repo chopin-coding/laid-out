@@ -67,7 +67,7 @@ onMounted(() => {
           <!-- controllable/uncontrollable switch -->
           <div class="flex">
             <button
-              class="text-textblackdimmer transition duration-100 ease-out hover:text-black"
+              class="transition duration-100 ease-out text-textblackdimmer hover:text-black"
               v-on:click="node.locked = !node.locked"
             >
               <!-- Locked icon -->

@@ -21,7 +21,7 @@
       </div>
       <label class="sr-only" for="confirmation-input">Account Deletion Confirmation</label>
       <input id="confirmation-input" x-model="confirmation"
-             class="w-48 rounded bg-backg px-3 py-2 text-center ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none"
+             class="w-48 rounded px-3 py-2 text-center ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight text-textblackdim focus:outline-none"
              type="text"/>
       <form method="post" action="{% url 'account_delete' %}">
         {% csrf_token %}

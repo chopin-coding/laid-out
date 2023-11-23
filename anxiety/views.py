@@ -75,18 +75,18 @@ def about_view(request):
     context = {
         "current_page": "about",
     }
-    messages.success(
-        request,
-        "The quick brown fox jumps over the lazy dog. "
-        "The quick brown fox jumps over the lazy dog. ",
-    )  # TODO: remove before prod
-    messages.warning(
-        request,
-        "The quick brown fox jumps over the lazy dog. "
-        "The quick brown fox jumps over the lazy dog. ",
-    )  # TODO: remove before prod
-    messages.error(request, "second toast")  # TODO: remove before prod
-    messages.info(request, "second toast")  # TODO: remove before prod
+    # messages.success(
+    #     request,
+    #     "The quick brown fox jumps over the lazy dog. "
+    #     "The quick brown fox jumps over the lazy dog. ",
+    # )  # TODO: remove before prod
+    # messages.warning(
+    #     request,
+    #     "The quick brown fox jumps over the lazy dog. "
+    #     "The quick brown fox jumps over the lazy dog. ",
+    # )  # TODO: remove before prod
+    # messages.error(request, "second toast")  # TODO: remove before prod
+    # messages.info(request, "second toast")  # TODO: remove before prod
 
     return render(request, "about.html", context=context)
 
@@ -95,8 +95,6 @@ def account_delete_view(request):
     if not request.user.is_authenticated:
         return redirect(reverse("account_login"))
     elif request.method == "POST":
-        # TODO: maybe set the account inactive instead of deleting it?
-
         try:
             user = User.objects.get(username=request.user.username)
         except User.DoesNotExist:
