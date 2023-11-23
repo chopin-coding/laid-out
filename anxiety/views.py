@@ -5,9 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import Http404, HttpResponse, HttpResponseServerError
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -16,7 +15,7 @@ from rest_framework.response import Response
 from anxiety.models import AnxietyTree
 from anxiety.permissions import IsOwner
 from anxiety.serializers import AnxietyTreeSerializer
-from anxiety.tasks import send_feedback_email_task
+from anxiety.tasks import delete_user_task
 
 log = getLogger(__name__)
 
@@ -36,20 +35,22 @@ def anxiety_view(request):
 
     try:
         if request.user.is_authenticated:
-            queryset = request.user.anxiety_trees.all().order_by('-date_modified')
+            queryset = request.user.anxiety_trees.all().order_by("-date_modified")
             if not queryset.exists():
                 AnxietyTree.objects.create(owner=request.user)
 
             serializer = AnxietyTreeSerializer(queryset, many=True)
             user_trees = serializer.data
     except Exception as e:
-        log.error(f"Unexpected error while fetching user trees or creating a tree for the user: {e}")
+        log.error(
+            f"Unexpected error while fetching user trees or creating a tree for the user: {e}"
+        )
 
     context = {
         "current_page": "anxiety",
         "user_trees": user_trees,
         "logged_in": request.user.is_authenticated,
-        "ANXIETY_API_BASE_URL": "http://127.0.0.1:8000/anxiety/api/trees/"  # FIXME
+        "ANXIETY_API_BASE_URL": "http://127.0.0.1:8000/anxiety/api/trees/",  # FIXME
     }
 
     return render(request, "anxiety/anxiety.html", context=context)
@@ -74,46 +75,56 @@ def about_view(request):
     context = {
         "current_page": "about",
     }
-    messages.success(request, 'The quick brown fox jumps over the lazy dog. '
-                              'The quick brown fox jumps over the lazy dog. ')  # TODO: remove before prod
-    messages.warning(request, 'The quick brown fox jumps over the lazy dog. '
-                              'The quick brown fox jumps over the lazy dog. ')  # TODO: remove before prod
-    messages.error(request, 'second toast')  # TODO: remove before prod
-    messages.info(request, 'second toast')  # TODO: remove before prod
-
-    if request.user.is_authenticated:
-        send_feedback_email_task.delay(email_address=request.user.email, message="asd")
-
+    messages.success(
+        request,
+        "The quick brown fox jumps over the lazy dog. "
+        "The quick brown fox jumps over the lazy dog. ",
+    )  # TODO: remove before prod
+    messages.warning(
+        request,
+        "The quick brown fox jumps over the lazy dog. "
+        "The quick brown fox jumps over the lazy dog. ",
+    )  # TODO: remove before prod
+    messages.error(request, "second toast")  # TODO: remove before prod
+    messages.info(request, "second toast")  # TODO: remove before prod
 
     return render(request, "about.html", context=context)
 
 
 def account_delete_view(request):
     if not request.user.is_authenticated:
-
         return redirect(reverse("account_login"))
-    elif request.method == 'POST':
+    elif request.method == "POST":
         # TODO: maybe set the account inactive instead of deleting it?
 
         try:
             user = User.objects.get(username=request.user.username)
         except User.DoesNotExist:
-            print("The user trying to be deleted does not exist")
+            log.error("The user trying to be deleted does not exist")
             return redirect(reverse("index"))
         except Exception as e:
-            print(f"Unexpected error while fetching user to delete: {e}")
+            log.error(f"Unexpected error while fetching user to delete: {e}")
             messages.error(request, "Unexpected error. Please try again.")
             return redirect(reverse("index"))
 
         if user:
             try:
-                user.delete()
-                messages.success(request, "Your account has been deleted.")
-                return redirect(reverse("index"))
+                user.is_active = False
+                user.save()
+
+                delete_user_task.delay(user_name=user.username)
+                messages.success(
+                    request,
+                    "Your account has been marked for deletion and will be deleted within 24 hours.",
+                )
             except Exception as e:
-                print(f"Unexpected error while deleting user: {e}")
-                messages.error(request,
-                               "Error while trying to delete user. Please try again or contact the administrator.")
+                log.error(f"Unexpected error in {__name__}: {e}")
+                messages.error(
+                    request,
+                    "Problem deleting account. Please try again or contact the administrator.",
+                )
+
+            finally:
                 return redirect(reverse("index"))
 
     context = {
@@ -131,7 +142,7 @@ def error_404_view(request, exception):
         f"user: {request.user}\n"
         f"exception: {exception}"
     )
-    return render(request, 'base/404.html')
+    return render(request, "base/404.html")
 
 
 def error_500_view(request):
@@ -141,7 +152,7 @@ def error_500_view(request):
         f"request method: {request.method}"
         f"user: {request.user}\n"
     )
-    return render(request, 'base/500.html')
+    return render(request, "base/500.html")
 
 
 class AnxietyTreeViewSet(
@@ -173,10 +184,13 @@ class AnxietyTreeViewSet(
             user_tree_count = self.get_user_tree_count()
             if user_tree_count > 150:
                 return Response(
-                    data={"detail": f"You've reached the maximum number of trees allowed per user. "
-                                    f"This limit is just to fight bots. Please don't hesitate to contact me if you'd "
-                                    f"like to be able to register more trees!"},
-                    status=400)
+                    data={
+                        "detail": f"You've reached the maximum number of trees allowed per user. "
+                                  f"This limit is just to fight bots. Please don't hesitate to contact me if you'd "
+                                  f"like to be able to register more trees!"
+                    },
+                    status=400,
+                )
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -190,7 +204,9 @@ class AnxietyTreeViewSet(
         try:
             partial = kwargs.pop("partial", False)
             instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer = self.get_serializer(
+                instance, data=request.data, partial=partial
+            )
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
 

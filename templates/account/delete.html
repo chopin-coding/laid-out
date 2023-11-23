@@ -21,7 +21,7 @@
       </div>
       <label class="sr-only" for="confirmation-input">Account Deletion Confirmation</label>
       <input id="confirmation-input" x-model="confirmation"
-             class="w-48 rounded bg-white px-3 py-2 text-center ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none"
+             class="w-48 rounded bg-backg px-3 py-2 text-center ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none"
              type="text"/>
       <form method="post" action="{% url 'account_delete' %}">
         {% csrf_token %}
@@ -29,6 +29,9 @@
                class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-500 ease-out ring-primarylight enabled:text-textblackdim text-textblackdimmer2 enabled:hover:bg-danger enabled:hover:text-black focus:outline-none"
                type="submit" value="Delete account forever">
       </form>
+      <div class="">
+        Once you confirm, your account is deactivated and will be deleted within 24 hours.
+      </div>
     </div>
   </div>
 

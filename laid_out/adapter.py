@@ -10,6 +10,3 @@ class UsernameCustomAdapter(DefaultAccountAdapter):
         return DefaultAccountAdapter.clean_username(
             self, username
         )  # For other default validations.
-
-
-

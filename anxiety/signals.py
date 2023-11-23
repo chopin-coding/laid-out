@@ -1,8 +1,19 @@
 from logging import getLogger
 
 from allauth.account.models import EmailConfirmation
-from allauth.account.signals import user_logged_in, user_logged_out, user_signed_up, password_set, password_changed, \
-    password_reset, email_confirmed, email_confirmation_sent, email_changed, email_added, email_removed
+from allauth.account.signals import (
+    email_added,
+    email_changed,
+    email_confirmation_sent,
+    email_confirmed,
+    email_removed,
+    password_changed,
+    password_reset,
+    password_set,
+    user_logged_in,
+    user_logged_out,
+    user_signed_up,
+)
 from django.contrib import messages
 from django.dispatch import receiver
 
@@ -45,13 +56,19 @@ def email_confirmed_handler(sender, email_address, **kwargs):
 
 
 @receiver(email_confirmation_sent)
-def email_confirmation_sent_handler(sender, confirmation: EmailConfirmation, signup, **kwargs):
-    log.info(f"Email confirmation sent to {confirmation.email_address}. Signup: {signup}")
+def email_confirmation_sent_handler(
+    sender, confirmation: EmailConfirmation, signup, **kwargs
+):
+    log.info(
+        f"Email confirmation sent to {confirmation.email_address}. Signup: {signup}"
+    )
 
 
 @receiver(email_changed)
 def email_changed_handler(sender, user, from_email_address, to_email_address, **kwargs):
-    log.info(f"User {user} changed their email address from {from_email_address} to {to_email_address}.")
+    log.info(
+        f"User {user} changed their email address from {from_email_address} to {to_email_address}."
+    )
 
 
 @receiver(email_added)

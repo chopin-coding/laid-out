@@ -1,4 +1,5 @@
 version: '3.11'
+name: laid-out
 
 services:
   redis:
@@ -10,7 +11,7 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    container_name: postgres_db
+    container_name: postgres-db
 
   app:
     env_file: settings.env
@@ -18,19 +19,18 @@ services:
     volumes:
       - .:/django
     ports:
-      - "8005:8005"
+      - "8000:8000"
     image: app:django
-    container_name: django_app
-#    command: python manage.py runserver 0.0.0.0:8005
+    container_name: django-app
     command: sh entrypoint.sh
     depends_on:
       - db
 
   celery:
-    restart: always
+    restart: unless-stopped
     build:
       context: .
-    command: celery -A laid_out worker -l INFO
+    command: celery -A laid_out worker -l INFO -E
     volumes:
       - .:/django
     container_name: celery
@@ -38,3 +38,19 @@ services:
       - db
       - redis
       - app
+
+  flower:
+    env_file: settings.env
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=laid_out.settings
+    command: celery -A laid_out.celery.app  flower --logging=info
+    volumes:
+      - .:/django
+    ports:
+      - "5555:5555"
+    container_name: flower
+    depends_on:
+      - celery

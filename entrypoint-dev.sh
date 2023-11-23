@@ -1,7 +1,6 @@
 #!/bin/sh
 
 python manage.py migrate --no-input
-python manage.py collectstatic --no-input
 
 DJANGO_SUPERUSER_PASSWORD=$SUPER_USER_PASSWORD python manage.py createsuperuser --username $SUPER_USER_NAME --email --noinput
-gunicorn laid_out.wsgi:application --bind 0.0.0.0:8000 --log-level=info
+python manage.py runserver 0.0.0.0:8000 --settings=laid_out.settings-dev

@@ -1,10 +1,10 @@
 # this is to run the project locally using dev settings
 
+import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
@@ -102,10 +102,10 @@ LOGGING = {
     "version": 1,
     # This will leave the default Django logging behavior in place
     "disable_existing_loggers": False,
-    'formatters': {
-        'first_formatter': {
-            'format': "{asctime} - {levelname} - {module} - {message}",
-            'style': "{",
+    "formatters": {
+        "first_formatter": {
+            "format": "{asctime} - {levelname} - {module} - {message}",
+            "style": "{",
         }
     },
     # Custom handler config that gets log messages and outputs them to console
@@ -113,7 +113,7 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "level": LOG_LEVEL,
-            'formatter': 'first_formatter',
+            "formatter": "first_formatter",
         },
         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
     },
@@ -136,12 +136,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
 
 # Session lifetime in seconds
@@ -197,8 +195,8 @@ WSGI_APPLICATION = "laid_out.wsgi.application"
 # Celery #
 ##########
 
-CELERY_BROKER_URL = "redis://0.0.0.0:6379"
-CELERY_RESULT_BACKEND = "redis://0.0.0.0:6379"
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 ############
 # Database #
@@ -211,7 +209,8 @@ DATABASES = {
         "NAME": os.environ["POSTGRES_DB"],
         "USER": os.environ["POSTGRES_USER"],
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": os.environ["DB_HOST"],
+        "HOST": "db",
+        "PORT": 5432,
     }
 }
 

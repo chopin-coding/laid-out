@@ -300,6 +300,6 @@ anxiety/migrations
 
 node_modules
 
-# docker data folder
+# docker db data
 data
 

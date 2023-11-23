@@ -36,7 +36,9 @@ class AnxietyTree(models.Model):
     tree_name = models.CharField(
         max_length=50, null=True, blank=True, default="New Tree"
     )
-    date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)  # UTC
+    date_created = models.DateTimeField(
+        verbose_name="Creation Date", auto_now_add=True
+    )  # UTC
     owner = models.ForeignKey(
         to="auth.User",
         related_name="anxiety_trees",

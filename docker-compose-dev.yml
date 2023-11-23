@@ -1,0 +1,62 @@
+version: '3.11'
+name: laid-out-dev
+
+services:
+  redis:
+    image: redis
+    container_name: redis-dev
+
+  db:
+    env_file: settings.env
+    image: postgres
+    volumes:
+      - ./data/db-dev:/var/lib/postgresql/data
+    container_name: postgres-db-dev
+
+  app:
+    env_file: settings.env
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - .:/django
+    ports:
+      - "8000:8000"
+    image: app:django
+    container_name: django-app-dev
+    command: sh entrypoint-dev.sh
+    depends_on:
+      - db
+
+  celery:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    environment:
+      - DJANGO_SETTINGS_MODULE=laid_out.settings-dev
+    command: celery -A laid_out worker -l DEBUG -E
+    volumes:
+      - .:/django
+    container_name: celery-dev
+    depends_on:
+      - db
+      - redis
+      - app
+
+  flower:
+    env_file: settings.env
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    environment:
+      - DJANGO_SETTINGS_MODULE=laid_out.settings-dev
+    command: celery -A laid_out.celery.app  flower --logging=debug
+    volumes:
+      - .:/django
+    ports:
+      - "5555:5555"
+    container_name: flower-dev
+    depends_on:
+      - celery

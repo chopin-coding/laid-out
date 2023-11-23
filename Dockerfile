@@ -2,12 +2,12 @@ FROM python:3.11
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV ISDOCKER 1
 
 WORKDIR /django
 
+COPY ./requirements.txt /django
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
 COPY . .
 
-RUN pip install -r requirements.txt
-
-EXPOSE 8005
+EXPOSE 8000

@@ -29,7 +29,6 @@ urlpatterns = [
     path("about/", views.about_view, name="about"),
     path("accounts/", include("allauth.urls")),
     path("accounts/details", views.account_view, name="account_details"),
-
 ]
 
 if os.environ.get("DEBUG_MODE"):
@@ -38,5 +37,5 @@ if os.environ.get("DEBUG_MODE"):
         path("__reload__/", include("django_browser_reload.urls")),
     ]
 
-handler404 = 'anxiety.views.error_404_view'
-handler500 = 'anxiety.views.error_500_view'
+handler404 = "anxiety.views.error_404_view"
+handler500 = "anxiety.views.error_500_view"

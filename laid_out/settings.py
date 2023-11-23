@@ -1,10 +1,10 @@
 # this is to run the project in docker containers using prod-like settings
 
+import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-import logging
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # TODO
@@ -100,10 +100,10 @@ LOGGING = {
     "version": 1,
     # This will leave the default Django logging behavior in place
     "disable_existing_loggers": False,
-    'formatters': {
-        'first_formatter': {
-            'format': "{asctime} - {levelname} - {module} - {message}",
-            'style': "{",
+    "formatters": {
+        "first_formatter": {
+            "format": "{asctime} - {levelname} - {module} - {message}",
+            "style": "{",
         }
     },
     # Custom handler config that gets log messages and outputs them to console
@@ -111,7 +111,7 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "level": LOG_LEVEL,
-            'formatter': 'first_formatter',
+            "formatter": "first_formatter",
         },
         "null": {"level": "DEBUG", "class": "logging.NullHandler"},
     },
@@ -144,12 +144,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
 
 # Session lifetime in seconds
@@ -218,8 +216,8 @@ DATABASES = {
         "NAME": os.environ["POSTGRES_DB"],
         "USER": os.environ["POSTGRES_USER"],
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": 'db',
-        "PORT": 5432
+        "HOST": "db",
+        "PORT": 5432,
     }
 }
 
