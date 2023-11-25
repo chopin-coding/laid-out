@@ -7,7 +7,6 @@ __pycache__
 venv
 env
 node_modules
-*.env
 pip-log.txt
 pip-delete-this-directory.txt
 .tox

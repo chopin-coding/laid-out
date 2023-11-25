@@ -21,7 +21,7 @@ services:
     volumes:
       - .:/django
     ports:
-      - "8000:8000"
+      - "8005:8005"
     image: app:django
     container_name: django-app-dev
     command: sh entrypoint-dev.sh
@@ -52,11 +52,26 @@ services:
       dockerfile: Dockerfile-dev
     environment:
       - DJANGO_SETTINGS_MODULE=laid_out.settings-dev
-    command: celery -A laid_out.celery.app  flower --logging=debug
+    command: celery -A laid_out.celery.app  flower --logging=debug --port=5556
     volumes:
       - .:/django
     ports:
-      - "5555:5555"
+      - "5556:5556"
     container_name: flower-dev
     depends_on:
       - celery
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1

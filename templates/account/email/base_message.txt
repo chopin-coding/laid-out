@@ -1,0 +1,8 @@
+{% with site_name=current_site.name %}
+Hello,
+
+{% block content %}{% endblock content %}
+
+Best,
+{{ site_name }}
+{% endwith %}

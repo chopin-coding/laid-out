@@ -16,11 +16,11 @@ Including another URLconf
 """
 import os
 
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
 from anxiety import views
-from laid_out import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,7 +31,7 @@ urlpatterns = [
     path("accounts/details", views.account_view, name="account_details"),
 ]
 
-if os.environ.get("DEBUG_MODE"):
+if settings.DEBUG:
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
         path("__reload__/", include("django_browser_reload.urls")),

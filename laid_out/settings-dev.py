@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 # allauth #
 ###########
 
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 15
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 
@@ -73,8 +73,8 @@ LOGOUT_REDIRECT_URL = "index"
 
 ACCOUNT_ADAPTER = "laid_out.adapter.UsernameCustomAdapter"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ACCOUNT_EMAIL_VERIFICATION = "optional"  #
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -186,9 +186,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "laid_out.wsgi.application"
 
-##########
+#########
+# Email #
+#########
+
+EMAIL_HOST = "mailpit"
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-port
+EMAIL_PORT = 1025
+
+#########
 # Redis #
-##########
+#########
 
 
 ##########

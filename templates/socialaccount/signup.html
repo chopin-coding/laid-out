@@ -27,5 +27,13 @@
     </div>
   </div>
 
-
+  <script>
+      const emailInput = document.querySelector(`input[id="id_email"]`);
+      const signupForm = emailInput.parentElement.parentElement
+      signupForm.classList.add('allauth-signup-form')
+      const labels = document.querySelectorAll(`.allauth-signup-form > p > label`)
+      for (const label of labels) {
+          label.remove()
+      }
+  </script>
 {% endblock content %}

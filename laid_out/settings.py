@@ -11,7 +11,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 dev_env_file_path = os.path.join(current_dir, "..", "settings.env")
 
 if not load_dotenv(dev_env_file_path):
-    raise Exception("Couldn't load environment variables.")
+    raise Exception(f"Couldn't load environment variables. Env variables file path: {dev_env_file_path}")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,7 +72,7 @@ LOGOUT_REDIRECT_URL = "index"
 ACCOUNT_ADAPTER = "laid_out.adapter.UsernameCustomAdapter"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ACCOUNT_EMAIL_VERIFICATION = "optional"  #
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {

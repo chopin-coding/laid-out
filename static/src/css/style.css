@@ -116,7 +116,7 @@
 
     /* allauth reset pass */
     /* allauth error text */
-    .errorlist {
+    .errorlist, .errorlist > li {
         @apply text-danger text-sm
     }
 

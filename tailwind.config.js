@@ -3,10 +3,13 @@ module.exports = {
     darkMode: "class",
     content: [
         '!**/node_modules',
-        "./templates/*/*.{ts,html,css}",
-        "./templates/*.{ts,html,css}",
+        "./templates/*/*/*/*.{html,css}",
+        "./templates/*/*/*.{html,css}",
+        "./templates/*/*.{html,css}",
+        "./templates/*.{html,css}",
         "./anxiety/templates/**/*.{html,css}",
         "./static/src/*/*.{vue,ts,html,css}",
+        "./static/src/**/*.{html,css}",
         "./static/src/ts/*/*.{vue,ts,html,css}",
     ],
     theme: {

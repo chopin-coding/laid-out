@@ -16,8 +16,6 @@ services:
   app:
     env_file: settings.env
     build: .
-    volumes:
-      - .:/django
     ports:
       - "8000:8000"
     image: app:django
@@ -31,8 +29,6 @@ services:
     build:
       context: .
     command: celery -A laid_out worker -l INFO -E
-    volumes:
-      - .:/django
     container_name: celery
     depends_on:
       - db
@@ -47,8 +43,6 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=laid_out.settings
     command: celery -A laid_out.celery.app  flower --logging=info
-    volumes:
-      - .:/django
     ports:
       - "5555:5555"
     container_name: flower
