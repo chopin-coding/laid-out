@@ -43,6 +43,9 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Verify successfully passing env secrets
+        run: echo "${{secrets.TEST}}"
+
       - name: Create empty .allauth file
         run: touch .envs/.local/.allauth
 
