@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import os
 from pathlib import Path
 
 import environ
@@ -336,8 +337,8 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
         },
         "APP": {
-            "client_id": env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=""),
-            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default=""),
+            "client_id": env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=os.environ["ALLAUTH_GOOGLE_AUTH_CLIENT_ID"]),
+            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default="ALLAUTH_GOOGLE_AUTH_SECRET"),
         },
     }
 }

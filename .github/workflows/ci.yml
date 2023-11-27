@@ -41,6 +41,9 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Create empty .allauth file
+        run: touch .envs/.local/.allauth
+
       - name: Build the Stack
         run: docker compose -f local.yml build
 
