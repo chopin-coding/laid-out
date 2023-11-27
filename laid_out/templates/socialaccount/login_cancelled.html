@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+  {% trans "Login Cancelled" %}
+{% endblock title %}
+{% block content %}
+  <div class="mx-2 my-10">
+    <div class="my-auto flex h-full w-full max-w-sm flex-col gap-y-6 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-xl">
+      <div class="text-2xl">{% trans "Login Cancelled" %}</div>
+      {% url 'account_login' as login_url %}
+      <p>
+        {% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a
+        mistake, please proceed to <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+      </p>
+    </div>
+  </div>
+{% endblock content %}

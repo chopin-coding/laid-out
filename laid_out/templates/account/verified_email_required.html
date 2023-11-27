@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+  {% trans "Verify Your Email Address" %}
+{% endblock title %}
+{% block content %}
+  <div class="mx-4 my-10">
+    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-4 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
+      <div class="text-2xl">{% trans "Verify Your Email Address" %}</div>
+      {% url 'account_email' as email_url %}
+      <p>{% blocktrans %}This part of the site requires email verification.{% endblocktrans %}</p>
+      <p>
+        {% blocktrans %}A verification email has been sent to you. Please follow the link in the email. If you do
+        not see the verification email in your inbox, check your spam folder. Otherwise,
+        contact me if you do not receive it within a few minutes.{% endblocktrans %}
+      </p>
+      <p>
+        {% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your email address</a>
+        .{% endblocktrans %}
+      </p>
+    </div>
+  </div>
+{% endblock content %}

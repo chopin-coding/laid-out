@@ -21,3 +21,12 @@ coverage.xml
 .mypy_cache
 .pytest_cache
 .hypothesis
+.editorconfig
+.gitattributes
+.github
+.gitignore
+.gitlab-ci.yml
+
+.pre-commit-config.yaml
+.readthedocs.yml
+.envs/

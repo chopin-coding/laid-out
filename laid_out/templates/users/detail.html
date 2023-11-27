@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Settings
+{% endblock title %}
+{% block content %}
+  <div class="mx-2 my-4">
+    <div class="my-auto flex h-full w-full max-w-sm flex-col gap-y-6 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-xl">
+      <div class="text-2xl">Settings</div>
+      <div>
+        <div>{{ user.get_username }}</div>
+        <div class="text-sm text-textblackdimmer">{{ user.email }}</div>
+      </div>
+      <div class="w-80">
+        <div class="flex flex-col w-full bg-white divide-y divide-primarylight rounded py-1 shadow-lg ring-1 ring-primarylight ring-opacity-5 focus:outline-none"
+             role="menu"
+             aria-orientation="vertical"
+             aria-labelledby="user-menu-button"
+             tabindex="-1">
+          <a href="{% url 'account_email' %}"
+             class="flex items-center px-4 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+             role="menuitem"
+             tabindex="-1">Change email</a>
+          <a href="{% url 'socialaccount_connections' %}"
+             class="flex items-center px-4 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+             role="menuitem"
+             tabindex="-1">Social authentication methods</a>
+          <a href="{% url 'account_change_password' %}"
+             class="flex items-center px-4 py-2 transition duration-100 ease-out text-textblackdim hover:bg-primarylight hover:text-black"
+             role="menuitem"
+             tabindex="-1">Set or change password</a>
+          <a href="{% url 'users:delete' %}"
+             class="flex items-center px-4 py-2 transition duration-100 ease-out text-warning hover:bg-primarylight hover:text-black"
+             role="menuitem"
+             tabindex="-1">Delete account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

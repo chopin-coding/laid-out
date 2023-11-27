@@ -3,14 +3,14 @@ module.exports = {
     darkMode: "class",
     content: [
         '!**/node_modules',
-        "./templates/*/*/*/*.{html,css}",
-        "./templates/*/*/*.{html,css}",
-        "./templates/*/*.{html,css}",
-        "./templates/*.{html,css}",
-        "./anxiety/templates/**/*.{html,css}",
-        "./static/src/*/*.{vue,ts,html,css}",
-        "./static/src/**/*.{html,css}",
-        "./static/src/ts/*/*.{vue,ts,html,css}",
+        "./laid_out/templates/*/*/*/*.{html,css}",
+        "./laid_out/templates/*/*/*.{html,css}",
+        "./laid_out/templates/*/*.{html,css}",
+        "./laid_out/templates/*.{html,css}",
+        "./laid_out/anxiety/templates/**/*.{html,css}",
+        "./laid_out/static/src/*/*.{vue,ts,html,css}",
+        "./laid_out/static/src/**/*.{html,css}",
+        "./laid_out/static/src/ts/*/*.{vue,ts,html,css}",
     ],
     theme: {
         colors: {

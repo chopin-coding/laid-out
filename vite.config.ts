@@ -14,7 +14,7 @@ const postcssConfig = {
 
 export default defineConfig({
     plugins: [vue()],
-    root: resolve("./static/src"),
+    root: resolve("./laid_out/static/src/"),
     base: "/static/",
     css: {
         postcss: postcssConfig,
@@ -29,15 +29,15 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: resolve("./static/dist"),
+        outDir: resolve("./laid_out/static/dist"),
         assetsDir: "",
         manifest: true,
         emptyOutDir: true,
         target: "es2015",
         rollupOptions: {
             input: {
-                main: resolve("./static/src/ts/main.ts"),
-                style: resolve("./static/src/ts/style.ts"),
+                main: resolve("./laid_out/static/src/ts/main.ts"),
+                style: resolve("./laid_out/static/src/ts/style.ts"),
             },
             output: {
                 chunkFileNames: undefined,

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Anxiety
+{% endblock title %}
+{% block head %}
+  {{ user_trees|json_script:"user-trees" }}
+  {{ logged_in|json_script:"logged-in" }}
+  {{ ANXIETY_API_BASE_URL|json_script:"ANXIETY-API-BASE-URL" }}
+  {% vite_asset 'ts/main.ts' %}
+  {% }
+  {% block content %}
+    <div id="app"></div>
+  {% endblock content %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}
+  {% trans "Log In or Sign Up" %}
+{% endblock title %}
+{% block content %}
+  <div class="mx-4 my-10">
+    <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-4 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
+      <div class="text-3xl">{% blocktrans %}Log in{% endblocktrans %}</div>
+      <div class="flex gap-x-1 text-sm text-textblackdimmer">
+        {% blocktranslate %}
+          <span>
+              Don't have an account?
+            </span>
+          <div class="flex">
+            <a class="rounded-none transition duration-200 group button secondaryAction hover:text-black focus:outline-none" href="{{ signup_url }}">Sign up!
+              <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
+            </a>
+          </div>
+
+        {% endblocktranslate %}
+      </div>
+      <form class="mx-auto my-auto flex h-full w-full flex-col gap-y-4 rounded-md bg-white align-middle login login-form-tag text-textblackdim focus:outline-none"
+            method="post"
+            action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="flex text-sm">
+          <a class="my-0 rounded-none py-1 transition duration-200 group button secondaryAction text-textblackdimmer hover:text-black focus:outline-none"
+             href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}
+            <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span></a>
+        </div>
+        <div class="flex justify-center">
+          <button class="max-w-full justify-around gap-x-3 rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out primaryAction ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+                  type="submit">{% trans "Log in" %}</button>
+        </div>
+      </form>
+      <div class="inline-flex w-full items-center justify-center">
+        <hr class="h-px w-full border-textblackdimmer2" />
+        <span class="absolute left-1/2 -translate-x-1/2 bg-white px-3 text-sm text-textblackdimmer">or</span>
+      </div>
+      {% get_providers as socialaccount_providers %}
+      {% if socialaccount_providers %}
+        <div class="flex flex-col gap-y-8 socialaccount_ballot">
+          <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+          </ul>
+        </div>
+        {% include "socialaccount/snippets/login_extra.html" %}
+      {% else %}
+        <p class="text-center">
+          {% blocktrans %}If you have not created an account yet, then please
+          <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+  <script>
+    //
+    // some JS monkey patching here because it's easier than
+    // writing an adapter for the allauth signup form just to style it
+    //
+
+
+    const loginLabel = document.querySelector(`label[for="id_login"]`);
+    loginLabel.textContent = "Login";
+
+    const passwordLabel = document.querySelector(`label[for="id_password"]`);
+    passwordLabel.textContent = "Password";
+
+    const rememberLabel = document.querySelector(`label[for="id_remember"]`);
+    rememberLabel.textContent = "Remember me";
+
+
+    loginLabel.parentElement.classList.add("allauth-login-and-password")
+    passwordLabel.parentElement.classList.add("allauth-login-and-password")
+    rememberLabel.parentElement.classList.add("allauth-remember")
+  </script>
+{% endblock content %}
