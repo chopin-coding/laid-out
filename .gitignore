@@ -539,5 +539,5 @@ node_modules
 data
 
 # allauth env variables
-#*.allauth
+*.allauth
 staticfiles
