@@ -43,9 +43,6 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Verify successfully passing env secrets
-        run: echo "${{secrets.TEST}}"
-
       - name: Create empty .allauth file
         run: touch .envs/.local/.allauth
 
@@ -53,10 +50,10 @@ jobs:
         run: docker compose -f local.yml build
 
       - name: Run DB Migrations
-        run: ALLAUTH_GOOGLE_AUTH_CLIENT_ID=${{secrets.ALLAUTH_GOOGLE_AUTH_CLIENT_ID}} ALLAUTH_GOOGLE_AUTH_SECRET=${{secrets.ALLAUTH_GOOGLE_AUTH_SECRET}} docker compose -f local.yml run --rm django python manage.py migrate
+        run: docker compose -f local.yml run -e ALLAUTH_GOOGLE_AUTH_CLIENT_ID=${{secrets.ALLAUTH_GOOGLE_AUTH_CLIENT_ID}} -e ALLAUTH_GOOGLE_AUTH_SECRET=${{secrets.ALLAUTH_GOOGLE_AUTH_SECRET}} --rm django python manage.py migrate
 
       - name: Run Django Tests
-        run: ALLAUTH_GOOGLE_AUTH_CLIENT_ID=${{secrets.ALLAUTH_GOOGLE_AUTH_CLIENT_ID}} ALLAUTH_GOOGLE_AUTH_SECRET=${{secrets.ALLAUTH_GOOGLE_AUTH_SECRET}} docker compose -f local.yml run django pytest
+        run: docker compose -f local.yml run -e ALLAUTH_GOOGLE_AUTH_CLIENT_ID=${{secrets.ALLAUTH_GOOGLE_AUTH_CLIENT_ID}} -e ALLAUTH_GOOGLE_AUTH_SECRET=${{secrets.ALLAUTH_GOOGLE_AUTH_SECRET}} django pytest
 
       - name: Tear down the Stack
         run: docker compose -f local.yml down
