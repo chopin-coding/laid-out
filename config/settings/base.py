@@ -338,7 +338,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         "APP": {
             "client_id": env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=os.environ["ALLAUTH_GOOGLE_AUTH_CLIENT_ID"]),
-            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default="ALLAUTH_GOOGLE_AUTH_SECRET"),
+            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default=os.environ["ALLAUTH_GOOGLE_AUTH_SECRET"]),
         },
     }
 }
