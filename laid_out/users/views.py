@@ -2,9 +2,9 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from laid_out.anxiety.tasks import delete_user_task
 from laid_out.anxiety.views import log
 from laid_out.users.models import User
+from laid_out.users.tasks import delete_user_task
 
 
 def user_detail_view(request):

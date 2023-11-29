@@ -15,3 +15,7 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    "hourly-inactive-user-cleaner": {"task": "laid_out.users.tasks.delete_all_inactive_users", "schedule": 3600.0}
+}
