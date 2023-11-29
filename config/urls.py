@@ -29,11 +29,6 @@ urlpatterns += [
     path("api/", include("config.api_router")),
 ]
 
-# TODO
-# handler404 = "anxiety.views.error_404_view"
-# handler500 = "anxiety.views.error_500_view"
-
-
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
