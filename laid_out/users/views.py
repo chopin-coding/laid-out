@@ -37,7 +37,7 @@ def user_delete_view(request):
                 user.is_active = False
                 user.save()
 
-                delete_user_task.delay(user_name=user.username)
+                delete_user_task.delay(username=user.username)
                 messages.success(
                     request,
                     "Your account has been marked for deletion and will be deleted within 24 hours.",

@@ -8,14 +8,10 @@
             <option value="django" />
             <option value="celeryworker" />
             <option value="celerybeat" />
-            <option value="flower" />
-            <option value="postgres" />
-            <option value="redis" />
-            <option value="mailpit" />
-            <option value="docs" />
           </list>
         </option>
         <option name="sourceFilePath" value="local.yml" />
+        <option name="upDetach" value="false" />
       </settings>
     </deployment>
     <method v="2" />

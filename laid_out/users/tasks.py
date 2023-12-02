@@ -10,21 +10,15 @@ log = getLogger(__name__)
 User = get_user_model()
 
 
-@celery_app.task()
-def get_users_count():
-    """A pointless Celery task to demonstrate usage."""
-    return User.objects.count()
-
-
 @shared_task(max_retries=3)
-def delete_user_task(user_name: User) -> None:
-    log.info(f"Starting user deletion for user {user_name}")
+def delete_user_task(username: str) -> None:
+    log.info(f"Starting user deletion for user {username}")
     try:
-        user = User.objects.get(username=user_name)
+        user = User.objects.get(username=username)
         user.delete()
         log.info(f"Successfully deleted user {user}")
     except Exception as e:
-        log.error(f"Unexpected error while deleting user {user_name}: {e}")
+        log.error(f"Unexpected error while deleting user {username}: {e}")
 
 
 @shared_task(max_retries=3)

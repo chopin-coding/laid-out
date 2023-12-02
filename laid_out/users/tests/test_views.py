@@ -1,64 +1,34 @@
-import logging
-
 import pytest
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from django.test import RequestFactory, TestCase
-from django.urls import reverse
-from django.contrib.messages.storage.fallback import FallbackStorage
+from django.contrib.auth.models import AnonymousUser
 
+from django.core.exceptions import ObjectDoesNotExist
+from django.test import RequestFactory
+from django.urls import reverse
+
+from laid_out.users.models import User
 from laid_out.users.views import user_delete_view
 
+pytestmark = pytest.mark.django_db
 
-@pytest.mark.skip
-class UserDeleteViewTests(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
 
-    def test_user_not_authenticated(self):
-        request = self.factory.get(reverse("user_delete"))
-        response = user_delete_view(request)
-        self.assertRedirects(response, reverse("account_login"))
+class TestUserDeleteView:
 
-    def test_delete_user_success(self):
-        user = User.objects.create(username="testuser")
-        request = self.factory.post(reverse("user_delete"))
-        request.user = user
+    def test_user_not_authenticated(self, rf: RequestFactory):
+        rf.user = AnonymousUser()
 
-        with self.assertLogs(logging.getLogger(), level="ERROR") as cm:
-            response = user_delete_view(request)
+        view = user_delete_view(request=rf)
 
-        user.refresh_from_db()
-        self.assertFalse(user.is_active)
-        self.assertRedirects(response, reverse("home"))
-        self.assertEqual(
-            response.context["messages"].get()[0].message,
-            "Your account has been marked for deletion and will be deleted within 24 hours."
-        )
+        # unauthenticated users are redirected to the login page
+        assert view.status_code == 302
+        assert view.url == reverse('account_login')
 
-    # def test_fetch_user_error(self):
-    #     request = self.factory.post(reverse("user_delete"))
-    #     request.user = User.objects.create(username="testuser")
-    #
-    #     with self.assertRaises(ObjectDoesNotExist):
-    #         user_delete_view(request)
-    #
-    #     self.assertRedirects(response, reverse("home"))
-    #     self.assertEqual(
-    #         response.context["messages"].get()[0].message,
-    #         "Unexpected error. Please try again."
-    #     )
+    @pytest.mark.skip
+    def test_user_authenticated(self, user: User, rf: RequestFactory, settings):
+        settings.CELERY_TASK_ALWAYS_EAGER = True
+        rf.user = user
 
-    def test_delete_account_error(self):
-        user = User.objects.create(username="testuser")
-        request = self.factory.post(reverse("user_delete"))
-        request.user = user
+        request = rf.post(reverse("users:delete"))
 
-        with self.assertLogs(logging.getLogger(), level="ERROR") as cm:
-            response = user_delete_view(request)
+        assert User.objects.get(username=user.username) is None
 
-        self.assertRedirects(response, reverse("home"))
-        self.assertEqual(
-            response.context["messages"].get()[0].message,
-            "Problem deleting account. Please try again or contact the administrator."
-        )
+
