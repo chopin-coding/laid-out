@@ -3,8 +3,6 @@ from logging import getLogger
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from config import celery_app
-
 log = getLogger(__name__)
 
 User = get_user_model()

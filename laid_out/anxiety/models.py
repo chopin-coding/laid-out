@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from pydantic import UUID4, BaseModel, field_validator
 
-from laid_out import users
+from laid_out import users  # noqa: F401
 
 
 class TreeDataNode(BaseModel):

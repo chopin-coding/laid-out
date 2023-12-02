@@ -1,7 +1,5 @@
 import pytest
 from django.contrib.auth.models import AnonymousUser
-
-from django.core.exceptions import ObjectDoesNotExist
 from django.test import RequestFactory
 from django.urls import reverse
 
@@ -12,7 +10,6 @@ pytestmark = pytest.mark.django_db
 
 
 class TestUserDeleteView:
-
     def test_user_not_authenticated(self, rf: RequestFactory):
         rf.user = AnonymousUser()
 
@@ -20,15 +17,13 @@ class TestUserDeleteView:
 
         # unauthenticated users are redirected to the login page
         assert view.status_code == 302
-        assert view.url == reverse('account_login')
+        assert view.url == reverse("account_login")
 
     @pytest.mark.skip
     def test_user_authenticated(self, user: User, rf: RequestFactory, settings):
         settings.CELERY_TASK_ALWAYS_EAGER = True
         rf.user = user
 
-        request = rf.post(reverse("users:delete"))
+        # request = rf.post(reverse("users:delete"))
 
         assert User.objects.get(username=user.username) is None
-
-
