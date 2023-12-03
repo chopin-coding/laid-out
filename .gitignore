@@ -53,8 +53,7 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-staticfiles/
+
 
 # Sphinx documentation
 docs/_build/
@@ -351,6 +350,8 @@ media
 # <django-project-name>/staticfiles/
 
 
+
+
 share/python-wheels/
 MANIFEST
 
@@ -527,8 +528,7 @@ cmake-build-*/
 # Env variables
 *.env
 
-# Django collectedstatic
-collectedstatic
+
 
 node_modules
 
@@ -537,4 +537,3 @@ data
 
 # allauth env variables
 *.allauth
-staticfiles

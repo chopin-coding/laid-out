@@ -1,0 +1,26 @@
+{
+  "ts/main.css": {
+    "file": "main-376fd84b.css",
+    "src": "ts/main.css"
+  },
+  "ts/main.ts": {
+    "css": [
+      "main-376fd84b.css"
+    ],
+    "file": "main-75b7b0f8.js",
+    "isEntry": true,
+    "src": "ts/main.ts"
+  },
+  "ts/style.css": {
+    "file": "style-e27d5e26.css",
+    "src": "ts/style.css"
+  },
+  "ts/style.ts": {
+    "css": [
+      "style-e27d5e26.css"
+    ],
+    "file": "style-cb003254.js",
+    "isEntry": true,
+    "src": "ts/style.ts"
+  }
+}
