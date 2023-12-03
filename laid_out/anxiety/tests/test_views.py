@@ -10,6 +10,14 @@ pytestmark = pytest.mark.django_db
 
 
 class TestAnxietyPage:
+    def test_anxiety_view_context_authenticated(self, user: User):
+        # TODO
+        pass
+
+    def test_anxiety_view_context_unauthenticated(self):
+        # TODO
+        pass
+
     def test_anxiety_view_authenticated_user(self, user: User, rf: RequestFactory):
         rf.user = user
 

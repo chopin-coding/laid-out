@@ -18,10 +18,10 @@ class OptionalSlashSimpleRouter(SimpleRouter):
 
 if settings.DEBUG:
     router = OptionalSlashDefaultRouter()
-    router.register(r"trees", AnxietyTreeViewSet, basename="tree")
+    router.register(r"trees", AnxietyTreeViewSet, basename="trees")
 else:
     router = OptionalSlashSimpleRouter()
-    router.register(r"trees", AnxietyTreeViewSet, basename="tree")
+    router.register(r"trees", AnxietyTreeViewSet, basename="trees")
 
 app_name = "api"
 urlpatterns = router.urls
