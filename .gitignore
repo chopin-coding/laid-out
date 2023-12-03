@@ -530,9 +530,6 @@ cmake-build-*/
 # Django collectedstatic
 collectedstatic
 
-# Migrations
-laid_out/anxiety/migrations
-
 node_modules
 
 # docker db data
