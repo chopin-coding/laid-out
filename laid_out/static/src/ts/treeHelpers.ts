@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
-import { Tree, TreeNode } from "./models";
+import {v4 as uuidv4} from "uuid";
+import {Tree, TreeNode} from "./models";
 import * as timeUtils from "./timeUtils";
 import axios from "axios";
 
@@ -49,7 +49,7 @@ export function defaultTree(
 export async function createTree(loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const { data, status } = await axios.post(
+      const {data, status} = await axios.post(
         API_BASE_URL,
         {},
         {
@@ -81,9 +81,9 @@ export async function createTree(loggedIn: boolean) {
 export async function updateTree(tree: Tree, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const { status } = await axios.patch(
+      const {status} = await axios.patch(
         API_BASE_URL + tree.tree_id,
-        { tree_name: tree.tree_name, tree_data: tree.tree_data },
+        {tree_name: tree.tree_name, tree_data: tree.tree_data},
         {
           headers: {
             "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
 export async function deleteTree(treeId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const { status } = await axios.delete(API_BASE_URL + treeId, {
+      const {status} = await axios.delete(API_BASE_URL + treeId, {
         headers: {
           "X-CSRFTOKEN": getCookieValue("csrftoken"),
         },
