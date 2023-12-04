@@ -8,6 +8,14 @@ from laid_out.users.views import user_delete_view, user_detail_view
 pytestmark = pytest.mark.django_db
 
 
+class TestLogin:
+    def test_user_login(self):
+        # create user manually
+        # set password
+        # log'em in manually using the set password (not the hashed version)
+        pass
+
+
 class TestUserDetailView:
     def test_unauthenticated_user(self, rf: RequestFactory):
         rf.user = AnonymousUser()
