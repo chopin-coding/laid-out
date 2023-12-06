@@ -125,6 +125,7 @@ class AnxietyTreeViewSet(
             return Response(data=return_detail, status=201)
         except Exception as e:
             log.error(f"Unexpected error while trying to create tree: {e}")
+            raise
 
     def update(self, request, *args, **kwargs):
         try:
@@ -141,15 +142,16 @@ class AnxietyTreeViewSet(
 
             return Response(status=200)
 
-        #  TODO: handle more specific exceptions?
         except Exception as e:
             log.error(f"Unexpected error while updating tree: {e}")
+            raise
 
     def perform_update(self, serializer):
         try:
             serializer.save()
         except Exception as e:
             log.error(f"Unexpected error while performing tree update: {e}")
+            raise
 
     def partial_update(self, request, *args, **kwargs):
         try:
@@ -157,6 +159,7 @@ class AnxietyTreeViewSet(
             return self.update(request, *args, **kwargs)
         except Exception as e:
             log.error(f"Unexpected error while partially updating tree: {e}")
+            raise
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -171,3 +174,4 @@ class AnxietyTreeViewSet(
             return Response(status=204)
         except Exception as e:
             log.error(f"Unexpected error while deleting tree: {e}")
+            raise
