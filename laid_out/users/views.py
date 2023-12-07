@@ -48,6 +48,7 @@ def user_delete_view(request):
                     request,
                     "Problem deleting account. Please try again or contact the administrator.",
                 )
+                raise
 
             finally:
                 return redirect(reverse("home"))

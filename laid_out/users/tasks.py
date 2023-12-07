@@ -17,6 +17,7 @@ def delete_user_task(username: str) -> None:
         log.info(f"Successfully deleted user {user}")
     except Exception as e:
         log.error(f"Unexpected error while deleting user {username}: {e}")
+        raise
 
 
 @shared_task(max_retries=3)
@@ -33,8 +34,10 @@ def delete_all_inactive_users() -> None:
                 log.info("Successfully deleted all inactive users")
             except Exception as e:
                 log.error(f"Unexpected error while deleting inactive users: {e}")
+                raise
         else:
             log.info("No inactive users found")
 
     except Exception as e:
         log.error(f"Unexpected error while fetching inactive users: {e}")
+        raise

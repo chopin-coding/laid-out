@@ -29,6 +29,7 @@ def anxiety_view(request):
             user_trees = serializer.data
     except Exception as e:
         log.error(f"Unexpected error while fetching user trees or creating a tree for the user: {e}")
+        raise
 
     context = {
         "current_page": "anxiety",

@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from laid_out.users.views import user_delete_view, user_detail_view
 
-pytestmark = pytest.mark.django_db
+pytestmark = [pytest.mark.django_db, pytest.mark.unit]
 
 
 class TestLogin:

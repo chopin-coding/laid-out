@@ -67,7 +67,7 @@
               <a href="{% url 'home' %}"
                  class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium"
                  aria-current="page">Home</a>
-              <a href="{% url 'anxiety:anxiety-home' %}"
+              <a href="{% url 'anxiety:home' %}"
                  class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">Anxiety</a>
               <a href="{% url 'about' %}"
                  class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">About</a>
@@ -254,7 +254,7 @@
         <a href="{% url 'home' %}"
            class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">Home</a>
-        <a href="{% url 'anxiety:anxiety-home' %}"
+        <a href="{% url 'anxiety:home' %}"
            class="{% if current_page == 'anxiety' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">Anxiety</a>
         <a href="{% url 'about' %}"

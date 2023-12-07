@@ -4,7 +4,7 @@ from celery.result import EagerResult
 from laid_out.users.models import User
 from laid_out.users.tasks import delete_all_inactive_users, delete_user_task
 
-pytestmark = pytest.mark.django_db
+pytestmark = [pytest.mark.django_db, pytest.mark.unit]
 
 
 class TestDeleteUserTask:

@@ -1,7 +1,11 @@
+from logging import getLogger
+
 from pydantic import ValidationError
 from rest_framework import serializers
 
 from laid_out.anxiety.models import AnxietyTree, TreeData, default_tree_data
+
+log = getLogger(__name__)
 
 
 class AnxietyTreeSerializer(serializers.Serializer):
@@ -42,7 +46,8 @@ class AnxietyTreeSerializer(serializers.Serializer):
             created = AnxietyTree.objects.create(owner=user, **validated_data)
             return created
         except Exception as e:
-            print(e)
+            log.error(f"Unexpected error occurred at AnxietyTreeSerializer create(): {e}")
+            raise
 
     def update(self, instance, validated_data):
         try:
@@ -52,4 +57,5 @@ class AnxietyTreeSerializer(serializers.Serializer):
 
             return instance
         except Exception as e:
-            print(f"Unexpected error when serializing PATCH/PUT: {e}")
+            log.error(f"Unexpected error occurred at AnxietyTreeSerializer update(): {e}")
+            raise
