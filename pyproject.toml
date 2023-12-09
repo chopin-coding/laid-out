@@ -6,6 +6,9 @@ python_files = [
     "tests.py",
     "test_*.py",
 ]
+markers = [
+    "unit: unit tests",
+]
 
 # ==== Coverage ====
 [tool.coverage.run]

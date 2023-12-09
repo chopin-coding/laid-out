@@ -69,3 +69,8 @@ CELERY_TASK_EAGER_PROPAGATES = True
 # Your stuff...
 # ------------------------------------------------------------------------------
 DJANGO_VITE_DEV_MODE = True
+# DJANGO_VITE_DEV_SERVER_HOST = "localhost"
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",  # Allow the Vite development server to make requests
+]
