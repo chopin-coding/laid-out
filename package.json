@@ -20,7 +20,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2",
     "uuidv4": "^6.2.13",
-    "vite": "^4.4.9",
+    "vite": "^4.4.12",
     "vue": "^3.3.4"
   },
   "devDependencies": {
