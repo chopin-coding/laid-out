@@ -1,19 +1,30 @@
 import pytest
 from django.contrib.auth.models import AnonymousUser
-from django.test import RequestFactory
+from django.test import Client, RequestFactory
 from django.urls import reverse
 
+from laid_out.users.models import User
 from laid_out.users.views import user_delete_view, user_detail_view
 
 pytestmark = [pytest.mark.django_db, pytest.mark.unit]
 
 
 class TestLogin:
-    def test_user_login(self):
-        # create user manually
-        # set password
-        # log'em in manually using the set password (not the hashed version)
-        pass
+    def test_user_login_username(self, client: Client):
+        password = "gangshit123"
+        username = "test"
+        email = "test@test.com"
+        User.objects.create_user(username=username, email=email, password=password)
+
+        assert client.login(username=username, password=password)
+
+    def test_user_login_email(self, client: Client):
+        password = "gangshit123"
+        username = "test"
+        email = "test@test.com"
+        User.objects.create_user(username=username, email=email, password=password)
+
+        assert client.login(email=email, password=password)
 
 
 class TestUserDetailView:
@@ -39,4 +50,4 @@ class TestUserDeleteView:
 
     def test_user_authenticated(self):
         # TODO: figure out how to test the view E2E with the celery tasks
-        assert True
+        pass

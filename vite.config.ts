@@ -20,8 +20,8 @@ export default defineConfig({
         postcss: postcssConfig,
     },
     server: {
-        host: true,
-        port: 3000,
+        host: "0.0.0.0",
+        // port: 3000,
         open: false,
         watch: {
             usePolling: true,

@@ -92,3 +92,14 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+
+  vite:
+    build:
+      context: .
+      dockerfile: ./compose/local/vite/Dockerfile
+    image: laid_out_local_vite
+    volumes:
+      - .:/app:z
+    container_name: laid_out_local_vite
+    ports:
+      - "5173:5173"
