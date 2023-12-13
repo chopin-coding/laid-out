@@ -36,7 +36,8 @@ export default defineConfig({
         target: "es2015",
         rollupOptions: {
             input: {
-                main: resolve("./laid_out/static/src/ts/main.ts"),
+                anxiety: resolve("./laid_out/static/src/ts/anxiety/anxiety.ts"),
+                gratitude: resolve("./laid_out/static/src/ts/gratitude/gratitude.ts"),
                 style: resolve("./laid_out/static/src/ts/style.ts"),
             },
             output: {

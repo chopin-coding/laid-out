@@ -3,8 +3,8 @@ import { ref, computed } from "vue";
 import * as treeHelpers from "../treeHelpers";
 import * as timeUtils from "../timeUtils";
 import { Tree } from "../models";
-import TransitionSlide from "../transitions/TransitionSlide.vue";
-import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
+import TransitionSlide from "../../transitions/TransitionSlide.vue";
+import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 
 interface TreeListProps {
   tree: Tree;

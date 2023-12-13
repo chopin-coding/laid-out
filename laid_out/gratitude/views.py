@@ -2,8 +2,6 @@ from logging import getLogger
 
 from django.shortcuts import render
 
-# Create your views here.
-
 log = getLogger(__name__)
 
 

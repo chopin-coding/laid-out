@@ -5,8 +5,8 @@ import * as treeHelpers from "../treeHelpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import { TreeNode } from "../models";
 import TreeComponent from "./TreeComponent.vue";
-import TransitionBasic from "../transitions/TransitionBasic.vue";
-import TransitionSlide from "../transitions/TransitionSlide.vue";
+import TransitionBasic from "../../transitions/TransitionBasic.vue";
+import TransitionSlide from "../../transitions/TransitionSlide.vue";
 
 interface TreeNodeProps {
   node: TreeNode;

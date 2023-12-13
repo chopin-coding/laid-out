@@ -7,7 +7,11 @@
   Gratitude
 {% endblock title %}
 {% block head %}
+  {{ logged_in|json_script:"logged-in" }}
+  {#  {{ ANXIETY_API_BASE_URL|json_script:"ANXIETY-API-BASE-URL" }}#}
+  {% vite_asset 'ts/gratitude/gratitude.ts' %}
 {% endblock head %}
 {% block content %}
-  <div class="text-7xl text-textblackdim text-center">Gratitude page!</div>
+  {% csrf_token %}
+  <div id="app"></div>
 {% endblock content %}

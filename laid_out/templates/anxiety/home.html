@@ -10,7 +10,7 @@
   {{ user_trees|json_script:"user-trees" }}
   {{ logged_in|json_script:"logged-in" }}
   {{ ANXIETY_API_BASE_URL|json_script:"ANXIETY-API-BASE-URL" }}
-  {% vite_asset 'ts/main.ts' %}
+  {% vite_asset 'ts/anxiety/anxiety.ts' %}
 {% endblock head %}
 {% block content %}
   {% csrf_token %}

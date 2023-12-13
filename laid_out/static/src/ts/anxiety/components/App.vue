@@ -4,9 +4,9 @@ import * as treeHelpers from "../treeHelpers";
 import * as timeUtils from "../timeUtils";
 import { useLocalStorage } from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
-import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
-import TransitionBasic from "../transitions/TransitionBasic.vue";
-import TransitionSlide from "../transitions/TransitionSlide.vue";
+import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
+import TransitionBasic from "../../transitions/TransitionBasic.vue";
+import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TreeListItemComponent from "./TreeListItemComponent.vue";
 
 // TODO: loggedIn and userTrees error handling
