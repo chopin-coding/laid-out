@@ -218,7 +218,6 @@ SESSION_COOKIE_HTTPONLY = True
 #                   <ss> <mm> <hh> <dd>
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-# FIXME: figure out what to do with this
 CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"

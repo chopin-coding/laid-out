@@ -1,9 +1,19 @@
 import {v4 as uuidv4} from "uuid";
 import {Tree, TreeNode} from "./models";
 import * as timeUtils from "./timeUtils";
-import axios from "axios";
+import axios, {AxiosRequestHeaders} from "axios";
 
 let API_BASE_URL: string = null;
+const csrftoken: string = (document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement).value;
+
+axios.interceptors.request.use(
+  (config) => {
+    (config.headers as AxiosRequestHeaders)["X-CSRFTOKEN"] = csrftoken;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 
 try {
   API_BASE_URL = JSON.parse(
@@ -12,10 +22,6 @@ try {
 } catch (error) {
   console.log(`Couldn't parse ANXIETY-API-BASE-URL: ${error}`);
 }
-
-const getCookieValue = (name: string): string =>
-  // case sensitive
-  document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
 
 export function defaultTreeNode(): TreeNode {
   const newNodeId: string = uuidv4();
@@ -56,7 +62,6 @@ export async function createTree(loggedIn: boolean) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "X-CSRFTOKEN": getCookieValue("csrftoken"),
           },
           withCredentials: true,
         },
@@ -88,7 +93,6 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            "X-CSRFTOKEN": getCookieValue("csrftoken"),
           },
           withCredentials: true,
         },
@@ -113,9 +117,6 @@ export async function deleteTree(treeId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
       const {status} = await axios.delete(API_BASE_URL + treeId, {
-        headers: {
-          "X-CSRFTOKEN": getCookieValue("csrftoken"),
-        },
         withCredentials: true,
       });
 
