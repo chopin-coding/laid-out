@@ -15,8 +15,7 @@ log = getLogger(__name__)
 
 
 def anxiety_view(request):
-    # FIXME: This view for a user with a large number of large-sized trees could slow the whole
-    #  app down since this is not async
+    # FIXME: needs pagination
     user_trees = None
 
     try:

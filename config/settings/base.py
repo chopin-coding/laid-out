@@ -84,6 +84,7 @@ LOCAL_APPS = [
     "laid_out.users",
     # Your stuff: custom apps go here
     "laid_out.anxiety",
+    "laid_out.gratitude",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

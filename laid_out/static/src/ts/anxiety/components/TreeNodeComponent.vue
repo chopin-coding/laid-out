@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch } from "vue";
 
-import * as treeHelpers from "../treeHelpers";
+import * as helpers from "../helpers";
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import { TreeNode } from "../models";
 import TreeComponent from "./TreeComponent.vue";

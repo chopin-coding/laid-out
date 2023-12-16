@@ -3,7 +3,7 @@ import { nextTick, ref, computed } from "vue";
 
 import TreeNodeComponent from "./TreeNodeComponent.vue";
 import { TreeNode } from "../models";
-import * as treeHelpers from "../treeHelpers";
+import * as helpers from "../helpers";
 
 interface TreeProps {
   nodes: TreeNode[];
@@ -24,7 +24,7 @@ const singleNodeLeft = computed(() => {
 async function childBtnHandler(nodeId: string) {
   const indexToAddTo = props.nodes.findIndex((node) => node.node_id === nodeId);
 
-  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
+  const nodeToAdd: TreeNode = helpers.defaultTreeNode();
 
   if (indexToAddTo !== -1) {
     props.nodes[indexToAddTo].children.push(nodeToAdd);
@@ -38,7 +38,7 @@ async function siblingBtnHandler(nodeId: string) {
   const indexToAddTo =
     props.nodes.findIndex((node) => node.node_id === nodeId) + 1;
 
-  const nodeToAdd: TreeNode = treeHelpers.defaultTreeNode();
+  const nodeToAdd: TreeNode = helpers.defaultTreeNode();
 
   if (indexToAddTo !== -1) {
     props.nodes.splice(indexToAddTo, 0, nodeToAdd);
@@ -62,13 +62,7 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
       nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
     }
     document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
-    // try {
-    //   nodeIdToFocus = props.nodes[indexToDelete].node_id;
-    // } catch {
-    //   nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
-    // } finally {
-    //   document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
-    // }
+
   } else if (props.nodes.length === 1) {
     try {
       document.getElementById(`${parentNodeId}-titleInput`).focus();
@@ -84,34 +78,6 @@ async function deleteBtnHandler(nodeId: string, parentNodeId: string) {
       resolve();
     }, 152);
   });
-
-  // // let the animation play out before deleting the node
-  // await new Promise<void>((resolve) => {
-  //   setTimeout(() => {
-  //     props.nodes.splice(indexToDelete, 1);
-  //     resolve();
-  //   }, 152);
-  // });
-  //
-  // await nextTick();
-  //
-  // let nodeIdToFocus: string | null = null;
-  //
-  // if (props.nodes.length > 0) {
-  //   try {
-  //     nodeIdToFocus = props.nodes[indexToDelete].node_id;
-  //   } catch {
-  //     nodeIdToFocus = props.nodes[indexToDelete - 1].node_id;
-  //   } finally {
-  //     document.getElementById(`${nodeIdToFocus}-titleInput`).focus();
-  //   }
-  // } else if (props.nodes.length === 0) {
-  //   try {
-  //     document.getElementById(`${parentNodeId}-titleInput`).focus();
-  //   } catch (error) {
-  //     console.log(`couldn't focus parent node: ${error}`);
-  //   }
-  // }
 }
 </script>
 

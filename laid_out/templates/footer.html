@@ -16,17 +16,16 @@
         <!-- Dropdown -->
         <div x-cloak x-data="{ toolMenuOpen: false }" class="relative z-20">
           <div class="flex hover:text-black">
-            <a x-on:click="toolMenuOpen = !toolMenuOpen"
-               @click.outside="toolMenuOpen = false"
-               href="#"
-               class="px-2 text-textblackdimmer text-sm transition duration-200 ease-out group hover:text-black rounded-nonegroup focus:outline-none"
-               aria-expanded="false"
-               aria-haspopup="true">
+            <div x-on:click="toolMenuOpen = !toolMenuOpen"
+                 @click.outside="toolMenuOpen = false"
+                 class="px-2 text-textblackdimmer cursor-pointer text-sm transition duration-200 ease-out group hover:text-black rounded-nonegroup focus:outline-none"
+                 aria-expanded="false"
+                 aria-haspopup="true">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only ">Open tools menu</span>
               Tools
               <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
-            </a>
+            </div>
           </div>
           <div x-transition:enter="transition ease-out duration-100"
                x-transition:enter-start="opacity-0 scale-95"

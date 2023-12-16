@@ -13,7 +13,7 @@ class AnxietyTreeAdmin(admin.ModelAdmin):
         "date_modified",
         "date_created",
     ]
-    search_fields = ["tree_id", "user"]
+    search_fields = ["tree_id"]
 
     readonly_fields = [
         "tree_id",

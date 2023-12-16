@@ -40,7 +40,7 @@ class AnxietyTree(models.Model):
     owner = models.ForeignKey(
         to="users.User",
         related_name="anxiety_trees",
-        # TODO: change on_delete to models.SET_NULL if I start using Celery
+        # TODO: change on_delete to models.SET_NULL when I implement pagination
         on_delete=models.CASCADE,
         null=True,
     )

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import * as treeHelpers from "../treeHelpers";
-import * as timeUtils from "../timeUtils";
+import * as helpers from "../helpers";
+import * as timeUtils from "../../timeUtils";
 import { Tree } from "../models";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
@@ -36,7 +36,7 @@ async function deleteInTwoStages(treeId: string) {
 async function deleteBtnHandler(treeId: string) {
   loading.value = true;
 
-  const deleteResult = await treeHelpers.deleteTree(treeId, props.loggedIn);
+  const deleteResult = await helpers.deleteTree(treeId, props.loggedIn);
 
   if (deleteResult === 204) {
     deleted.value = true;

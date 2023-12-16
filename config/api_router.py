@@ -2,6 +2,7 @@ from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from laid_out.anxiety.views import AnxietyTreeViewSet
+from laid_out.gratitude.views import GratitudeJournalViewSet
 
 
 class OptionalSlashDefaultRouter(DefaultRouter):
@@ -19,9 +20,11 @@ class OptionalSlashSimpleRouter(SimpleRouter):
 if settings.DEBUG:
     router = OptionalSlashDefaultRouter()
     router.register(r"trees", AnxietyTreeViewSet, basename="trees")
+    router.register(r"gratitude_journals", GratitudeJournalViewSet, basename="gratitude-journals")
 else:
     router = OptionalSlashSimpleRouter()
     router.register(r"trees", AnxietyTreeViewSet, basename="trees")
+    router.register(r"gratitude_journals", GratitudeJournalViewSet, basename="gratitude-journals")
 
 app_name = "api"
 urlpatterns = router.urls

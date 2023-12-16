@@ -7,8 +7,9 @@
   Gratitude
 {% endblock title %}
 {% block head %}
+  {{ user_g_journals|json_script:"user-g-journals" }}
   {{ logged_in|json_script:"logged-in" }}
-  {#  {{ ANXIETY_API_BASE_URL|json_script:"ANXIETY-API-BASE-URL" }}#}
+  {{ GRATITUDE_JOURNAL_API_BASE_URL|json_script:"GRATITUDE-JOURNAL-API-BASE-URL" }}
   {% vite_asset 'ts/gratitude/gratitude.ts' %}
 {% endblock head %}
 {% block content %}

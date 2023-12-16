@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import * as treeHelpers from "../treeHelpers";
-import * as timeUtils from "../timeUtils";
-import { Tree } from "../models";
-import TransitionSlide from "../transitions/TransitionSlide.vue";
-import TransitionOutInGrow from "../transitions/TransitionOutInGrow.vue";
+import * as helpers from "../helpers";
+import * as timeUtils from "../../timeUtils";
+import { GratitudeJournal } from "../models";
+import TransitionSlide from "../../transitions/TransitionSlide.vue";
+import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 
-interface TreeListProps {
-  tree: Tree;
-  lastRemainingTree: boolean;
-  selectedTreeId: string;
+interface GratitudeJournalListProps {
+  gratitudeJournal: GratitudeJournal;
+  lastRemainingGratitudeJournal: boolean;
+  selectedGratitudeJournalId: string;
   loggedIn: boolean;
 }
 
-const emit = defineEmits(["selectTree", "deleteTree"]);
+const emit = defineEmits(["selectGratitudeJournal", "deleteGratitudeJournal"]);
 
 // defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeListProps>();
+let props = defineProps<GratitudeJournalListProps>();
 const deleted = ref(false);
 const loading = ref(false);
 const deleteConfirmed = ref(false);
@@ -36,7 +36,7 @@ async function deleteInTwoStages(treeId: string) {
 async function deleteBtnHandler(treeId: string) {
   loading.value = true;
 
-  const deleteResult = await treeHelpers.deleteTree(treeId, props.loggedIn);
+  const deleteResult = await helpers.deleteGratitudeJournal(treeId, props.loggedIn);
 
   if (deleteResult === 204) {
     deleted.value = true;
@@ -44,7 +44,7 @@ async function deleteBtnHandler(treeId: string) {
     await new Promise<void>((resolve) => {
       // for the animation goes through before deleting the tree
       setTimeout(() => {
-        emit("deleteTree", treeId);
+        emit("deleteGratitudeJournal", treeId);
         resolve();
       }, 152);
     });
@@ -63,27 +63,27 @@ async function deleteBtnHandler(treeId: string) {
         href="#"
         class="flex flex-grow flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer"
         :class="{
-          'bg-primary text-white': tree.tree_id === selectedTreeId,
+          'bg-primary text-white': gratitudeJournal.g_journal_id === selectedGratitudeJournalId,
           'hover:bg-primarylight hover:text-black':
-            tree.tree_id !== selectedTreeId,
+            gratitudeJournal.g_journal_id !== selectedGratitudeJournalId,
         }"
-        v-on:click="emit('selectTree', tree.tree_id)"
+        v-on:click="emit('selectGratitudeJournal', gratitudeJournal.g_journal_id)"
       >
-        <span v-text="tree.tree_name"></span>
+        <span v-text="gratitudeJournal.g_journal_name"></span>
         <div
           v-if="loggedIn"
           class="text-xs text-textblackdimmer2"
           :class="{
-            'text-textwhitedimmer2': tree.tree_id === selectedTreeId,
+            'text-textwhitedimmer2': gratitudeJournal.g_journal_id === selectedGratitudeJournalId,
           }"
-          v-text="`${timeUtils.formatTimeShort(tree.date_modified)}`"
+          v-text="`${timeUtils.formatTimeShort(gratitudeJournal.date_modified)}`"
         ></div>
       </a>
 
       <button
         class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
-        v-show="!lastRemainingTree"
-        v-on:click="deleteInTwoStages(tree.tree_id)"
+        v-show="!lastRemainingGratitudeJournal"
+        v-on:click="deleteInTwoStages(gratitudeJournal.g_journal_id)"
       >
         <TransitionOutInGrow duration="50">
           <!-- Delete icon -->
