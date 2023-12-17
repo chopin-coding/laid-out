@@ -155,9 +155,6 @@ async function deleteJournalHandler(journalId: string) {
   }
 }
 
-function journalUpdateHandler(newText: string): void {
-  tempJournalStore.value[selectedJournalIndex.value].journal_data.value = newText;
-}
 
 function unfocusInput(event) {
   event.target.blur();
@@ -377,13 +374,10 @@ function unfocusInput(event) {
         <!--   Journal   -->
         <div class="mb-40 w-full sm:mb-10 lg:mb:20">
           <component
-              v-show="
-              tempJournalStore.length !== 0 && tempJournalStore[selectedJournalIndex]
-            "
+              v-show="tempJournalStore.length !== 0 && tempJournalStore[selectedJournalIndex]"
               :is="JournalComponent"
               :journal="tempJournalStore[selectedJournalIndex]"
               :logged-in="loggedIn"
-              @journalUpdate="journalUpdateHandler"
           />
         </div>
       </div>
