@@ -33,6 +33,16 @@ class TestAnxietyApiCreateView:
         assert created_tree is not None
         assert created_tree.tree_name == post_data["tree_name"]
 
+    def test_max_number_of_anxiety_trees(self, user: User, api_client: APIClient):
+        for _ in range(151):
+            AnxietyTree.objects.create(owner=user)
+        user_total_trees = user.anxiety_trees.count()
+        api_client.force_login(user=user)
+
+        response = api_client.post(self.endpoint)
+        assert response.status_code == 400
+        assert user.anxiety_trees.count() == user_total_trees
+
 
 class TestAnxietyApiUpdateView:
     endpoint = "/api/trees/"

@@ -33,6 +33,16 @@ class TestGratitudeJournalApiCreateView:
         assert created_g_journal is not None
         assert created_g_journal.g_journal_name == post_data["g_journal_name"]
 
+    def test_max_number_of_g_journals(self, user: User, api_client: APIClient):
+        for _ in range(151):
+            GratitudeJournal.objects.create(owner=user)
+        user_total_g_journals = user.gratitude_journals.count()
+        api_client.force_login(user=user)
+
+        response = api_client.post(self.endpoint)
+        assert response.status_code == 400
+        assert user.gratitude_journals.count() == user_total_g_journals
+
 
 class TestGratitudeJournalApiUpdateView:
     endpoint = "/api/gratitude_journals/"

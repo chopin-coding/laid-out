@@ -25,6 +25,14 @@
     "isEntry": true,
     "src": "ts/gratitude/gratitude.ts"
   },
+  "ts/journal/journal.ts": {
+    "file": "journal-97d472b6.js",
+    "imports": [
+      "_config-4f765b06.js"
+    ],
+    "isEntry": true,
+    "src": "ts/journal/journal.ts"
+  },
   "ts/style.css": {
     "file": "style-1e5bd68d.css",
     "src": "ts/style.css"

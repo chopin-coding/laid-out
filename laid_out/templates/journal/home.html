@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Journal
+{% endblock title %}
+{% block head %}
+  {{ user_journals|json_script:"user-journals" }}
+  {{ logged_in|json_script:"logged-in" }}
+  {{ JOURNAL_API_BASE_URL|json_script:"JOURNAL-API-BASE-URL" }}
+  {% vite_asset 'ts/journal/journal.ts' %}
+{% endblock head %}
+{% block content %}
+  {% csrf_token %}
+  <div id="app"></div>
+{% endblock content %}

@@ -27,7 +27,7 @@ const selectedGratitudeJournalIndex = ref(0);
 const syncWarningExpanded = ref(false);
 const syncFailedExpanded = ref(false);
 const newGratitudeJournalLoading = ref(false);
-const maxNumberOfGratitudeJournals = 150; // the browser may shit itself before 150 trees:D
+const maxNumberOfGratitudeJournals = 150;
 
 initializeGratitudeJournals();
 

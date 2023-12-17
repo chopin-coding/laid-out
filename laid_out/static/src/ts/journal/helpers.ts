@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from "uuid";
-import {Tree, TreeNode} from "./models";
+import {Journal} from "./models";
 import * as timeUtils from "../timeUtils";
 import axios, {AxiosRequestHeaders} from "axios";
 
@@ -17,43 +17,28 @@ axios.interceptors.request.use(
 
 try {
   API_BASE_URL = JSON.parse(
-    document.getElementById("ANXIETY-API-BASE-URL").textContent,
+    document.getElementById("JOURNAL-API-BASE-URL").textContent,
   );
 } catch (error) {
-  console.log(`Couldn't parse ANXIETY-API-BASE-URL: ${error}`);
+  console.log(`Couldn't parse JOURNAL-API-BASE-URL: ${error}`);
 }
 
-export function defaultTreeNode(): TreeNode {
-  const newNodeId: string = uuidv4();
+export function defaultJournal(
+  journalId: string = null,
+  journalName: string = null,
+  journalData: string = null,
+): Journal {
+  const newjournalId: string = uuidv4();
   return {
-    title: "",
-    locked: false,
-    node_id: newNodeId,
-    children: [],
-  };
-}
-
-
-function defaultTreeData(): TreeNode[] {
-  return [defaultTreeNode()];
-}
-
-export function defaultTree(
-  treeId: string = null,
-  treeName: string = null,
-  treeData: TreeNode[] = null,
-): Tree {
-  const newTreeId: string = uuidv4();
-  return {
-    tree_id: treeId || newTreeId,
-    tree_name: treeName || "New Tree",
-    tree_data: treeData || defaultTreeData(),
+    journal_id: journalId || newjournalId,
+    journal_name: journalName || "New Journal",
+    journal_data: journalData || "",
     date_modified: timeUtils.toDjangoTimeString(new Date()),
     date_created: timeUtils.toDjangoTimeString(new Date()),
   };
 }
 
-export async function createTree(loggedIn: boolean) {
+export async function createJournal(loggedIn: boolean) {
   if (loggedIn) {
     try {
       const {data, status} = await axios.post(
@@ -68,28 +53,28 @@ export async function createTree(loggedIn: boolean) {
         },
       );
 
-      return data.tree_id;
+      return data.journal_id;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("Error while creating tree: ", error.message);
+        console.log("Error while creating journal: ", error.message);
         return error.message;
       } else {
-        console.log("Error while creating tree: ", error);
+        console.log("Error while creating journal: ", error);
         return "An unexpected error occurred";
       }
     }
   } else {
-    const newTree: Tree = defaultTree();
-    return newTree.tree_id;
+    const newJournal: Journal = defaultJournal();
+    return newJournal.journal_id;
   }
 }
 
-export async function updateTree(tree: Tree, loggedIn: boolean) {
+export async function updateJournal(journal: Journal, loggedIn: boolean) {
   if (loggedIn) {
     try {
       const {status} = await axios.patch(
-        API_BASE_URL + tree.tree_id,
-        {tree_name: tree.tree_name, tree_data: tree.tree_data},
+        API_BASE_URL + journal.journal_id,
+        {journal_name: journal.journal_name, journal_data: journal.journal_data},
         {
           headers: {
             "Content-Type": "application/json",
@@ -102,10 +87,10 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
       return status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("Error while updating tree: ", error.message);
+        console.log("Error while updating journal: ", error.message);
         return error.message;
       } else {
-        console.log("Unexpected error while updating tree: ", error);
+        console.log("Unexpected error while updating journal: ", error);
         return "An unexpected error occurred";
       }
     }
@@ -114,20 +99,20 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
   }
 }
 
-export async function deleteTree(treeId: string, loggedIn: boolean) {
+export async function deleteJournal(journalId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const {status} = await axios.delete(API_BASE_URL + treeId, {
+      const {status} = await axios.delete(API_BASE_URL + journalId, {
         withCredentials: true,
       });
 
       return status;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("Error while deleting tree: ", error.message);
+        console.log("Error while deleting journal: ", error.message);
         return error.message;
       } else {
-        console.log("Unexpected error while deleting tree: ", error);
+        console.log("Unexpected error while deleting journal: ", error);
         return "An unexpected error occurred";
       }
     }

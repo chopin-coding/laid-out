@@ -3,11 +3,11 @@ import {ref, watch, computed, nextTick} from "vue";
 import * as helpers from "../helpers";
 import * as timeUtils from "../../timeUtils";
 import {useLocalStorage} from "@vueuse/core";
-import GratitudeJournalComponent from "./GratitudeJournalComponent.vue";
+import JournalComponent from "./JournalComponent.vue";
 import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
-import GratitudeJournalListItemComponent from "./GratitudeJournalListItemComponent.vue";
+import JournalListItemComponent from "./JournalListItemComponent.vue";
 import {config} from "../../config";
 
 // TODO: loggedIn and userTrees error handling
@@ -15,45 +15,45 @@ const loggedIn: boolean = JSON.parse(
     document.getElementById("logged-in").textContent,
 );
 
-const localGratitudeJournalStore = useLocalStorage("gratitude-journal-store", {
-  gratitudeJournals: [helpers.defaultGratitudeJournal()],
+const localJournalStore = useLocalStorage("journal-store", {
+  journals: [helpers.defaultJournal()],
 });
 let syncTimerBaseCount = config.SYNC_TIMER_DURATION_MS;
 
-const tempGratitudeJournalStore = ref([]);
+const tempJournalStore = ref([]);
 let syncTimer = null;
 const syncStatus = ref("synced");
-const selectedGratitudeJournalIndex = ref(0);
+const selectedJournalIndex = ref(0);
 const syncWarningExpanded = ref(false);
 const syncFailedExpanded = ref(false);
-const newGratitudeJournalLoading = ref(false);
-const maxNumberOfGratitudeJournals = 150;
+const newJournalLoading = ref(false);
+const maxNumberOfJournals = 150;
 
-initializeGratitudeJournals();
+initializeJournals();
 
-function initializeGratitudeJournals() {
+function initializeJournals() {
   if (loggedIn) {
-    tempGratitudeJournalStore.value = JSON.parse(
-        document.getElementById("user-g-journals").textContent,
+    tempJournalStore.value = JSON.parse(
+        document.getElementById("user-journals").textContent,
     );
 
-    initializeGratitudeJournalWatchers();
+    initializeJournalWatchers();
   } else {
     // TODO: see if this causes performance issues
-    tempGratitudeJournalStore.value = localGratitudeJournalStore.value.gratitudeJournals;
+    tempJournalStore.value = localJournalStore.value.journals;
   }
 }
 
-const lastRemainingGratitudeJournal = computed(() => {
-  return tempGratitudeJournalStore.value.length === 1;
+const lastRemainingJournal = computed(() => {
+  return tempJournalStore.value.length === 1;
 });
 
-const selectedGratitudeJournalId = computed(() => {
-  return tempGratitudeJournalStore.value[selectedGratitudeJournalIndex.value].g_journal_id;
+const selectedJournalId = computed(() => {
+  return tempJournalStore.value[selectedJournalIndex.value].journal_id;
 });
 
-const numberOfGratitudeJournals = computed(() => {
-  return tempGratitudeJournalStore.value.length;
+const numberOfJournals = computed(() => {
+  return tempJournalStore.value.length;
 });
 
 window.addEventListener("beforeunload", function (e) {
@@ -69,10 +69,10 @@ window.addEventListener("beforeunload", function (e) {
   }
 });
 
-function gratitudeJournalWatcher(gJournalIndex: string) {
-  const gratitudeJournalInQuestion = tempGratitudeJournalStore.value[gJournalIndex];
+function journalWatcher(journalIndex: string) {
+  const journalInQuestion = tempJournalStore.value[journalIndex];
 
-  watch(gratitudeJournalInQuestion, (newValue, oldValue) => {
+  watch(journalInQuestion, (newValue, oldValue) => {
     syncStatus.value = "syncing";
 
     // reset the sync timer
@@ -82,8 +82,8 @@ function gratitudeJournalWatcher(gJournalIndex: string) {
 
     // start the sync timer
     syncTimer = setTimeout(async () => {
-      const updateStatus = await helpers.updateGratitudeJournal(
-          gratitudeJournalInQuestion,
+      const updateStatus = await helpers.updateJournal(
+          journalInQuestion,
           loggedIn,
       );
 
@@ -96,63 +96,67 @@ function gratitudeJournalWatcher(gJournalIndex: string) {
   });
 }
 
-function initializeGratitudeJournalWatchers() {
-  for (const index in tempGratitudeJournalStore.value) {
-    gratitudeJournalWatcher(index);
+function initializeJournalWatchers() {
+  for (const index in tempJournalStore.value) {
+    journalWatcher(index);
   }
 }
 
-function addGratitudeJournalWatcher(gJournalId: string) {
-  const indexToWatch = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+function addJournalWatcher(journalId: string) {
+  const indexToWatch = tempJournalStore.value.findIndex(
+      (journal) => journal.journal_id === journalId,
   );
 
   if (indexToWatch !== -1) {
-    gratitudeJournalWatcher(indexToWatch.toString());
+    journalWatcher(indexToWatch.toString());
   }
 }
 
-function selectGratitudeJournalHandler(gJournalId: string): void {
-  const indexToSelect = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+function selectJournalHandler(journalId: string): void {
+  const indexToSelect = tempJournalStore.value.findIndex(
+      (journal) => journal.journal_id === journalId,
   );
 
   if (indexToSelect !== -1) {
-    if (selectedGratitudeJournalIndex.value != indexToSelect) {
-      selectedGratitudeJournalIndex.value = indexToSelect;
+    if (selectedJournalIndex.value != indexToSelect) {
+      selectedJournalIndex.value = indexToSelect;
     }
   }
 }
 
-async function newGratitudeJournal(loggedIn: boolean) {
-  if (numberOfGratitudeJournals.value < maxNumberOfGratitudeJournals) {
-    newGratitudeJournalLoading.value = loggedIn;
-    const gJournalId = await helpers.createGratitudeJournal(loggedIn);
-    const newGJournal = helpers.defaultGratitudeJournal(gJournalId);
+async function newJournal(loggedIn: boolean) {
+  if (numberOfJournals.value < maxNumberOfJournals) {
+    newJournalLoading.value = loggedIn;
+    const journalId = await helpers.createJournal(loggedIn);
+    const newJournal = helpers.defaultJournal(journalId);
 
-    tempGratitudeJournalStore.value.splice(0, 0, newGJournal);
+    tempJournalStore.value.splice(0, 0, newJournal);
     if (loggedIn) {
-      addGratitudeJournalWatcher(gJournalId);
+      addJournalWatcher(journalId);
     }
-    newGratitudeJournalLoading.value = false;
+    newJournalLoading.value = false;
   }
 }
 
-async function deleteGratitudeJournalHandler(gJournalId: string) {
-  const indexToDelete = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+async function deleteJournalHandler(journalId: string) {
+  const indexToDelete = tempJournalStore.value.findIndex(
+      (journal) => journal.journal_id === journalId,
   );
 
   if (indexToDelete !== -1) {
-    if (selectedGratitudeJournalIndex.value !== indexToDelete) {
-      selectedGratitudeJournalIndex.value = 0;
-      tempGratitudeJournalStore.value.splice(indexToDelete, 1);
+    if (selectedJournalIndex.value !== indexToDelete) {
+      selectedJournalIndex.value = 0;
+      tempJournalStore.value.splice(indexToDelete, 1);
     } else {
-      selectedGratitudeJournalIndex.value = 0;
+      selectedJournalIndex.value = 0;
 
-      tempGratitudeJournalStore.value.splice(indexToDelete, 1);
+      tempJournalStore.value.splice(indexToDelete, 1);
     }
   }
+}
+
+function journalUpdateHandler(newText: string): void {
+  tempJournalStore.value[selectedJournalIndex.value].journal_data.value = newText;
 }
 
 function unfocusInput(event) {
@@ -163,14 +167,14 @@ function unfocusInput(event) {
 <template v-cloak>
   <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
     <div class="text-4xl text-center  font-semibold text-textblackdimmer mt-8">
-      Gratitude Journal
+      Journal
     </div>
     <div
         class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
     >
 
-      <!--  G Journal List  -->
-      <!-- Mobile g journal list: on top, sm:on the left -->
+      <!--  Journal List  -->
+      <!-- Mobile journal list: on top, sm:on the left -->
       <div
           class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
@@ -178,12 +182,12 @@ function unfocusInput(event) {
           <div>
             <button
                 class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
-                v-on:click="newGratitudeJournal(loggedIn)"
+                v-on:click="newJournal(loggedIn)"
             >
               <TransitionOutInGrow duration="50">
-                <!-- New G Journal icon -->
+                <!-- New Journal icon -->
                 <div
-                    v-if="!newGratitudeJournalLoading && numberOfGratitudeJournals < maxNumberOfGratitudeJournals"
+                    v-if="!newJournalLoading && numberOfJournals < maxNumberOfJournals"
                     class="flex gap-x-3"
                 >
                   <svg
@@ -202,7 +206,7 @@ function unfocusInput(event) {
 
                 <!-- Loading icon -->
                 <svg
-                    v-else-if="newGratitudeJournalLoading"
+                    v-else-if="newJournalLoading"
                     class="h-6 w-6animate-spin"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -217,13 +221,13 @@ function unfocusInput(event) {
                 </svg>
 
                 <div
-                    v-else-if="numberOfGratitudeJournals >= maxNumberOfGratitudeJournals"
+                    v-else-if="numberOfJournals >= maxNumberOfJournals"
 
                 >
-                  <div class="text-danger">Maximum number of gratitude journals reached</div>
+                  <div class="text-danger">Maximum number of journals reached</div>
                   <div>
                     This limit is just to prevent spam. You're awesome for reaching this limit! Please do contact me if
-                    you'd like to have more gratitude journals at once!
+                    you'd like to have more journals at once!
                   </div>
                 </div>
               </TransitionOutInGrow>
@@ -231,15 +235,15 @@ function unfocusInput(event) {
           </div>
           <ul class="max-h-80 list-none overflow-y-scroll sm:max-h-96">
             <component
-                v-for="gJournal in tempGratitudeJournalStore"
-                :key="gJournal.g_journal_id"
-                :is="GratitudeJournalListItemComponent"
-                :gratitude-journal="gJournal"
-                :selected-gratitude-journal-id="selectedGratitudeJournalId"
-                :last-remaining-gratitude-journal="lastRemainingGratitudeJournal"
+                v-for="journal in tempJournalStore"
+                :key="journal.journal_id"
+                :is="JournalListItemComponent"
+                :journal="journal"
+                :selected-journal-id="selectedJournalId"
+                :last-remaining-journal="lastRemainingJournal"
                 :logged-in="loggedIn"
-                @select-gratitude-journal="(gJournalId: string) => selectGratitudeJournalHandler(gJournalId)"
-                @delete-gratitude-journal="(gJournalId: string) => deleteGratitudeJournalHandler(gJournalId)"
+                @select-journal="(journalId: string) => selectJournalHandler(journalId)"
+                @delete-journal="(journalId: string) => deleteJournalHandler(journalId)"
             />
           </ul>
         </div>
@@ -250,14 +254,14 @@ function unfocusInput(event) {
           class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:my-8 lg:px-6"
       >
         <div class="flex flex-col gap-y-3 sm:flex-row sm:justify-between">
-          <!--   G Journal Name   -->
+          <!--   Journal Name   -->
           <div class="flex text-textblackdim">
             <input
                 class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="22"
-                v-model="tempGratitudeJournalStore[selectedGratitudeJournalIndex].g_journal_name"
+                v-model="tempJournalStore[selectedJournalIndex].journal_name"
                 @keydown.enter.exact.prevent.stop="unfocusInput($event)"
             />
           </div>
@@ -370,15 +374,16 @@ function unfocusInput(event) {
           </div>
         </div>
 
-        <!--   G Journal   -->
+        <!--   Journal   -->
         <div class="mb-40 w-full sm:mb-10 lg:mb:20">
           <component
               v-show="
-              tempGratitudeJournalStore.length !== 0 && tempGratitudeJournalStore[selectedGratitudeJournalIndex]
+              tempJournalStore.length !== 0 && tempJournalStore[selectedJournalIndex]
             "
-              :is="GratitudeJournalComponent"
-              :nodes="tempGratitudeJournalStore[selectedGratitudeJournalIndex].g_journal_data"
+              :is="JournalComponent"
+              :journal="tempJournalStore[selectedJournalIndex]"
               :logged-in="loggedIn"
+              @journalUpdate="journalUpdateHandler"
           />
         </div>
       </div>
