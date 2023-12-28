@@ -188,13 +188,9 @@ sentry_sdk.init(
     environment=env("SENTRY_ENVIRONMENT", default="production"),
     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
 )
-
-# django-rest-framework
-# -------------------------------------------------------------------------------
-# Tools that generate code samples can use SERVERS to point to the correct domain
-SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa: F405
-    {"url": "https://thelaidoutproject.org", "description": "Production server"},
-]
 # Your stuff...
 # ------------------------------------------------------------------------------
 DJANGO_VITE_DEV_MODE = False
+
+# Allauth
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL  # TODO

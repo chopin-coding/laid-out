@@ -8,7 +8,7 @@ import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TreeListItemComponent from "./TreeListItemComponent.vue";
-import { config } from "../../config";
+import {config} from "../../config";
 
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
@@ -264,7 +264,7 @@ function unfocusInput(event) {
 
           <div class="mx-1 flex items-center gap-x-1 sm:mx-4">
             <!--     Sync status     -->
-            <div class="relative text-textblackdimmer">
+            <div class="relative text-textblackdimmer" title="Sync status">
               <TransitionOutInGrow>
                 <svg
                     v-if="syncStatus === 'syncing'"
@@ -378,6 +378,7 @@ function unfocusInput(event) {
           <button
               class="transition duration-100 ease-out fill-textblackdimmer hover:fill-black"
               v-on:click="hideUncontrollable = !hideUncontrollable"
+              title="Toggle uncontrollable items visibility"
           >
             <TransitionBasic>
               <!-- Not visible -->

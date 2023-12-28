@@ -265,7 +265,7 @@ function unfocusInput(event) {
 
           <div class="mx-1 flex items-center gap-x-1 sm:mx-4">
             <!--     Sync status     -->
-            <div class="relative text-textblackdimmer">
+            <div class="relative text-textblackdimmer" title="Sync status">
               <TransitionOutInGrow>
                 <svg
                     v-if="syncStatus === 'syncing'"
