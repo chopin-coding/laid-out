@@ -132,6 +132,9 @@ async function newTree(loggedIn: boolean) {
     const newTree = helpers.defaultTree(treeId);
 
     tempTreeStore.value.splice(0, 0, newTree);
+    await nextTick();
+    selectedTreeIndex.value += 1
+
     if (loggedIn) {
       addTreeWatcher(treeId);
     }
@@ -144,16 +147,18 @@ async function deleteTreeHandler(treeId: string) {
       (tree) => tree.tree_id === treeId,
   );
 
-  if (indexToDelete !== -1) {
-    if (selectedTreeIndex.value !== indexToDelete) {
-      selectedTreeIndex.value = 0;
-      tempTreeStore.value.splice(indexToDelete, 1);
-    } else {
-      selectedTreeIndex.value = 0;
-
-      tempTreeStore.value.splice(indexToDelete, 1);
-    }
+  if (indexToDelete === -1) {
+    console.log("The tree trying to be deleted does not exist in tempTreeStore")
+    return;
   }
+
+  if (indexToDelete !== tempTreeStore.value.length - 1) {
+    tempTreeStore.value.splice(indexToDelete, 1);
+  } else if (indexToDelete === tempTreeStore.value.length - 1) {
+    selectedTreeIndex.value -= 1
+    tempTreeStore.value.splice(indexToDelete, 1);
+  }
+
 }
 
 function unfocusInput(event) {

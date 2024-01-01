@@ -117,6 +117,9 @@ onMounted(() => {
                   @keydown.tab.exact.prevent.stop="
                   emit('childBtnHandler', node.node_id)
                 "
+                 @keydown.delete.exact.stop="
+                  node.title === '' && (!singleNodeLeft || nodeType !== 'root') && emit('deleteBtnHandler', props.node.node_id)
+                "
                   @input="nodeResize"
                   class="w-full resize-none rounded px-2 py-2 align-middle text-sm transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
                   :class="{
@@ -191,7 +194,7 @@ onMounted(() => {
               emit('deleteBtnHandler', props.node.node_id);
               deleted = true;
             "
-              title="Delete node"
+              title="Delete node (⌫ Backspace or Delete)"
           >
             <svg
                 viewBox="0 0 24 24"

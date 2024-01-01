@@ -131,6 +131,9 @@ async function newGratitudeJournal(loggedIn: boolean) {
     const newGJournal = helpers.defaultGratitudeJournal(gJournalId);
 
     tempGratitudeJournalStore.value.splice(0, 0, newGJournal);
+    await nextTick();
+    selectedGratitudeJournalIndex.value += 1
+
     if (loggedIn) {
       addGratitudeJournalWatcher(gJournalId);
     }
@@ -142,17 +145,18 @@ async function deleteGratitudeJournalHandler(gJournalId: string) {
   const indexToDelete = tempGratitudeJournalStore.value.findIndex(
       (gJournal) => gJournal.g_journal_id === gJournalId,
   );
-
-  if (indexToDelete !== -1) {
-    if (selectedGratitudeJournalIndex.value !== indexToDelete) {
-      selectedGratitudeJournalIndex.value = 0;
-      tempGratitudeJournalStore.value.splice(indexToDelete, 1);
-    } else {
-      selectedGratitudeJournalIndex.value = 0;
-
-      tempGratitudeJournalStore.value.splice(indexToDelete, 1);
-    }
+  if (indexToDelete === -1) {
+    console.log("The tree trying to be deleted does not exist in tempTreeStore")
+    return;
   }
+
+  if (indexToDelete !== tempGratitudeJournalStore.value.length - 1) {
+    tempGratitudeJournalStore.value.splice(indexToDelete, 1);
+  } else if (indexToDelete === tempGratitudeJournalStore.value.length - 1) {
+    selectedGratitudeJournalIndex.value -= 1
+    tempGratitudeJournalStore.value.splice(indexToDelete, 1);
+  }
+
 }
 
 function unfocusInput(event) {

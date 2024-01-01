@@ -131,6 +131,9 @@ async function newJournal(loggedIn: boolean) {
     const newJournal = helpers.defaultJournal(journalId);
 
     tempJournalStore.value.splice(0, 0, newJournal);
+    await nextTick();
+    selectedJournalIndex.value += 1
+
     if (loggedIn) {
       addJournalWatcher(journalId);
     }
@@ -142,17 +145,18 @@ async function deleteJournalHandler(journalId: string) {
   const indexToDelete = tempJournalStore.value.findIndex(
       (journal) => journal.journal_id === journalId,
   );
-
-  if (indexToDelete !== -1) {
-    if (selectedJournalIndex.value !== indexToDelete) {
-      selectedJournalIndex.value = 0;
-      tempJournalStore.value.splice(indexToDelete, 1);
-    } else {
-      selectedJournalIndex.value = 0;
-
-      tempJournalStore.value.splice(indexToDelete, 1);
-    }
+  if (indexToDelete === -1) {
+    console.log("The tree trying to be deleted does not exist in tempTreeStore")
+    return;
   }
+
+  if (indexToDelete !== tempJournalStore.value.length - 1) {
+    tempJournalStore.value.splice(indexToDelete, 1);
+  } else if (indexToDelete === tempJournalStore.value.length - 1) {
+    selectedJournalIndex.value -= 1
+    tempJournalStore.value.splice(indexToDelete, 1);
+  }
+
 }
 
 
