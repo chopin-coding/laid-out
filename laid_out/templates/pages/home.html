@@ -1,35 +1,66 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
   Home
 {% endblock title %}
 {% block content %}
-  <div class="mx-2 my-10 flex justify-center text-textblackdim">
-    <div class="my-auto flex h-full w-full flex-col gap-y-20 px-3 py-2  focus:outline-none sm:max-w-screen-lg">
-      <div class="flex flex-col gap-y-2">
-        <div class="text">your worries</div>
+  <div class="my-10 flex flex-col justify-center divide-y divide-primarylight items-center text-textblackdim">
+    <div class="mx-2 my-auto flex flex-col lg:items-center h-full w-full gap-y-16 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
+      <div class="flex flex-col gap-y-2 lg:w-[460px]">
+        <div class="text-sm">your worries</div>
         <div class="text-7xl font-black text-center text-primary">
           <i>laid out</i>
         </div>
-        <div class="text-end">to help fight anxiety</div>
+        <div class="text-end text-sm">to help with anxiety</div>
       </div>
-      <ol class="flex flex-col gap-y-6 list-decimal ml-3 text-textblackdim">
-        <li>
-          <div class="mb-4">Write down all your worries.</div>
-          <img alt="step 1"
-               class="object-contain"
-               src="../../static/images/step-1.png" />
-        </li>
-        <li>
-          <div class="mb-4">Lock the uncontrollable ones.</div>
-          <img alt="step 2"
-               class="object-contain"
-               src="../../static/images/step-2.png" />
-        </li>
-        <li>
-          <div class="mb-4">Accept the uncontrollable and action the rest.</div>
-        </li>
-      </ol>
+      <div class="text-center">A self-help web app with minimalistic utilities.</div>
+    </div>
+    <div class="mx-2 flex flex-col items-center h-full w-full gap-y-10 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
+      <div class="text-center text-xl lg:hidden">Anxiety</div>
+      <div class="flex flex-col lg:flex-row lg:justify-around gap-y-10 items-center">
+        <div class="flex items-center justify-center order-2 lg:order-3 lg:w-1/2">
+          <img class="h-5/6 w-5/6"
+               src="{% static 'images/anxiety_preview.png' %}"
+               alt="preview failed to load"
+               loading="lazy" />
+        </div>
+        <div class="flex flex-col gap-y-6 mx-4 order-3 lg:order-2 lg:w-1/3">
+          <div class="lg:block text-start text-2xl font-extrabold text-primary hidden">Anxiety</div>
+          <div>Write down your worries, cross out and accept the uncontrollable, and action the rest.</div>
+        </div>
+      </div>
+    </div>
+    <div class="mx-2 flex flex-col items-center h-full w-full gap-y-10 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
+      <div class="text-center text-xl lg:hidden">Gratitude</div>
+      <div class="flex flex-col lg:flex-row lg:justify-around gap-y-10 items-center">
+        <div class="flex items-center justify-center order-2 lg:w-1/2">
+          <img class="h-5/6 w-5/6"
+               src="{% static 'images/gratitude_preview.png' %}"
+               alt="preview failed to load"
+               loading="lazy" />
+        </div>
+        <div class="flex flex-col gap-y-6 mx-4 order-3 lg:w-1/3">
+          <div class="lg:block text-start text-2xl font-extrabold text-primary hidden">Gratitude</div>
+          <div>Write down things you're grateful for.</div>
+        </div>
+      </div>
+    </div>
+    <div class="mx-2 flex flex-col items-center h-full w-full gap-y-10 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
+      <div class="text-center text-xl lg:hidden">Journal</div>
+      <div class="flex flex-col lg:flex-row lg:justify-around gap-y-10 items-center">
+        <div class="flex items-center justify-center order-2 lg:order-3 lg:w-1/2">
+          <img class="h-5/6 w-5/6"
+               src="{% static 'images/journal_preview.png' %}"
+               alt="preview failed to load"
+               loading="lazy" />
+        </div>
+        <div class="flex flex-col gap-y-6 mx-4 order-3 lg:order-2 lg:w-1/3">
+          <div class="lg:block text-start text-2xl font-extrabold text-primary hidden">Journal</div>
+          <div>It's a regular journal :D</div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock content %}
