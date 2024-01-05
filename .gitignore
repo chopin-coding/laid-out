@@ -537,10 +537,3 @@ data
 
 # allauth env variables
 *.allauth
-
-# staticfiles not needed for testing
-staticfiles/admin
-staticfiles/debug_toolbar
-staticfiles/django-browser-reload
-staticfiles/django_extensions
-staticfiles/rest_framework
