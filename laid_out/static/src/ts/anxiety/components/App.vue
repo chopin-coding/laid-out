@@ -9,6 +9,7 @@ import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TreeListItemComponent from "./TreeListItemComponent.vue";
 import {config} from "../../config";
+import CharacterAnimation from "../../animations/CharacterAnimation.vue";
 
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
@@ -164,20 +165,38 @@ async function deleteTreeHandler(treeId: string) {
 function unfocusInput(event) {
   event.target.blur();
 }
+
 </script>
 
 <template v-cloak>
   <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
-    <div class="text-4xl text-center  font-semibold text-textblackdimmer mt-8">
-      Anxiety
+    <div class="mt-8 flex flex-col sm:flex-row justify-content-center">
+      <div class="order-1 sm:order-2 sm:mx-auto text-4xl text-center font-semibold text-textblackdimmer">
+        Anxiety
+      </div>
+      <CharacterAnimation
+          class="order-2 sm:order-1 -mb-5 sm:mb-0"
+          character="cat"
+          :action="{
+      name: 'idle',
+      numberOfFrames: 2,
+      ticksPerFrame: 300,
+      loop: true
+        }"
+      />
     </div>
+
+
     <div
-        class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
+        class="flex h-full w-full flex-col gap-y-10 items-center lg:flex-row lg:items-start lg:gap-x-5"
     >
+
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
+
+
       <div
-          class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
+          class="w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div>
@@ -252,7 +271,7 @@ function unfocusInput(event) {
 
       <!--   Info & Controls   -->
       <div
-          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:my-8 lg:px-6"
+          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:px-6"
       >
         <div class="flex flex-col gap-y-3 sm:flex-row sm:justify-between">
           <!--   Tree Name   -->
@@ -341,7 +360,7 @@ function unfocusInput(event) {
                 @mouseleave="syncWarningExpanded = false"
             >
               <div
-                  class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
+                  class="relative flex items-center text-textblackdim"
               >
                 <TransitionBasic duration="150">
                   <div
@@ -439,3 +458,7 @@ function unfocusInput(event) {
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

@@ -14,5 +14,9 @@
 {% endblock head %}
 {% block content %}
   {% csrf_token %}
+  <img id="myImage"
+       hidden
+       src="{% static 'spritesheets/blinking_48x32.png' %}"
+       alt="" />
   <div id="app"></div>
 {% endblock content %}

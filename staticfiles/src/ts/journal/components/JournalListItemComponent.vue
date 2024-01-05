@@ -59,9 +59,8 @@ async function deleteBtnHandler(journalId: string) {
   <TransitionSlide>
     <li class="my-2 flex justify-between" v-show="!deleted">
       <!-- Journal name -->
-      <a
-          href="#"
-          class="flex flex-grow flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer"
+      <div
+          class="flex flex-grow cursor-pointer flex-col rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer"
           :class="{
           'bg-primary text-white': journal.journal_id === selectedJournalId,
           'hover:bg-primarylight hover:text-black':
@@ -78,7 +77,7 @@ async function deleteBtnHandler(journalId: string) {
           }"
             v-text="`${timeUtils.formatTimeShort(journal.date_modified)}`"
         ></div>
-      </a>
+      </div>
 
       <button
           class="mx-3 items-center rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"

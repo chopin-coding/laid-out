@@ -340,7 +340,7 @@ function unfocusInput(event) {
                 @mouseleave="syncWarningExpanded = false"
             >
               <div
-                  class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
+                  class="relative flex items-center text-textblackdim"
               >
                 <TransitionBasic duration="150">
                   <div

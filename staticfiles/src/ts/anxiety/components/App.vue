@@ -9,6 +9,7 @@ import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TreeListItemComponent from "./TreeListItemComponent.vue";
 import {config} from "../../config";
+import CharacterAnimation from "../../animations/CharacterAnimation.vue";
 
 // TODO: loggedIn and userTrees error handling
 const loggedIn: boolean = JSON.parse(
@@ -132,6 +133,9 @@ async function newTree(loggedIn: boolean) {
     const newTree = helpers.defaultTree(treeId);
 
     tempTreeStore.value.splice(0, 0, newTree);
+    await nextTick();
+    selectedTreeIndex.value += 1
+
     if (loggedIn) {
       addTreeWatcher(treeId);
     }
@@ -144,21 +148,24 @@ async function deleteTreeHandler(treeId: string) {
       (tree) => tree.tree_id === treeId,
   );
 
-  if (indexToDelete !== -1) {
-    if (selectedTreeIndex.value !== indexToDelete) {
-      selectedTreeIndex.value = 0;
-      tempTreeStore.value.splice(indexToDelete, 1);
-    } else {
-      selectedTreeIndex.value = 0;
-
-      tempTreeStore.value.splice(indexToDelete, 1);
-    }
+  if (indexToDelete === -1) {
+    console.log("The tree trying to be deleted does not exist in tempTreeStore")
+    return;
   }
+
+  if (indexToDelete !== tempTreeStore.value.length - 1) {
+    tempTreeStore.value.splice(indexToDelete, 1);
+  } else if (indexToDelete === tempTreeStore.value.length - 1) {
+    selectedTreeIndex.value -= 1
+    tempTreeStore.value.splice(indexToDelete, 1);
+  }
+
 }
 
 function unfocusInput(event) {
   event.target.blur();
 }
+
 </script>
 
 <template v-cloak>
@@ -166,13 +173,27 @@ function unfocusInput(event) {
     <div class="text-4xl text-center  font-semibold text-textblackdimmer mt-8">
       Anxiety
     </div>
+
+    <CharacterAnimation
+        class="-mb-5 z-50"
+        character="cat"
+        :action="{
+      name: 'idle',
+      numberOfFrames: 2,
+      ticksPerFrame: 300,
+      loop: true
+        }"
+    />
     <div
-        class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
+        class="flex h-full w-full flex-col gap-y-10 items-center lg:flex-row lg:items-start lg:gap-x-5"
     >
+
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
+
+
       <div
-          class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
+          class="w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div>
@@ -336,7 +357,7 @@ function unfocusInput(event) {
                 @mouseleave="syncWarningExpanded = false"
             >
               <div
-                  class="relative flex cursor-pointer items-center text-textblackdim hover:text-gray-600"
+                  class="relative flex items-center text-textblackdim"
               >
                 <TransitionBasic duration="150">
                   <div
@@ -434,3 +455,8 @@ function unfocusInput(event) {
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>
+
