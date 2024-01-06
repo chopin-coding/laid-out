@@ -170,19 +170,13 @@ function unfocusInput(event) {
 
 <template v-cloak>
   <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
-    <div class="mt-8 flex flex-col sm:flex-row justify-content-center">
+    <div class="mt-8 flex flex-col sm:flex-row align-items-middle justify-content-center">
       <div class="order-1 sm:order-2 sm:mx-auto text-4xl text-center font-semibold text-textblackdimmer">
         Anxiety
       </div>
       <CharacterAnimation
-          class="order-2 sm:order-1 -mb-5 sm:mb-0"
-          character="cat"
-          :action="{
-      name: 'idle',
-      numberOfFrames: 2,
-      ticksPerFrame: 300,
-      loop: true
-        }"
+          class="order-2 sm:order-1"
+          character="cat_01"
       />
     </div>
 

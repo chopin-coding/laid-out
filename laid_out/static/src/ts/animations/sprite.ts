@@ -1,12 +1,4 @@
-interface AnimationOptions {
-  context: CanvasRenderingContext2D;
-  width: number;
-  height: number;
-  image: any;
-  numberOfFrames: number;
-  ticksPerFrame: number;
-  loop: boolean;
-}
+import {AnimationOptions} from "./models";
 
 export const sprite = (options: AnimationOptions) => {
     let frameIndex = 0; // The current frame to be displayed
@@ -17,12 +9,10 @@ export const sprite = (options: AnimationOptions) => {
       width,
       height,
       image,
-      numberOfFrames,
-      ticksPerFrame,
-      loop,
+      action,
+      scaleFactor
     } =
       options;
-    const scaleFactor = calculateScaleFactor();
 
     //get the canvas, canvas context, and dpi
     let canvas = document.getElementById('myCanvas')
@@ -42,16 +32,6 @@ export const sprite = (options: AnimationOptions) => {
       //set the correct attributes for a crystal clear image!
       canvas.setAttribute('width', (style._width() * dpi).toString());
       canvas.setAttribute('height', (style._height() * dpi).toString());
-    }
-
-    function calculateScaleFactor() {
-      const screenWidth = window.innerWidth;
-
-      if (screenWidth <= 600) {
-        return 1;
-      } else {
-        return 0.4;
-      }
     }
 
     return {
@@ -76,12 +56,12 @@ export const sprite = (options: AnimationOptions) => {
       update: function () {
         tickCount += 1;
 
-        if (tickCount > ticksPerFrame) {
+        if (tickCount > action.ticksPerFrame) {
           tickCount = 0;
 
-          if (frameIndex < numberOfFrames - 1) {
+          if (frameIndex < action.numberOfFrames - 1) {
             frameIndex += 1;
-          } else if (loop) {
+          } else if (action.loop) {
             frameIndex = 0;
           }
         }

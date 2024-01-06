@@ -1,34 +1,83 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {sprite} from './sprite';
+import {actions} from "./actions";
+import {Action, Sprite} from "./models";
 
-let characterSprite: Sprite;
-const characterAnimation = ref(null);
-const width = 480;
-const height = 320;
-
-interface Sprite {
-  render: Function;
-  update: Function;
-}
-
-interface Action {
-  name: string;
-  numberOfFrames: number;
-  ticksPerFrame: number;
-  loop: boolean;
-}
 
 interface CharacterAnimationProps {
   character: string;
-  action: Action;
-
 }
 
 let props = defineProps<CharacterAnimationProps>();
 
+
+const allActions: Action[] = actions[props.character]
+let characterSprite: Sprite;
+const characterAnimation = ref(null);
+const width = 480;
+const height = 320;
+let tickCount = 0;
+let currentAction: Action = actions[props.character][0]
+
+const scaleFactorComputed = computed(() => {
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth <= 600) {
+    return 1;
+  } else {
+    return 0.4;
+  }
+});
+
+const marginOffsetX = computed(() => {
+  return (width - width * scaleFactorComputed.value) / 2;
+});
+
+const marginOffsetY = computed(() => {
+  return (height - height * scaleFactorComputed.value) / 2;
+});
+
+// Function to choose a random action based on probabilities and multipliers
+function chooseRandomAction(actionsList: Action[]): Action {
+  // Calculate the total sum of probabilities with multipliers
+  const totalProbability = actionsList.reduce((sum, action) => sum + action.probabilityMultiplier, 0);
+
+  // Generate a random value between 0 and the total sum of probabilities
+  const randomValue = Math.random() * totalProbability;
+
+  // Initialize cumulative probability
+  let cumulativeProbability = 0;
+
+  // Iterate through actions and choose the one with the corresponding probability
+  let selectedAction: Action;
+  for (const action of actionsList) {
+    cumulativeProbability += action.probabilityMultiplier;
+    if (randomValue <= cumulativeProbability) {
+      selectedAction = action;
+      break;
+    }
+  }
+  return selectedAction;
+}
+
 function animate() {
   requestAnimationFrame(animate)
+  tickCount++;
+  if (tickCount >= currentAction.ticksPerFrame * currentAction.numberOfFrames) {
+    tickCount = 0
+    currentAction = chooseRandomAction(allActions)
+
+    characterSprite = sprite({
+      context: characterAnimation.value.getContext("2d"),
+      width,
+      height,
+      image: document.getElementById(`${props.character}_${currentAction.name}`),
+      action: currentAction,
+      scaleFactor: scaleFactorComputed.value
+    });
+  }
+
   characterSprite.update()
   characterSprite.render()
 }
@@ -36,28 +85,30 @@ function animate() {
 onMounted(() => {
   characterAnimation.value.width = width;
   characterAnimation.value.height = height;
-  const characterImage = document.getElementById('myImage');
 
+  // initiate with the base animation
   characterSprite = sprite({
     context: characterAnimation.value.getContext("2d"),
     width,
     height,
-    image: characterImage,
-    numberOfFrames: props.action.numberOfFrames,
-    ticksPerFrame: props.action.ticksPerFrame,
-    loop: props.action.loop,
+    image: document.getElementById(`${props.character}_${currentAction.name}`),
+    action: currentAction,
+    scaleFactor: scaleFactorComputed.value
   });
-  characterSprite.render()
   animate()
 });
 </script>
 
 <template>
-  <canvas id="myCanvas" ref="characterAnimation"></canvas>
+  <canvas
+      id="myCanvas"
+      ref="characterAnimation"
+      class="z-10"
+      :style="{ height: `${height * scaleFactorComputed}px`,
+      width: `${width * scaleFactorComputed}px`
+  }"
+  ></canvas>
 </template>
 
 <style scoped>
-canvas {
-  height: 128px;
-}
 </style>
