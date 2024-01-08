@@ -42,7 +42,7 @@ async function deleteBtnHandler(treeId: string) {
     deleted.value = true;
 
     await new Promise<void>((resolve) => {
-      // for the animation goes through before deleting the tree
+      // for the animation to go through before deleting the tree
       setTimeout(() => {
         emit("deleteGratitudeJournal", treeId);
         resolve();

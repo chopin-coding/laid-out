@@ -1,5 +1,5 @@
 {% if messages %}
-  <ul class="fixed top-16 flex w-screen max-w-full translate-y-5 flex-col items-center transition duration-300 ease-out sm:max-w-md">
+  <ul class="fixed top-16 z-20 flex w-screen max-w-full translate-y-5 flex-col items-center transition duration-300 ease-out sm:max-w-md">
     {% for message in messages %}
       {% if message.tags == 'success' %}
         <li x-transition.duration.200ms

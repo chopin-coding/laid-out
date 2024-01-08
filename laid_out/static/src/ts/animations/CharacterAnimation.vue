@@ -17,26 +17,9 @@ let characterSprite: Sprite;
 const characterAnimation = ref(null);
 const width = 480;
 const height = 320;
+const scaleFactor = 0.3;
 let tickCount = 0;
 let currentAction: Action = actions[props.character][0]
-
-const scaleFactorComputed = computed(() => {
-  const screenWidth = window.innerWidth;
-
-  if (screenWidth <= 600) {
-    return 1;
-  } else {
-    return 0.4;
-  }
-});
-
-const marginOffsetX = computed(() => {
-  return (width - width * scaleFactorComputed.value) / 2;
-});
-
-const marginOffsetY = computed(() => {
-  return (height - height * scaleFactorComputed.value) / 2;
-});
 
 // Function to choose a random action based on probabilities and multipliers
 function chooseRandomAction(actionsList: Action[]): Action {
@@ -74,7 +57,6 @@ function animate() {
       height,
       image: document.getElementById(`${props.character}_${currentAction.name}`),
       action: currentAction,
-      scaleFactor: scaleFactorComputed.value
     });
   }
 
@@ -93,7 +75,6 @@ onMounted(() => {
     height,
     image: document.getElementById(`${props.character}_${currentAction.name}`),
     action: currentAction,
-    scaleFactor: scaleFactorComputed.value
   });
   animate()
 });
@@ -104,8 +85,8 @@ onMounted(() => {
       id="myCanvas"
       ref="characterAnimation"
       class="z-10"
-      :style="{ height: `${height * scaleFactorComputed}px`,
-      width: `${width * scaleFactorComputed}px`
+      :style="{ height: `${height * scaleFactor}px`,
+      width: `${width * scaleFactor}px`
   }"
   ></canvas>
 </template>

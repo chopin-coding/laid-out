@@ -17,5 +17,4 @@ export interface AnimationOptions {
   height: number;
   image: any;
   action: Action
-  scaleFactor: number;
 }

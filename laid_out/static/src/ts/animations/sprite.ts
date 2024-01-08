@@ -10,37 +10,16 @@ export const sprite = (options: AnimationOptions) => {
       height,
       image,
       action,
-      scaleFactor
     } =
       options;
 
     //get the canvas, canvas context, and dpi
     let canvas = document.getElementById('myCanvas')
-    let dpi = window.devicePixelRatio;
-
-    function fixDpi() {
-//create a style object that returns width and height
-      let style = {
-        _height() {
-          return +getComputedStyle(canvas).getPropertyValue('height').slice(0, -2);
-        }
-        ,
-        _width() {
-          return +getComputedStyle(canvas).getPropertyValue('width').slice(0, -2);
-        }
-      }
-      //set the correct attributes for a crystal clear image!
-      canvas.setAttribute('width', (style._width() * dpi).toString());
-      canvas.setAttribute('height', (style._height() * dpi).toString());
-    }
 
     return {
       render: function () {
-        // clear the canvas
         context.clearRect(0, 0, width, height);
 
-        fixDpi()
-        // draw the image
         context.drawImage(
           image,
           frameIndex * width,
@@ -49,8 +28,8 @@ export const sprite = (options: AnimationOptions) => {
           height,
           0,
           0,
-          width * scaleFactor,
-          height * scaleFactor
+          width,
+          height
         );
       },
       update: function () {

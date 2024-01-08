@@ -354,7 +354,7 @@ function unfocusInput(event) {
                   </div>
                 </TransitionBasic>
 
-                <button>
+                <div>
                   <!-- Warning icon -->
                   <svg
                       class="h-8 w-8 fill-warning"
@@ -368,7 +368,7 @@ function unfocusInput(event) {
                         d="M19.5 12a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Zm1.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.75 1.5V8.25h1.5v5.25h-1.5Zm0 2.25v-1.5h1.5v1.5h-1.5Z"
                     />
                   </svg>
-                </button>
+                </div>
               </div>
             </div>
           </div>
