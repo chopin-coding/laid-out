@@ -3,7 +3,6 @@ import {nextTick, ref, computed, onMounted} from "vue";
 import {Journal} from "../models";
 import * as helpers from "../helpers";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
-import {useTextareaAutosize} from "@vueuse/core";
 
 interface JournalProps {
   journal: Journal;

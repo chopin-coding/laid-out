@@ -22,7 +22,7 @@ certificatesResolvers:
   letsencrypt:
     # https://docs.traefik.io/master/https/acme/#lets-encrypt
     acme:
-      email: 'support@thelaidoutproject.org'
+      email: 'support@laid-out.org'
       storage: /etc/traefik/acme/acme.json
       # https://docs.traefik.io/master/https/acme/#httpchallenge
       httpChallenge:
@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`thelaidoutproject.org`) || Host(`www.thelaidoutproject.org`)'
+      rule: 'Host(`laid-out.org`) || Host(`www.laid-out.org`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`thelaidoutproject.org`)'
+      rule: 'Host(`laid-out.org`)'
       entryPoints:
         - flower
       service: flower
