@@ -1,6 +1,6 @@
-# Translations for the temp1 project
-# Copyright (C) 2024 Daniel Roy Greenfeld
-# Daniel Roy Greenfeld <support@laid-out.org>, 2024.
+# Translations for the laid-out project
+# Copyright (C) 2024 Emre Erguvan
+# Emre Erguvan <support@laid-out.org>, 2024.
 #
 #, fuzzy
 msgid ""
