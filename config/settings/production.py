@@ -126,7 +126,13 @@ INSTALLED_APPS += ["anymail"]  # noqa: F405
 # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
 # https://anymail.readthedocs.io/en/stable/esps/amazon_ses/
 EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
-ANYMAIL = {}
+ANYMAIL = {
+    "AMAZON_SES_CLIENT_PARAMS": {
+        "aws_access_key_id": os.getenv("AWS_ACCESS_KEY_FOR_ANYMAIL_SES"),  # noqa: F405
+        "aws_secret_access_key": os.getenv("AWS_SECRET_KEY_FOR_ANYMAIL_SES"),  # noqa: F405
+        "region_name": "eu-central-1",
+    },
+}
 
 
 # LOGGING
