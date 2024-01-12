@@ -150,12 +150,13 @@ async function deleteJournalHandler(journalId: string) {
     return;
   }
 
-  if (indexToDelete !== tempJournalStore.value.length - 1) {
-    tempJournalStore.value.splice(indexToDelete, 1);
-  } else if (indexToDelete === tempJournalStore.value.length - 1) {
-    selectedJournalIndex.value -= 1
-    tempJournalStore.value.splice(indexToDelete, 1);
+  if (indexToDelete === selectedJournalIndex.value) {
+    selectedJournalIndex.value = Math.min(indexToDelete, tempJournalStore.value.length - 2);
+  } else if (indexToDelete < selectedJournalIndex.value) {
+    selectedJournalIndex.value -= 1;
   }
+
+  tempJournalStore.value.splice(indexToDelete, 1);
 
 }
 

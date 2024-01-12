@@ -150,12 +150,13 @@ async function deleteGratitudeJournalHandler(gJournalId: string) {
     return;
   }
 
-  if (indexToDelete !== tempGratitudeJournalStore.value.length - 1) {
-    tempGratitudeJournalStore.value.splice(indexToDelete, 1);
-  } else if (indexToDelete === tempGratitudeJournalStore.value.length - 1) {
-    selectedGratitudeJournalIndex.value -= 1
-    tempGratitudeJournalStore.value.splice(indexToDelete, 1);
+  if (indexToDelete === selectedGratitudeJournalIndex.value) {
+    selectedGratitudeJournalIndex.value = Math.min(indexToDelete, tempGratitudeJournalStore.value.length - 2);
+  } else if (indexToDelete < selectedGratitudeJournalIndex.value) {
+    selectedGratitudeJournalIndex.value -= 1;
   }
+
+  tempGratitudeJournalStore.value.splice(indexToDelete, 1);
 
 }
 

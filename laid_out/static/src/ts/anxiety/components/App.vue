@@ -153,13 +153,13 @@ async function deleteTreeHandler(treeId: string) {
     return;
   }
 
-  if (indexToDelete !== tempTreeStore.value.length - 1) {
-    tempTreeStore.value.splice(indexToDelete, 1);
-  } else if (indexToDelete === tempTreeStore.value.length - 1) {
-    selectedTreeIndex.value -= 1
-    tempTreeStore.value.splice(indexToDelete, 1);
+  if (indexToDelete === selectedTreeIndex.value) {
+    selectedTreeIndex.value = Math.min(indexToDelete, tempTreeStore.value.length - 2);
+  } else if (indexToDelete < selectedTreeIndex.value) {
+    selectedTreeIndex.value -= 1;
   }
 
+  tempTreeStore.value.splice(indexToDelete, 1);
 }
 
 function unfocusInput(event) {
