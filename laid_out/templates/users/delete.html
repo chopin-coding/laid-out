@@ -21,7 +21,7 @@
       <form method="post" action="{% url 'users:delete' %}">
         {% csrf_token %}
         <input :disabled="confirmation !== 'confirm deletion'"
-               class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-500 ease-out ring-primarylight enabled:text-textblackdim text-textblackdimmer2 enabled:hover:bg-danger enabled:hover:text-black focus:outline-none"
+               class="rounded cursor-pointer px-3 py-2 ring-1 ring-opacity-5 transition duration-500 ease-out ring-primarylight enabled:text-textblackdim text-textblackdimmer2 enabled:hover:bg-danger enabled:hover:text-black focus:outline-none"
                type="submit"
                value="Delete account forever" />
       </form>

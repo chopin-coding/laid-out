@@ -4,5 +4,5 @@ Hello,
 {% block content %}{% endblock content %}
 
 Best,
-{{ site_name }}
+laid out
 {% endwith %}

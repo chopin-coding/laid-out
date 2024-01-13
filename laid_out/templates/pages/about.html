@@ -5,40 +5,64 @@
 {% endblock title %}
 {% block content %}
   <div class="mx-2 mt-4 mb-10 flex justify-center">
-    <div class="my-auto flex h-full w-full flex-col gap-y-6 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-md">
-      <div class="text-xl">Purpose & Mission</div>
+    <div class="my-auto flex h-full w-full flex-col gap-y-10 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-md">
       <div>
-        At times, people —especially those who suffer from anxiety disorders— feel very anxious for seemingly no good
-        reason. This feeling could be overwhelming, and if prolonged, often leads to depression. Navigating through and
-        managing
-        worries become difficult under the mental fog that accompanies heightened anxiety.
-        <br />
-        <br />
-        Through <i>laying out</i> worries, filtering them by whether they can be controlled, and accepting the
-        uncontrollable to be left with only the actionable, laid out's raison
-        d'être is
-        to help the user manage their anxiety a bit better.
-        <br />
-        <br />
-        While it's largely impossible to <i>cure</i> anxiety solely using this tool, what laid out aims to achieve is
-        merely to help lift some of the mental fog off of the user's mind which in turn would empower them to
-        address the root causes of their anxiety and work towards long-term emotional
-        well-being.
+        Please see our <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+    href="{% url 'privacy' %}">Privacy Policy</a> and <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+    href="{% url 'terms' %}">Terms of Service</a> for detailed information.
       </div>
-      <div class="text-xl">Motivation</div>
-      <div>
-        The motivation for laid out was two-fold at the beginning; to create a tool to manage my anxiety, and by doing
-        that, learn
-        how to code. It was clear from the get-go that if the tool ended up being actually useful, many other people
-        like me could also benefit from it. The prospect of helping people struggling with anxiety made laid out a
-        passion project for me.
+      <div class="flex flex-col gap-y-3">
+        <div class="text-xl font-semibold">Purpose & Mission</div>
+        <div>
+          Laid Out is a mental health focused, free, open source web app with minimalistic utilities to help you help
+          yourself.
+          <br />
+          <br />
+          Our main tool is Anxiety. Through <i>laying out</i> worries, filtering them by whether they can be controlled,
+          and accepting the
+          uncontrollable to be left with only the actionable, the tool aims to help lift some of the mental fog off of
+          your mind.
+        </div>
       </div>
-      <div class="text-xl">Request a Feature</div>
-      <div>If you'd like to see a feature implemented, shoot an email to ihopeidontforget@tochangethis.com!</div>
-      <div class="text-xl">Pricing</div>
-      <div>Laid out will remain free and without ads forever.</div>
-      <div class="text-xl">Contact</div>
-      <div>Contact me at ihopeidontforget@tochangethis.com.</div>
+      <div class="flex flex-col gap-y-3">
+        <div class="text-xl font-semibold">Pricing</div>
+        <div>Laid Out will always be free and without ads.</div>
+      </div>
+      <div class="flex flex-col gap-y-3">
+        <div class="text-xl font-semibold">Contributing</div>
+        <div>There are many ways to contribute:</div>
+        <ul class="list-disc list-inside flex flex-col gap-y-3">
+          <li>
+            A pixel pet: Create a few animations of a pixel pet and submit the sprite sheets to our
+            <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+               href="https://github.com/chopin-coding/laid-out">GitHub repo</a>
+            via an issue labeled "new pixel pet" or simply email it to contact@laid-out.org.
+          </li>
+          <li>
+            Pitch in an idea for a tool: Open an issue labeled "enhancement" on our
+            <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+               href="https://github.com/chopin-coding/laid-out">GitHub repo</a>
+            or simply email it to contact@laid-out.org.
+          </li>
+          <li>
+            Report a bug: Open an issue labeled "bug" on our
+            <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+               href="https://github.com/chopin-coding/laid-out">GitHub repo</a>
+            or simply email it to support@laid-out.org.
+          </li>
+          <li>
+            Fix an issue: This can be done by fixing an existing issue on our
+            <a class="rounded-none text-textblackdimmer underline transition duration-200 group button secondaryAction hover:text-black focus:outline-none"
+               href="https://github.com/chopin-coding/laid-out">GitHub repo</a>
+            and opening a pull request for it.
+          </li>
+          <li>You can also just submit some feedback regarding anything to contact@laid-out.org.</li>
+        </ul>
+      </div>
+      <div class="flex flex-col gap-y-3">
+        <div class="text-xl font-semibold">Contact</div>
+        <div>Contact us at contact@laid-out.org.</div>
+      </div>
     </div>
   </div>
 {% endblock content %}

@@ -306,12 +306,12 @@ CELERY_TASK_SEND_SENT_EVENT = True
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 15
 ACCOUNT_CHANGE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_ADAPTER = "laid_out.users.adapters.AccountAdapter"
 # ACCOUNT_EMAIL_SUBJECT_PREFIX  # TODO?
 
@@ -330,7 +330,6 @@ SOCIALACCOUNT_STORE_TOKENS = False
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": [
-            "profile",
             "email",
         ],
         "AUTH_PARAMS": {

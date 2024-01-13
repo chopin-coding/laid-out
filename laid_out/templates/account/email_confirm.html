@@ -13,7 +13,7 @@
       {% if confirmation %}
         {% user_display confirmation.email_address.user as user_display %}
         {% if can_confirm %}
-          <p>
+          <p class="text-center">
             {% blocktrans with confirmation.email_address.email as email %}Confirm email address
             <a>{{ email }}</a> for user {{ user_display }}?{% endblocktrans %}
           </p>

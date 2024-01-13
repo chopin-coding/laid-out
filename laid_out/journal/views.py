@@ -69,7 +69,7 @@ class JournalViewSet(
                 return Response(
                     data={
                         "detail": "You've reached the maximum number of journals allowed per user. "
-                        "This limit is just to fight bots. Please don't hesitate to contact me"
+                        "This limit is just to fight bots. Please don't hesitate to contact us"
                         " if you'd like to be able to register more journals at once!"
                     },
                     status=400,

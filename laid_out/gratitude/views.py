@@ -72,7 +72,7 @@ class GratitudeJournalViewSet(
                 return Response(
                     data={
                         "detail": "You've reached the maximum number of gratitude journals allowed per user. "
-                        "This limit is just to fight bots. Please don't hesitate to contact me"
+                        "This limit is just to fight bots. Please don't hesitate to contact us"
                         " if you'd like to be able to register more gratitude journals!"
                     },
                     status=400,

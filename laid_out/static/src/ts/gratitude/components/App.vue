@@ -227,7 +227,7 @@ function unfocusInput(event) {
                 >
                   <div class="text-danger">Maximum number of gratitude journals reached</div>
                   <div>
-                    This limit is just to prevent spam. You're awesome for reaching this limit! Please do contact me if
+                    This limit is just to prevent spam. You're awesome for reaching this limit! Please do contact us if
                     you'd like to have more gratitude journals at once!
                   </div>
                 </div>

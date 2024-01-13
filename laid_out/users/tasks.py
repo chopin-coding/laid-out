@@ -23,7 +23,7 @@ def delete_user_task(username: str) -> None:
 @shared_task(max_retries=3)
 def delete_all_inactive_users() -> None:
     log.info("Fetching inactive users")
-
+    # TODO: make more efficient
     try:
         users_to_delete = User.objects.filter(is_active=False)
         if users_to_delete:

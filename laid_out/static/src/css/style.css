@@ -71,7 +71,7 @@
         @apply h-4 w-4 rounded px-3 py-2 accent-primary transition duration-100 ease-out
     }
 
-    .login-form-tag > p > input[type="text"], .login-form-tag > p > input[type="password"] {
+    .login-form-tag > p > input[type="email"], .login-form-tag > p > input[type="password"] {
         @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
     }
 
