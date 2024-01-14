@@ -18,7 +18,7 @@ class TestAnxietyPage:
         assert response.context["user_trees"] is not None
         assert response.context["user_trees"][0]["tree_name"] == "New Tree"
 
-        assert response.context["ANXIETY_API_BASE_URL"] is not None
+        assert response.context["ANXIETY_API_BASE_URL"] != ""
 
     def test_anxiety_view_context_authenticated_user_with_trees(self, user: User, client: Client):
         client.force_login(user=user)
