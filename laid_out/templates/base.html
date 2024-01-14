@@ -7,6 +7,11 @@
     <meta charset="UTF-8"
           name="viewport"
           content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        display: none;
+      }
+    </style>
     <script>
       // On page load or when changing themes, best to add inline in `head` to avoid FOUC
       if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -14,6 +19,17 @@
       } else {
         document.documentElement.classList.remove('dark')
       }
+
+      let domReady = (cb) => {
+        document.readyState === 'interactive' || document.readyState === 'complete' ?
+          cb() :
+          document.addEventListener('DOMContentLoaded', cb);
+      };
+
+      domReady(() => {
+        // Display body when DOM is loaded
+        document.body.style.visibility = 'visible';
+      });
     </script>
     {% vite_asset 'ts/style.ts' %}
     <link rel="shortcut icon"
@@ -32,6 +48,9 @@
     {% endblock head %}
   </head>
   <body class="bg-backg">
+    <script>
+      0
+    </script>
     {% block navbar %}
       {% include 'navbar.html' %}
     {% endblock navbar %}
@@ -46,5 +65,12 @@
     {% block footer %}
       {% include 'footer.html' %}
     {% endblock footer %}
+    <noscript>
+      <style>
+        body {
+          visibility: visible;
+        }
+      </style>
+    </noscript>
   </body>
 </html>
