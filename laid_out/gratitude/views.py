@@ -2,6 +2,7 @@ from logging import getLogger
 
 from django.http import Http404
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -37,7 +38,7 @@ def gratitude_view(request):
         "current_page": "gratitude",
         "user_g_journals": user_g_journals,
         "logged_in": request.user.is_authenticated,
-        "GRATITUDE_JOURNAL_API_BASE_URL": "http://localhost:8000/api/gratitude_journals/",  # FIXME
+        "GRATITUDE_JOURNAL_API_BASE_URL": reverse("api:gratitude-journals-list"),
     }
 
     return render(request, "gratitude/home.html", context=context)

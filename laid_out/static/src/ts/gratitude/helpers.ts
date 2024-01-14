@@ -2,7 +2,10 @@ import {v4 as uuidv4} from "uuid";
 import {GratitudeJournal, GratitudeJournalNode} from "./models";
 import * as timeUtils from "../timeUtils";
 import axios, {AxiosRequestHeaders} from "axios";
+import {getCurrentBaseUrl} from "../common_helpers";
+import urlJoin from "url-join";
 
+const baseUrl: string = getCurrentBaseUrl()
 let API_BASE_URL: string = null;
 const csrftoken: string = (document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement).value;
 
@@ -16,9 +19,10 @@ axios.interceptors.request.use(
 
 
 try {
-  API_BASE_URL = JSON.parse(
+  const apiUri = JSON.parse(
     document.getElementById("GRATITUDE-JOURNAL-API-BASE-URL").textContent,
-  );
+  )
+  API_BASE_URL = urlJoin(baseUrl, apiUri)
 } catch (error) {
   console.log(`Couldn't parse GRATITUDE-JOURNAL-API-BASE-URL: ${error}`);
 }
@@ -85,7 +89,7 @@ export async function updateGratitudeJournal(gratitudeJournal: GratitudeJournal,
   if (loggedIn) {
     try {
       const {status} = await axios.patch(
-        API_BASE_URL + gratitudeJournal.g_journal_id,
+        urlJoin(API_BASE_URL, gratitudeJournal.g_journal_id),
         {g_journal_name: gratitudeJournal.g_journal_name, g_journal_data: gratitudeJournal.g_journal_data},
         {
           headers: {
@@ -114,7 +118,7 @@ export async function updateGratitudeJournal(gratitudeJournal: GratitudeJournal,
 export async function deleteGratitudeJournal(gJournalId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const {status} = await axios.delete(API_BASE_URL + gJournalId, {
+      const {status} = await axios.delete(urlJoin(API_BASE_URL, gJournalId), {
         withCredentials: true,
       });
 

@@ -38,7 +38,7 @@ urlpatterns = [
 # API URLS
 urlpatterns += [
     # API base url
-    path("api/", include("config.api_router", namespace="anxiety-api")),
+    path("api/", include("config.api_router", namespace="api")),
 ]
 
 if settings.DEBUG:

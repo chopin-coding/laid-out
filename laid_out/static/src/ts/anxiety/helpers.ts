@@ -2,7 +2,10 @@ import {v4 as uuidv4} from "uuid";
 import {Tree, TreeNode} from "./models";
 import * as timeUtils from "../timeUtils";
 import axios, {AxiosRequestHeaders} from "axios";
+import {getCurrentBaseUrl} from "../common_helpers";
+import urlJoin from 'url-join';
 
+const baseUrl: string = getCurrentBaseUrl()
 let API_BASE_URL: string = null;
 const csrftoken: string = (document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement).value;
 
@@ -16,9 +19,10 @@ axios.interceptors.request.use(
 
 
 try {
-  API_BASE_URL = JSON.parse(
+  const apiUri = JSON.parse(
     document.getElementById("ANXIETY-API-BASE-URL").textContent,
-  );
+  )
+  API_BASE_URL = urlJoin(baseUrl, apiUri)
 } catch (error) {
   console.log(`Couldn't parse ANXIETY-API-BASE-URL: ${error}`);
 }
@@ -88,7 +92,7 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
   if (loggedIn) {
     try {
       const {status} = await axios.patch(
-        API_BASE_URL + tree.tree_id,
+        urlJoin(API_BASE_URL, tree.tree_id),
         {tree_name: tree.tree_name, tree_data: tree.tree_data},
         {
           headers: {
@@ -117,7 +121,7 @@ export async function updateTree(tree: Tree, loggedIn: boolean) {
 export async function deleteTree(treeId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const {status} = await axios.delete(API_BASE_URL + treeId, {
+      const {status} = await axios.delete(urlJoin(API_BASE_URL, treeId), {
         withCredentials: true,
       });
 

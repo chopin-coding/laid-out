@@ -2,7 +2,10 @@ import {v4 as uuidv4} from "uuid";
 import {Journal} from "./models";
 import * as timeUtils from "../timeUtils";
 import axios, {AxiosRequestHeaders} from "axios";
+import {getCurrentBaseUrl} from "../common_helpers";
+import urlJoin from "url-join";
 
+const baseUrl: string = getCurrentBaseUrl()
 let API_BASE_URL: string = null;
 const csrftoken: string = (document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement).value;
 
@@ -16,9 +19,10 @@ axios.interceptors.request.use(
 
 
 try {
-  API_BASE_URL = JSON.parse(
+  const apiUri = JSON.parse(
     document.getElementById("JOURNAL-API-BASE-URL").textContent,
-  );
+  )
+  API_BASE_URL = urlJoin(baseUrl, apiUri)
 } catch (error) {
   console.log(`Couldn't parse JOURNAL-API-BASE-URL: ${error}`);
 }
@@ -73,7 +77,7 @@ export async function updateJournal(journal: Journal, loggedIn: boolean) {
   if (loggedIn) {
     try {
       const {status} = await axios.patch(
-        API_BASE_URL + journal.journal_id,
+        urlJoin(API_BASE_URL, journal.journal_id),
         {journal_name: journal.journal_name, journal_data: journal.journal_data},
         {
           headers: {
@@ -102,7 +106,7 @@ export async function updateJournal(journal: Journal, loggedIn: boolean) {
 export async function deleteJournal(journalId: string, loggedIn: boolean) {
   if (loggedIn) {
     try {
-      const {status} = await axios.delete(API_BASE_URL + journalId, {
+      const {status} = await axios.delete(urlJoin(API_BASE_URL, journalId), {
         withCredentials: true,
       });
 

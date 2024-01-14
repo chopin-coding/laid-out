@@ -2,6 +2,7 @@ from logging import getLogger
 
 from django.http import Http404
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -15,7 +16,7 @@ log = getLogger(__name__)
 
 
 def anxiety_view(request):
-    # FIXME: needs pagination
+    # TODO: needs pagination
     user_trees = None
 
     try:
@@ -34,7 +35,7 @@ def anxiety_view(request):
         "current_page": "anxiety",
         "user_trees": user_trees,
         "logged_in": request.user.is_authenticated,
-        "ANXIETY_API_BASE_URL": "http://localhost:8000/api/trees/",  # FIXME
+        "ANXIETY_API_BASE_URL": reverse("api:trees-list"),
     }
 
     return render(request, "anxiety/home.html", context=context)
