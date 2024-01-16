@@ -7,7 +7,6 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# laid_out/
 APPS_DIR = BASE_DIR / "laid_out"
 env = environ.Env()
 

@@ -10,10 +10,14 @@ import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import JournalListItemComponent from "./JournalListItemComponent.vue";
 import {config} from "../../config";
 
-// TODO: loggedIn and userTrees error handling
-const loggedIn: boolean = JSON.parse(
-    document.getElementById("logged-in").textContent,
-);
+let loggedIn: boolean = false
+try {
+  loggedIn = JSON.parse(
+      document.getElementById("logged-in").textContent,
+  );
+} catch (e) {
+  console.log(e)
+}
 
 const localJournalStore = useLocalStorage("journal-store", {
   journals: [helpers.defaultJournal()],
@@ -39,7 +43,7 @@ function initializeJournals() {
 
     initializeJournalWatchers();
   } else {
-    // TODO: see if this causes performance issues
+
     tempJournalStore.value = localJournalStore.value.journals;
   }
 }

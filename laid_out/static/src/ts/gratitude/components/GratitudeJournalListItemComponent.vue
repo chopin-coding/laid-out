@@ -49,7 +49,7 @@ async function deleteBtnHandler(treeId: string) {
       }, 152);
     });
   } else {
-    // TODO: handle delete tree failure
+
     loading.value = false;
   }
 }

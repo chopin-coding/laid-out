@@ -16,7 +16,7 @@ log = getLogger(__name__)
 
 
 def gratitude_view(request):
-    # FIXME: needs pagination
+    # TODO: needs pagination
     user_g_journals = None
 
     try:

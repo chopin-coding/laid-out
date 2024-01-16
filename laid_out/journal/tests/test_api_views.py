@@ -59,7 +59,7 @@ class TestJournalApiUpdateView:
         assert response.status_code == 200
         assert updated_journal.journal_name == post_data["journal_name"]
 
-    @pytest.mark.skip  # FIXME
+    @pytest.mark.skip  # TODO
     def test_patch_valid_data(self, user: User, api_client: APIClient):
         api_client.force_login(user=user)
         journal_id = api_client.post(self.endpoint).data["journal_id"]

@@ -11,10 +11,15 @@ import TreeListItemComponent from "./TreeListItemComponent.vue";
 import {config} from "../../config";
 import CharacterAnimation from "../../animations/CharacterAnimation.vue";
 
-// TODO: loggedIn and userTrees error handling
-const loggedIn: boolean = JSON.parse(
-    document.getElementById("logged-in").textContent,
-);
+let loggedIn: boolean = false
+try {
+  loggedIn = JSON.parse(
+      document.getElementById("logged-in").textContent,
+  );
+} catch (e) {
+  console.log(e)
+}
+
 
 const localTreeStore = useLocalStorage("tree-store", {
   trees: [helpers.defaultTree()],
@@ -41,7 +46,7 @@ function initializeTrees() {
 
     initializeTreeWatchers();
   } else {
-    // TODO: see if this causes performance issues
+
     tempTreeStore.value = localTreeStore.value.trees;
   }
 }

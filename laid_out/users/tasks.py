@@ -2,6 +2,7 @@ from logging import getLogger
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 log = getLogger(__name__)
 
@@ -21,10 +22,10 @@ def delete_user_task(username: str) -> None:
 
 
 @shared_task(max_retries=3)
-def delete_all_inactive_users() -> None:
-    log.info("Fetching inactive users")
+def delete_all_inactive_users_task() -> None:
     # TODO: make more efficient
     try:
+        log.info("Fetching inactive users")
         users_to_delete = User.objects.filter(is_active=False)
         if users_to_delete:
             log.info(f"Starting to delete {len(users_to_delete)} inactive users")
@@ -41,3 +42,14 @@ def delete_all_inactive_users() -> None:
     except Exception as e:
         log.error(f"Unexpected error while fetching inactive users: {e}")
         raise
+
+
+@shared_task(bind=True, max_retries=2, rate_limit="1/s")
+def send_email_task(self, email: EmailMultiAlternatives | EmailMessage) -> None:
+    try:
+        log.info("Starting send_email_task")
+        email.send()
+
+    except Exception as e:
+        log.error(f"Unexpected error while sending email. email: {email}" f"error: {e}")
+        self.retry(exc=e, countdown=15)

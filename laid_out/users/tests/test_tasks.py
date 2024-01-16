@@ -2,7 +2,7 @@ import pytest
 from celery.result import EagerResult
 
 from laid_out.users.models import User
-from laid_out.users.tasks import delete_all_inactive_users, delete_user_task
+from laid_out.users.tasks import delete_all_inactive_users_task, delete_user_task
 
 pytestmark = [pytest.mark.django_db, pytest.mark.unit]
 
@@ -24,7 +24,7 @@ class TestDeleteAllInactiveUsersTask:
         user.is_active = False
         user.save()
 
-        task_result = delete_all_inactive_users.delay()
+        task_result = delete_all_inactive_users_task.delay()
 
         # the user is deleted
         assert isinstance(task_result, EagerResult)
@@ -34,7 +34,7 @@ class TestDeleteAllInactiveUsersTask:
     def test_no_inactive_users_exist(self, user: User, settings):
         settings.CELERY_TASK_ALWAYS_EAGER = True
 
-        task_result = delete_all_inactive_users.delay()
+        task_result = delete_all_inactive_users_task.delay()
 
         # the user is not deleted
         assert isinstance(task_result, EagerResult)

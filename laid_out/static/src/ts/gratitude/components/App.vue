@@ -10,10 +10,14 @@ import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import GratitudeJournalListItemComponent from "./GratitudeJournalListItemComponent.vue";
 import {config} from "../../config";
 
-// TODO: loggedIn and userTrees error handling
-const loggedIn: boolean = JSON.parse(
-    document.getElementById("logged-in").textContent,
-);
+let loggedIn: boolean = false
+try {
+  loggedIn = JSON.parse(
+      document.getElementById("logged-in").textContent,
+  );
+} catch (e) {
+  console.log(e)
+}
 
 const localGratitudeJournalStore = useLocalStorage("gratitude-journal-store", {
   gratitudeJournals: [helpers.defaultGratitudeJournal()],
@@ -39,7 +43,7 @@ function initializeGratitudeJournals() {
 
     initializeGratitudeJournalWatchers();
   } else {
-    // TODO: see if this causes performance issues
+
     tempGratitudeJournalStore.value = localGratitudeJournalStore.value.gratitudeJournals;
   }
 }

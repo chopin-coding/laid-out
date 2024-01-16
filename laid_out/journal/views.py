@@ -16,7 +16,7 @@ log = getLogger(__name__)
 
 
 def journal_view(request):
-    # FIXME: needs pagination
+    # TODO: needs pagination
     user_journals = None
 
     try:

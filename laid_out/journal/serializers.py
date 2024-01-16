@@ -23,7 +23,6 @@ class JournalSerializer(serializers.Serializer):
 
     @staticmethod
     def validate_journal_data(data):
-        # TODO: bleach.py this
         try:
             _ = {"journal_data": JournalData(text=data)}
         except ValidationError as e:
