@@ -1,9 +1,9 @@
 version: '3'
 
 volumes:
-  production_postgres_data: {}
-  production_postgres_data_backups: {}
-  production_traefik: {}
+  production_postgres_data: { }
+  production_postgres_data_backups: { }
+  production_traefik: { }
 
 services:
   django: &django
@@ -45,6 +45,18 @@ services:
       - '0.0.0.0:80:80'
       - '0.0.0.0:443:443'
       - '0.0.0.0:5555:5555'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile
+    image: laid_out_production_nginx
+    depends_on:
+      - django
+    volumes:
+      - production_postgres_data:/usr/share/nginx/media
+    ports:
+      - '0.0.0.0:5000:80'
 
   redis:
     image: redis:6
