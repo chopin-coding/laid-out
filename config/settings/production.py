@@ -93,6 +93,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+STATIC_HOST = env("DJANGO_STATIC_HOST", default="")
+STATIC_URL = STATIC_HOST + "/static/"
+
 # MEDIA
 # ------------------------------------------------------------------------------
 MEDIA_URL = f"https://{aws_s3_domain}/media/"
