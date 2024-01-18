@@ -28,7 +28,7 @@ class AccountAdapter(DefaultAccountAdapter):
             log.info("Starting send_mail")
             ctx = {
                 "email": email,
-                "current_site": get_current_site(context["request"]),
+                "current_site": get_current_site(self.request),
             }
             ctx.update(context)
             msg = self.render_mail(template_prefix, email, ctx)
@@ -47,6 +47,7 @@ class AccountAdapter(DefaultAccountAdapter):
                 f"context: {context}\n"
                 f"error: {e}"
             )
+            raise
 
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):

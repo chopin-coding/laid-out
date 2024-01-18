@@ -44,12 +44,12 @@ def delete_all_inactive_users_task() -> None:
         raise
 
 
-@shared_task(bind=True, max_retries=2, rate_limit="1/s")
-def send_email_task(self, email: EmailMultiAlternatives | EmailMessage) -> None:
+@shared_task(rate_limit="1/s")
+def send_email_task(email: EmailMultiAlternatives | EmailMessage) -> None:
     try:
         log.info("Starting send_email_task")
         email.send()
 
     except Exception as e:
         log.error(f"Unexpected error while sending email. email: {email}" f"error: {e}")
-        self.retry(exc=e, countdown=15)
+        raise
