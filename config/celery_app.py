@@ -23,7 +23,6 @@ app.conf.beat_schedule = {
 app.conf.beat_schedule = {
     "daily-db-backup-verifier": {
         "task": "laid_out.users.tasks.verify_db_backup_task",
-        # 'schedule': crontab(hour='16', minute='30'),
-        "schedule": crontab(),
+        "schedule": crontab(hour="16", minute="30"),
     },
 }
