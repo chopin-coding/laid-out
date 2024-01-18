@@ -1,6 +1,9 @@
+from datetime import datetime, timedelta, timezone
 from logging import getLogger
 
+import boto3
 from celery import shared_task
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 
@@ -52,4 +55,39 @@ def send_email_task(email: EmailMultiAlternatives | EmailMessage) -> None:
 
     except Exception as e:
         log.error(f"Unexpected error while sending email. email: {email}" f"error: {e}")
+        raise
+
+
+@shared_task(max_retries=3)
+def verify_db_backup_task():
+    """
+    Verifies that the daily backup was uploaded to s3.
+    """
+    try:
+        log.info("Starting verify_db_backup_task")
+        s3_bucket = settings.AWS_STORAGE_BUCKET_NAME
+        s3_prefix = "backups/"
+
+        session = boto3.Session(
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+        s3_client = session.client("s3")
+
+        response = s3_client.list_objects_v2(Bucket=s3_bucket, Prefix=s3_prefix)
+
+        if "Contents" in response:
+            newest_item = max(obj["LastModified"] for obj in response["Contents"])
+            utcnow = datetime.now(timezone.utc)
+            time_difference = utcnow - newest_item.astimezone(timezone.utc)
+
+            if time_difference > timedelta(minutes=30):
+                log.error("Daily backup not found. Check backup_script.log.")
+            else:
+                log.info("Daily backup successful.")
+
+        else:
+            log.error("No objects found in backups/ folder")
+    except Exception as e:
+        log.error(f"Unexpected error in verify_db_backup_task: {e}")
         raise
