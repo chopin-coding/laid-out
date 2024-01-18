@@ -18,4 +18,11 @@ $DOCKER_COMPOSE_BACKUP >> "$LOG_FILE" 2>&1
 echo "$(date): Starting upload to AWS S3" >> "$LOG_FILE"
 $DOCKER_COMPOSE_UPLOAD >> "$LOG_FILE" 2>&1
 
+# Check if the upload was successful (look for the SUCCESS message in the log)
+if grep -q "SUCCESS: Finished uploading and cleaning." "$LOG_FILE"; then
+    # If successful, delete the backup file
+    echo "$(date): Deleting backup file" >> "$LOG_FILE"
+    rm -f "${SCRIPT_DIR}/backups/*.sql.gz" >> "$LOG_FILE" 2>&1
+fi
+
 echo "$(date): Backup and upload complete" >> "$LOG_FILE"
