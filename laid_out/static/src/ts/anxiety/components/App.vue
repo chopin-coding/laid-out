@@ -364,7 +364,7 @@ function unfocusInput(event) {
                 <TransitionBasic duration="150">
                   <div
                       v-show="syncWarningExpanded"
-                      class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
+                      class="absolute top-0 sm:right-0 mt-14 sm:-ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
                   >
                     <span class="inline-block text-sm leading-tight"
                     >Your data has been saved to this device only. Log in to
