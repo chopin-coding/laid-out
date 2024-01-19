@@ -32,7 +32,6 @@ def anxiety_view(request):
         raise
 
     context = {
-        "current_page": "anxiety",
         "user_trees": user_trees,
         "logged_in": request.user.is_authenticated,
         "ANXIETY_API_BASE_URL": reverse("api:trees-list"),

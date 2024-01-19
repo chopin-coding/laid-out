@@ -35,7 +35,6 @@ def gratitude_view(request):
         raise
 
     context = {
-        "current_page": "gratitude",
         "user_g_journals": user_g_journals,
         "logged_in": request.user.is_authenticated,
         "GRATITUDE_JOURNAL_API_BASE_URL": reverse("api:gratitude-journals-list"),

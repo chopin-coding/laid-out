@@ -32,7 +32,6 @@ def journal_view(request):
         raise
 
     context = {
-        "current_page": "journal",
         "user_journals": user_journals,
         "logged_in": request.user.is_authenticated,
         "JOURNAL_API_BASE_URL": reverse("api:journals-list"),

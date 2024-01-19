@@ -11,9 +11,7 @@ def user_detail_view(request):
     if not request.user.is_authenticated:
         return redirect(reverse("account_login"))
 
-    context = {
-        "current_page": "user_detail",
-    }
+    context = {}
 
     return render(request, "users/detail.html", context=context)
 
@@ -53,8 +51,6 @@ def user_delete_view(request):
             finally:
                 return redirect(reverse("home"))
 
-    context = {
-        "current_page": "user_delete",
-    }
+    context = {}
 
     return render(request, "users/delete.html", context=context)

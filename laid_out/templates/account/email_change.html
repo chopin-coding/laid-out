@@ -6,47 +6,56 @@
   {% trans "Email Address" %}
 {% endblock title %}
 {% block content %}
-  <div class="mx-2 my-10">
-    <div class="my-auto flex h-full w-full max-w-sm flex-col gap-y-6 px-3 py-8 text-textblackdim focus:outline-none sm:max-w-screen-xl">
+  <div class="mx-2 my-6">
+    <div class="my-auto flex h-full w-full max-w-sm flex-col gap-y-6 px-3 py-2 text-textblackdim focus:outline-none sm:max-w-screen-xl">
       {% if emailaddresses %}
-        <div class="flex flex-col gap-y-2">
-          <div class="text-2xl">{% trans "Email Address" %}</div>
-          {% if current_emailaddress %}
-            <p>
-              {% trans 'The following email address is associated with your account:' %} <a>{{ current_emailaddress.email }}</a>
-            </p>
-          {% endif %}
-          {% if new_emailaddress %}
-            <p>
-              {% trans 'Your email address is still pending verification:' %} <a>{{ new_emailaddress.email }}</a>
-            </p>
-            <form method="post" action="{% url 'account_email' %}">
-              {% csrf_token %}
-              <input type="hidden" name="email" value="{{ new_emailaddress.email }}" />
-              <button class="mt-2 rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
-                      type="submit"
-                      name="action_send">{% trans 'Resend Verification Email' %}</button>
-            </form>
-          {% endif %}
+        <div class="flex flex-col gap-y-6">
+          <div class="text-2xl text-center">{% trans "Email Address" %}</div>
+          <div class="flex flex-col md:flex-row gap-y-6 gap-x-10">
+            <div>
+              <div class="text-textblackdimmer mb-3">{{ user.email }}</div>
+              {% include 'partials/account_panel.html' %}
+            </div>
+            <div class="flex flex-col gap-y-6 md:mt-8">
+              {% if current_emailaddress %}
+                <p>
+                  {% trans 'The following email address is associated with your account:' %}
+                  <a>{{ current_emailaddress.email }}</a>
+                </p>
+              {% endif %}
+              {% if new_emailaddress %}
+                <p>
+                  {% trans 'Your email address is still pending verification:' %} <a>{{ new_emailaddress.email }}</a>
+                </p>
+                <form method="post" action="{% url 'account_email' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="email" value="{{ new_emailaddress.email }}" />
+                  <button class="mt-2 rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+                          type="submit"
+                          name="action_send">{% trans 'Resend Verification Email' %}</button>
+                </form>
+              {% endif %}
+              <div class="flex flex-col gap-y-2">
+                <div class="text-xl">{% trans "Change Email Address" %}</div>
+                <form class="mt-2 flex flex-col gap-y-4"
+                      method="post"
+                      action="{% url 'account_email' %}">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <div>
+                    <button class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+                            name="action_add"
+                            type="submit">{% trans "Change Email" %}</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       {% else %}
         {# irrelevant since email is required #}
         {% include "account/snippets/warn_no_email.html" %}
       {% endif %}
-      <div class="flex flex-col gap-y-2">
-        <div class="text-xl">{% trans "Change Email Address" %}</div>
-        <form class="mt-2 flex flex-col gap-y-4"
-              method="post"
-              action="{% url 'account_email' %}">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <div>
-            <button class="rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
-                    name="action_add"
-                    type="submit">{% trans "Change Email" %}</button>
-          </div>
-        </form>
-      </div>
     </div>
   </div>
   <script>

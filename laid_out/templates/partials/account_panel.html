@@ -1,0 +1,34 @@
+<div class="w-80">
+  <div class="flex flex-col w-full bg-white divide-y divide-primarylight rounded py-1 shadow-lg ring-1 ring-primarylight ring-opacity-5 focus:outline-none"
+       role="menu"
+       aria-orientation="vertical"
+       aria-labelledby="user-menu-button"
+       tabindex="-1">
+    {% url 'users:detail' as url %}
+    <a href="{{ url }}"
+       class="{% if request.path == url %} bg-primary text-white font-medium {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-textblackdimmer  rounded-md px-3 py-2 "
+       role="menuitem"
+       tabindex="-1">Settings home</a>
+    {% url 'socialaccount_connections' as url %}
+    <a href="{{ url }}"
+       class="{% if request.path == url %} bg-primary text-white font-medium {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-textblackdimmer  rounded-md px-3 py-2 "
+       role="menuitem"
+       tabindex="-1">Social authentication</a>
+    {% url 'account_email' as url %}
+    <a href="{{ url }}"
+       class="{% if request.path == url %} bg-primary text-white font-medium {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-textblackdimmer  rounded-md px-3 py-2 "
+       role="menuitem"
+       tabindex="-1">Change email</a>
+    {% url 'account_change_password' as url %}
+    {% url 'account_set_password' as url2 %}
+    <a href="{{ url }}"
+       class="{% if request.path == url or request.path == url2 %} bg-primary text-white font-medium {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-textblackdimmer  rounded-md px-3 py-2 "
+       role="menuitem"
+       tabindex="-1">Set or change password</a>
+    {% url 'users:delete' as url %}
+    <a href="{{ url }}"
+       class="{% if request.path == url %} bg-primary text-white font-medium {% else %} text-warning transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-textblackdimmer  rounded-md px-3 py-2 "
+       role="menuitem"
+       tabindex="-1">Delete account</a>
+  </div>
+</div>

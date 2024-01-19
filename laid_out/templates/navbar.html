@@ -63,9 +63,9 @@
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:divide-x sm:divide-primarylight sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <div class="mr-3 hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-              <a href="{% url 'home' %}"
-                 class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium"
-                 aria-current="page">Home</a>
+              {% url 'home' as url %}
+              <a href="{{ url }}"
+                 class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">Home</a>
               <!-- Dropdown -->
               <div x-data="{ toolMenuOpen: false }" class="relative z-20">
                 <button x-on:click="toolMenuOpen = !toolMenuOpen"
@@ -137,8 +137,9 @@
                   Journal</a>
                 </div>
               </div>
-              <a href="{% url 'about' %}"
-                 class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">About</a>
+              {% url 'about' as url %}
+              <a href="{{ url }}"
+                 class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">About</a>
             </div>
           </div>
           <div class="flex items-center">
@@ -320,8 +321,9 @@
             <span class="mx-3 text-3xl font-black italic text-primary">laid out</span>
           </a>
         </div>
-        <a href="{% url 'home' %}"
-           class="{% if current_page == 'home' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
+        {% url 'home' as url %}
+        <a href="{{ url }}"
+           class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">Home</a>
         <button x-on:click="toolMenuOpen = !toolMenuOpen"
                 @click.outside="toolMenuOpen = false"
@@ -383,8 +385,9 @@
             <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
           </svg>
         Journal</a>
-        <a href="{% url 'about' %}"
-           class="{% if current_page == 'about' %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
+        {% url 'about' as url %}
+        <a href="{{ url }}"
+           class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
            aria-current="page">About</a>
       </div>
     </div>
