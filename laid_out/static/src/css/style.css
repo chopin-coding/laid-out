@@ -4,121 +4,146 @@
 
 
 [x-cloak] {
-    display: none !important;
+  display: none !important;
 }
 
 @layer base {
 
-    :root {
-        --color-textwhite: 243 243 243;
-        --color-textblack: 11 24 24;
-        --color-white: 255 255 255;
-        --color-black: 0 0 0;
-        --color-backg: 255 255 255;
-        --color-primary: 0 82 82;
-        --color-secondary: 245 254 255;
-        --color-accent: 0 10 10;
-        --color-warning: 255 160 0;
-        --color-danger: 168 27 27;
-    }
+  :root {
+    --color-textwhite: 243 243 243;
+    --color-textblack: 11 24 24;
+    --color-white: 255 255 255;
+    --color-black: 0 0 0;
+    --color-backg: 255 255 255;
+    --color-primary: 0 82 82;
+    --color-secondary: 245 254 255;
+    --color-accent: 0 10 10;
+    --color-warning: 255 160 0;
+    --color-danger: 168 27 27;
 
-    :root[class~="dark"] {
-        --color-textwhite: 11 24 24;
-        --color-textblack: 243 243 243;
-        --color-white: 0 0 0;
-        --color-black: 255 255 255;
-        --color-backg: 1 12 19;
-        --color-primary: 173 255 255;
-        --color-secondary: 0 9 10;
-        --color-accent: 245 255 255;
-        --color-warning: 237 150 0;
-        --color-danger: 228 88 88;
-    }
+    --color-gradient-1: 241 242 249;
+    --color-gradient-2: 248 239 251;
+    --color-gradient-3: 245 241 249;
+  }
 
-    html {
-        font-family: "Poppins", system-ui, sans-serif;
-    }
+  :root[class~="dark"] {
+    --color-textwhite: 11 24 24;
+    --color-textblack: 243 243 243;
+    --color-white: 0 0 0;
+    --color-black: 255 255 255;
+    --color-backg: 1 12 19;
+    --color-primary: 173 255 255;
+    --color-secondary: 0 9 10;
+    --color-accent: 245 255 255;
+    --color-warning: 237 150 0;
+    --color-danger: 228 88 88;
 
-    body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-    }
+    /*--color-gradient-1: 1 14 23;*/
+    /*--color-gradient-2: 1 14 23;*/
+    /*--color-gradient-3: 1 12 19;*/
 
-    .main-content {
-        flex: 1; /* Fill remaining space */
-    }
+    --color-gradient-1: 2 13 24;
+    --color-gradient-2: 3 15 26;
+    --color-gradient-3: 1 14 23;
+  }
 
-    nav, footer {
-        height: auto; /* Let content determine height */
-    }
+  html {
+    font-family: "Poppins", system-ui, sans-serif;
+  }
 
-    /* allauth login */
-    .allauth-login-and-password {
-        @apply flex flex-col w-full gap-y-1 justify-between
-    }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
 
-    .allauth-login-and-password > span[class='helptext'] {
-        @apply hidden
-    }
-
-    .allauth-remember {
-        @apply flex w-full gap-x-2 items-center text-textblackdimmer text-sm
-    }
-
-    #id_remember {
-        @apply h-4 w-4 rounded px-3 py-2 accent-primary transition duration-100 ease-out
-    }
-
-    .login-form-tag > p > input[type="email"], .login-form-tag > p > input[type="password"] {
-        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
-    }
-
-    .login-form-tag > p > label[for="id_login"], .login-form-tag > p > label[for="id_password"] {
-        @apply hidden
-    }
-
-    /* /allauth login */
-    /* allauth change email */
-    .allauth-change-email {
-        @apply flex w-full text-textblackdimmer
-    }
-
-    .allauth-change-email > input[type="email"] {
-        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
-    }
-
-    /* allauth change email */
-    /* allauth change pass */
-    .allauth-change-pass > p > input {
-        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
-    }
-
-    .allauth-change-pass > ul {
-        @apply text-textblackdimmer flex flex-col gap-y-2 text-sm
-    }
-
-    .allauth-signup-form > p > input {
-        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
-    }
-
-    .allauth-signup-form > ul {
-        @apply text-textblackdimmer flex flex-col gap-y-2 text-sm sm:px-4 px-1
-    }
+    background: linear-gradient(129deg,
+    rgba(var(--color-backg) / 1) 19%,
+    rgba(var(--color-gradient-1) / 1) 23%,
+    rgba(var(--color-gradient-2) / 1) 25%,
+    rgba(var(--color-gradient-3) / 1) 27%,
+    rgba(var(--color-backg) / 1) 31%,
+    rgba(var(--color-backg) / 1) 59%,
+    rgba(var(--color-gradient-1) / 1) 62%,
+    rgba(var(--color-gradient-2) / 1) 64%,
+    rgba(var(--color-backg) / 1) 68%,
+    rgba(var(--color-backg) / 1) 99%);
+  }
 
 
-    /* allauth change pass */
-    /* allauth reset pass */
-    .allauth-reset-pass > p > input {
-        @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
-    }
+  .main-content {
+    flex: 1; /* Fill remaining space */
+  }
 
-    /* allauth reset pass */
-    /* allauth error text */
-    .errorlist, .errorlist > li {
-        @apply text-danger text-sm
-    }
+  nav, footer {
+    height: auto; /* Let content determine height */
+  }
 
-    /* allauth error text */
+  /* allauth login */
+  .allauth-login-and-password {
+    @apply flex flex-col w-full gap-y-1 justify-between
+  }
+
+  .allauth-login-and-password > span[class='helptext'] {
+    @apply hidden
+  }
+
+  .allauth-remember {
+    @apply flex w-full gap-x-2 items-center text-textblackdimmer text-sm
+  }
+
+  #id_remember {
+    @apply h-4 w-4 rounded px-3 py-2 accent-primary transition duration-100 ease-out
+  }
+
+  .login-form-tag > p > input[type="email"], .login-form-tag > p > input[type="password"] {
+    @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+  }
+
+  .login-form-tag > p > label[for="id_login"], .login-form-tag > p > label[for="id_password"] {
+    @apply hidden
+  }
+
+  /* /allauth login */
+  /* allauth change email */
+  .allauth-change-email {
+    @apply flex w-full text-textblackdimmer
+  }
+
+  .allauth-change-email > input[type="email"] {
+    @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+  }
+
+  /* allauth change email */
+  /* allauth change pass */
+  .allauth-change-pass > p > input {
+    @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+  }
+
+  .allauth-change-pass > ul {
+    @apply text-textblackdimmer flex flex-col gap-y-2 text-sm
+  }
+
+  .allauth-signup-form > p > input {
+    @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+  }
+
+  .allauth-signup-form > ul {
+    @apply text-textblackdimmer flex flex-col gap-y-2 text-sm sm:px-4 px-1
+  }
+
+
+  /* allauth change pass */
+  /* allauth reset pass */
+  .allauth-reset-pass > p > input {
+    @apply rounded px-3 py-2 bg-white ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim focus:outline-none
+  }
+
+  /* allauth reset pass */
+  /* allauth error text */
+  .errorlist, .errorlist > li {
+    @apply text-danger text-sm
+  }
+
+  /* allauth error text */
 }

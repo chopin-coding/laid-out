@@ -10,13 +10,13 @@
   <div class="mx-4 my-10">
     <div class="mx-auto my-auto flex h-full w-full max-w-sm flex-col items-center justify-center gap-y-8 rounded-md bg-white px-4 py-8 align-middle shadow-lg ring-1 ring-opacity-5 text-textblackdim ring-primarylight focus:outline-none">
       <div class="text-3xl">{% blocktrans %}Log in{% endblocktrans %}</div>
-      <div class="flex gap-x-1 text-sm text-textblackdimmer">
+      <div class="flex gap-x-1 text-sm text-textblackdimmer justify-center items-center">
         {% blocktranslate %}
           <span>
               Don't have an account?
             </span>
-          <div class="flex">
-            <a class="rounded-none transition duration-200 group button secondaryAction hover:text-black focus:outline-none" href="{{ signup_url }}">Sign up!
+          <div class="flex justify-center items-center">
+            <a class="transition duration-200 bg-primarylight justify-center items-center rounded px-2 py-1.5 group button secondaryAction hover:text-black focus:outline-none" href="{{ signup_url }}">Sign up!
               <span class="block max-w-0 transition-all duration-200 h-0.5 bg-primary group-hover:max-w-full"></span>
             </a>
           </div>

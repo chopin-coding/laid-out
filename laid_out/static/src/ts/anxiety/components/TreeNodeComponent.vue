@@ -121,7 +121,7 @@ onMounted(() => {
                   node.title === '' && (!singleNodeLeft || nodeType !== 'root') && emit('deleteBtnHandler', props.node.node_id)
                 "
                   @input="nodeResize"
-                  class="w-full resize-none rounded px-2 py-2 align-middle text-sm transition duration-300 ease-out bg-backg placeholder-textblackdimmer2 focus:outline-none"
+                  class="w-full resize-none rounded bg-backg px-2 py-2 align-middle text-sm transition duration-300 ease-out placeholder-textblackdimmer2 focus:outline-none"
                   :class="{
                   'text-textblackdimmer2 line-through':
                     parentNodeLocked || node.locked,
