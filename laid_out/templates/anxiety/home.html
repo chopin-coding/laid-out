@@ -14,13 +14,6 @@
 {% endblock head %}
 {% block content %}
   {% csrf_token %}
-  <img id="cat_01_base"
-       hidden
-       src="{% static 'spritesheets/cat_01/base.png' %}"
-       alt="" />
-  <img id="cat_01_blink"
-       hidden
-       src="{% static 'spritesheets/cat_01/blink.png' %}"
-       alt="" />
+  {% include 'partials/cat_images.html' %}
   <div id="app"></div>
 {% endblock content %}

@@ -9,6 +9,7 @@ import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import GratitudeJournalListItemComponent from "./GratitudeJournalListItemComponent.vue";
 import {config} from "../../config";
+import CharacterAnimation from "../../animations/CharacterAnimation.vue";
 
 let loggedIn: boolean = false
 try {
@@ -171,8 +172,15 @@ function unfocusInput(event) {
 
 <template v-cloak>
   <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
-    <div class="text-4xl text-center  font-semibold text-textblackdimmer mt-8">
-      Gratitude Journal
+    <div class="mt-8 flex flex-col sm:flex-row align-items-middle justify-content-center">
+      <div class="order-1 sm:order-2 sm:mx-auto text-4xl text-center font-semibold text-textblackdimmer">
+        Gratitude
+      </div>
+      <CharacterAnimation
+          class="order-2 sm:order-1"
+          character="cat_01"
+      />
+
     </div>
     <div
         class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
@@ -181,7 +189,7 @@ function unfocusInput(event) {
       <!--  G Journal List  -->
       <!-- Mobile g journal list: on top, sm:on the left -->
       <div
-          class="mt-8 w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
+          class="w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
         <div class="divide-y divide-solid divide-primarylight">
           <div>

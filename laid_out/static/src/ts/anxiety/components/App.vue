@@ -185,14 +185,12 @@ function unfocusInput(event) {
       />
     </div>
 
-
     <div
         class="flex h-full w-full flex-col gap-y-10 items-center lg:flex-row lg:items-start lg:gap-x-5"
     >
 
       <!--  Tree List  -->
       <!-- Mobile tree list: on top, sm:on the left -->
-
 
       <div
           class="w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"

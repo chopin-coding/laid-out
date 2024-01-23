@@ -14,5 +14,5 @@
 {% endblock head %}
 {% block content %}
   {% csrf_token %}
-  <div id="app"></div>
+  {% include 'partials/cat_images.html' %}
 {% endblock content %}

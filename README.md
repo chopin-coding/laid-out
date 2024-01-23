@@ -12,6 +12,7 @@
 > A self-help web app.
 
 ## Install
+TODO: add info about precommit?
 TODO: Gotta find a solution for allauth social auth credentials
 ```sh
 docker compose --file local.yml up --build -d
