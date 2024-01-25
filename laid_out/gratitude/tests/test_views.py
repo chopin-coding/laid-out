@@ -15,7 +15,7 @@ class TestGratitudePage:
 
         assert response.context["logged_in"]
         assert response.context["user_g_journals"] is not None
-        assert response.context["user_g_journals"][0]["g_journal_name"] == "New Gratitude"
+        assert response.context["user_g_journals"][0]["g_journal_name"] == "Tutorial"
 
     def test_gratitude_view_context_authenticated_user_with_g_journals(self, user: User, client: Client):
         client.force_login(user=user)

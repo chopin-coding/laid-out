@@ -16,7 +16,7 @@ class TestAnxietyPage:
         assert response.context["logged_in"]
 
         assert response.context["user_trees"] is not None
-        assert response.context["user_trees"][0]["tree_name"] == "New Tree"
+        assert response.context["user_trees"][0]["tree_name"] == "Tutorial"
 
         assert response.context["ANXIETY_API_BASE_URL"] != ""
 
