@@ -66,15 +66,18 @@ export function demoGratitudeJournal(): GratitudeJournal {
       "title": "It could be a very small thing that happened today",
       "node_id": "152c94c3-7d16-4ea0-bf79-17d3c2a26ca8"
     }, {
-      "title": "Or something bigger and more general",
+      "title": "Or something more significant",
       "node_id": "efc755be-be18-4e7c-9f6c-56adc684c900"
     }, {
-      "title": "You can write down as many or as few as you like",
+      "title": "You can write down as many or as few as you'd like",
       "node_id": "f4175def-b4b9-473a-8fc9-7759b5c1f6c4"
     }, {
       "title": "5 items a day is great",
       "node_id": "c881f54a-a947-4963-9cec-9cb95f56a445"
-    }, {"title": "To get started, create a new gratitude entry!", "node_id": "7f1704c6-42c3-4ca6-9b45-c4004779c082"}],
+    }, {
+      "title": "To get started, create a new gratitude entry via \"Create new\"",
+      "node_id": "7f1704c6-42c3-4ca6-9b45-c4004779c082"
+    }],
     date_modified: timeUtils.toDjangoTimeString(new Date()),
     date_created: timeUtils.toDjangoTimeString(new Date()),
   };

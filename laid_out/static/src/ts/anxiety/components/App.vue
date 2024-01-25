@@ -390,10 +390,6 @@ function unfocusInput(event) {
         </div>
 
         <div class="flex gap-x-3 text-textblackdim">
-          <div>
-            <span class="text-lg text-textblackdim">Uncontrollable</span>
-          </div>
-
           <button
               class="transition duration-100 ease-out fill-textblackdimmer hover:fill-black"
               v-on:click="hideUncontrollable = !hideUncontrollable"
@@ -402,7 +398,7 @@ function unfocusInput(event) {
             <TransitionBasic>
               <!-- Not visible -->
               <svg
-                  v-if="hideUncontrollable"
+                  v-if="!hideUncontrollable"
                   class="h-7 w-7"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -419,7 +415,7 @@ function unfocusInput(event) {
               </svg>
               <!-- Visible -->
               <svg
-                  v-else-if="!hideUncontrollable"
+                  v-else-if="hideUncontrollable"
                   class="h-7 w-7"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -433,6 +429,15 @@ function unfocusInput(event) {
               </svg>
             </TransitionBasic>
           </button>
+
+          <div v-if="!hideUncontrollable">
+            <span class="text-lg text-textblackdim">Hide uncontrollable</span>
+          </div>
+          <div v-else>
+            <span class="text-lg text-textblackdim">Show uncontrollable</span>
+          </div>
+
+
         </div>
 
         <!--   Tree   -->
