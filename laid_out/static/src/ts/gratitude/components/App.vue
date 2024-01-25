@@ -21,7 +21,7 @@ try {
 }
 
 const localGratitudeJournalStore = useLocalStorage("gratitude-journal-store", {
-  gratitudeJournals: [helpers.defaultGratitudeJournal()],
+  gratitudeJournals: [helpers.demoGratitudeJournal()],
 });
 let syncTimerBaseCount = config.SYNC_TIMER_DURATION_MS;
 

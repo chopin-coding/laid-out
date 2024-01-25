@@ -33,6 +33,67 @@ def default_tree_data():
     return [default_tree_node()]
 
 
+def demo_tree_data():
+    return [
+        {
+            "title": "Welcome to Anxiety!",
+            "locked": False,
+            "node_id": "7b7308fe-9c1b-4f1a-b081-9463e01ad19c",
+            "children": [],
+        },
+        {
+            "title": "Write down your worries",
+            "locked": False,
+            "node_id": "ca6d96c7-0149-4ec0-bf84-e2a65600581e",
+            "children": [],
+        },
+        {
+            "title": "Break each worry down",
+            "locked": False,
+            "node_id": "b28ddc71-7d7f-4e35-a356-c00b5af839a4",
+            "children": [
+                {
+                    "title": "into parts",
+                    "locked": False,
+                    "node_id": "55bb6223-6655-4dfd-80e5-27d1935b3b32",
+                    "children": [
+                        {
+                            "title": "if you like",
+                            "locked": False,
+                            "node_id": "41344c91-14a4-439a-a471-fded11f73674",
+                            "children": [],
+                        }
+                    ],
+                }
+            ],
+        },
+        {
+            "title": "Cross off the ones that you can't control right now",
+            "locked": True,
+            "node_id": "a7babe33-46cc-4ff9-88c4-ee16cae90eef",
+            "children": [],
+        },
+        {
+            "title": "Accept the ones you can't control right now",
+            "locked": False,
+            "node_id": "f7fab8b7-4883-4e67-b765-48b1e239e848",
+            "children": [],
+        },
+        {
+            "title": "Finally, action the rest",
+            "locked": False,
+            "node_id": "3d4b4f55-ab54-4aa4-a4be-b476e0e5fc7a",
+            "children": [],
+        },
+        {
+            "title": "To get started, create a new anxiety tree!",
+            "locked": False,
+            "node_id": "19cc5385-aa61-467c-80a6-9f031cd3f715",
+            "children": [],
+        },
+    ]
+
+
 class AnxietyTree(models.Model):
     tree_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tree_name = models.CharField(max_length=50, null=True, blank=True, default="New Tree")

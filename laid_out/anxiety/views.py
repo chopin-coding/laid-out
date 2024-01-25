@@ -8,7 +8,7 @@ from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from laid_out.anxiety.models import AnxietyTree
+from laid_out.anxiety.models import AnxietyTree, demo_tree_data
 from laid_out.anxiety.permissions import IsOwner
 from laid_out.anxiety.serializers import AnxietyTreeSerializer
 
@@ -23,7 +23,7 @@ def anxiety_view(request):
         if request.user.is_authenticated:
             queryset = request.user.anxiety_trees.all().order_by("-date_modified")
             if not queryset.exists():
-                AnxietyTree.objects.create(owner=request.user)
+                AnxietyTree.objects.create(owner=request.user, tree_data=demo_tree_data(), tree_name="Tutorial")
 
             serializer = AnxietyTreeSerializer(queryset, many=True)
             user_trees = serializer.data

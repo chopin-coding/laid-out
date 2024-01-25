@@ -8,7 +8,7 @@ from rest_framework.generics import get_object_or_404 as drf_get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from laid_out.gratitude.models import GratitudeJournal
+from laid_out.gratitude.models import GratitudeJournal, demo_g_journal_data
 from laid_out.gratitude.permissions import IsOwner
 from laid_out.gratitude.serializers import GratitudeJournalSerializer
 
@@ -23,7 +23,9 @@ def gratitude_view(request):
         if request.user.is_authenticated:
             queryset = request.user.gratitude_journals.all().order_by("-date_modified")
             if not queryset.exists():
-                GratitudeJournal.objects.create(owner=request.user)
+                GratitudeJournal.objects.create(
+                    owner=request.user, g_journal_data=demo_g_journal_data(), g_journal_name="Tutorial"
+                )
 
             serializer = GratitudeJournalSerializer(queryset, many=True)
             user_g_journals = serializer.data

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import {ref, watch, computed, nextTick} from "vue";
 import * as helpers from "../helpers";
-import * as timeUtils from "../../timeUtils";
 import {useLocalStorage} from "@vueuse/core";
 import TreeComponent from "./TreeComponent.vue";
 import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
-import TransitionSlide from "../../transitions/TransitionSlide.vue";
 import TreeListItemComponent from "./TreeListItemComponent.vue";
 import {config} from "../../config";
 import CharacterAnimation from "../../animations/CharacterAnimation.vue";
@@ -22,7 +20,7 @@ try {
 
 
 const localTreeStore = useLocalStorage("tree-store", {
-  trees: [helpers.defaultTree()],
+  trees: [helpers.demoTree()],
 });
 let syncTimerBaseCount = config.SYNC_TIMER_DURATION_MS;
 

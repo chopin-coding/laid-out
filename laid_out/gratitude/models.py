@@ -38,6 +38,23 @@ def default_g_journal_data():
     return [default_g_journal_node()]
 
 
+def demo_g_journal_data():
+    return [
+        {"title": "Write down things you're grateful for", "node_id": "48b1acf5-f2df-4751-9035-af439448d2d4"},
+        {
+            "title": "It could be a very small thing that happened today",
+            "node_id": "152c94c3-7d16-4ea0-bf79-17d3c2a26ca8",
+        },
+        {"title": "Or something bigger and more general", "node_id": "efc755be-be18-4e7c-9f6c-56adc684c900"},
+        {
+            "title": "You can write down as many or as few as you like",
+            "node_id": "f4175def-b4b9-473a-8fc9-7759b5c1f6c4",
+        },
+        {"title": "5 items a day is great", "node_id": "c881f54a-a947-4963-9cec-9cb95f56a445"},
+        {"title": "To get started, create a new gratitude entry!", "node_id": "7f1704c6-42c3-4ca6-9b45-c4004779c082"},
+    ]
+
+
 class GratitudeJournal(models.Model):
     g_journal_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     g_journal_name = models.CharField(max_length=50, null=True, blank=True, default="New Gratitude")
