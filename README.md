@@ -11,22 +11,53 @@
 
 > A self-help web app.
 
-## Install
-TODO: add info about precommit?
-TODO: Gotta find a solution for allauth social auth credentials
+## Install Instructions for Linux
+
+- Install docker and
+  docker-compose ([helpful blog](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04))
+
+
+- Create an empty .allauth file
+
+```sh
+touch .envs/.local/.allauth
+```
+
+- Install pre-commit
+
+https://pre-commit.com/#install
+
+- Once pre-commit is installed, run
+
+```sh
+pre-commit install
+```
+
+- Start the development environment
+
 ```sh
 docker compose --file local.yml up --build -d
 ```
 
-## Run tests
+Django: http://localhost:8000
+
+Flower: http://localhost:5555
+
+Mailpit: http://localhost:8025
+
+## Run Tests
 
 ```sh
 docker compose --file local.yml run --rm django pytest
 ```
 
+- For extra information
+  visit [cookiecutter-django](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html)
+
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/chopin-coding/laid-out/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to
+check [issues page](https://github.com/chopin-coding/laid-out/issues).
 
 ## 📝 License
 

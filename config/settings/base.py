@@ -1,7 +1,6 @@
 """
 Base settings to build other settings files upon.
 """
-import os
 from pathlib import Path
 
 import environ
@@ -71,8 +70,6 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
     "django_celery_beat",
     "django_celery_results",
     "rest_framework",
@@ -315,33 +312,6 @@ ACCOUNT_CHANGE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_ADAPTER = "laid_out.users.adapters.AccountAdapter"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
-
-# SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
-SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
-SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
-SOCIALACCOUNT_STORE_TOKENS = False
-
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-# ACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSignupForm"}
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-# SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/forms.html
-# SOCIALACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSocialSignupForm"}
-
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": [
-            "email",
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "online",
-        },
-        "APP": {
-            "client_id": env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_CLIENT_ID")),
-            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_SECRET")),
-        },
-    }
-}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

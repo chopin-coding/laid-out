@@ -1,3 +1,5 @@
+import os
+
 from .base import *  # noqa
 from .base import env
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa: F40
 # ------------------------------------------------------------------------------
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
 INSTALLED_APPS += ["debug_toolbar", "django_browser_reload"]  # noqa: F405
+
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
 MIDDLEWARE += [  # noqa: F405
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -70,3 +73,47 @@ CELERY_TASK_EAGER_PROPAGATES = True
 # ------------------------------------------------------------------------------
 DJANGO_VITE_DEV_MODE = True
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Allauth
+INSTALLED_APPS += [
+    "allauth.socialaccount",
+    # "allauth.socialaccount.providers.google",
+]  # noqa: F405
+
+allauth_social_loaded = env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=None)
+
+# initialize allauth social login apps only if credentials found;
+# this way, anyone can develop locally without allauth social credentials
+if allauth_social_loaded:
+    INSTALLED_APPS += [
+        "allauth.socialaccount.providers.google",
+    ]  # noqa: F405
+
+    # SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
+    SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED  # noqa: F405
+    SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED  # noqa: F405
+    SOCIALACCOUNT_STORE_TOKENS = False
+
+    # https://django-allauth.readthedocs.io/en/latest/forms.html
+    # ACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSignupForm"}
+    # https://django-allauth.readthedocs.io/en/latest/configuration.html
+    # SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
+    # https://django-allauth.readthedocs.io/en/latest/forms.html
+    # SOCIALACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSocialSignupForm"}
+
+    SOCIALACCOUNT_PROVIDERS = {
+        "google": {
+            "SCOPE": [
+                "email",
+            ],
+            "AUTH_PARAMS": {
+                "access_type": "online",
+            },
+            "APP": {
+                "client_id": env(
+                    "ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_CLIENT_ID")
+                ),
+                "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_SECRET")),
+            },
+        }
+    }

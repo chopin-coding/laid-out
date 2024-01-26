@@ -1,4 +1,5 @@
 import logging
+import os
 
 import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
@@ -134,7 +135,6 @@ ANYMAIL = {
     "MAILJET_SECRET_KEY": env("MAILJET_SECRET_KEY"),
 }
 
-
 # LOGGING
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -199,4 +199,36 @@ sentry_sdk.init(
 DJANGO_VITE_DEV_MODE = False
 
 # Allauth
+INSTALLED_APPS += [
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+]  # noqa: F405
+
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+
+# SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED  # noqa: F405
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED  # noqa: F405
+SOCIALACCOUNT_STORE_TOKENS = False
+
+# https://django-allauth.readthedocs.io/en/latest/forms.html
+# ACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSignupForm"}
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+# SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
+# https://django-allauth.readthedocs.io/en/latest/forms.html
+# SOCIALACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSocialSignupForm"}
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "APP": {
+            "client_id": env("ALLAUTH_GOOGLE_AUTH_CLIENT_ID", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_CLIENT_ID")),
+            "secret": env("ALLAUTH_GOOGLE_AUTH_SECRET", default=os.environ.get("ALLAUTH_GOOGLE_AUTH_SECRET")),
+        },
+    }
+}
