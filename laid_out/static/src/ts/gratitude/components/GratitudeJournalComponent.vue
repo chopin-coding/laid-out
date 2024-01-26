@@ -59,7 +59,7 @@ async function deleteBtnHandler(nodeId: string) {
 
 <template>
   <ul
-      class="flex list-disc ml-4 flex-col"
+      class="flex list-disc ml-4 flex-col gap-y-1.5"
   >
     <component
         v-for="node in nodes"

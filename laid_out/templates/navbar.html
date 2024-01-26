@@ -66,7 +66,7 @@
               <a href="{{ url }}"
                  class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">Home</a>
               <!-- Dropdown -->
-              <div x-data="{ toolMenuOpen: false }" class="relative z-20">
+              <div x-data="{ toolMenuOpen: false }" class="relative z-30">
                 <button x-on:click="toolMenuOpen = !toolMenuOpen"
                         @click.outside="toolMenuOpen = false"
                         type="button"
@@ -143,7 +143,7 @@
           <div class="flex items-center">
             <!-- Dark/Light/System mode selection -->
             <div x-data="{ themeMenuOpen: false, currentTheme: localStorage.getItem('theme') || 'system' }"
-                 class="relative z-10 ml-3">
+                 class="relative z-30 ml-3">
               <button x-on:click="themeMenuOpen = !themeMenuOpen"
                       x-on:click.outside="themeMenuOpen = false"
                       type="button"
@@ -239,7 +239,7 @@
               </div>
             {% else %}
               <!-- Profile dropdown -->
-              <div x-data="{ isUserMenuOpen: false }" class="relative z-20 ml-3">
+              <div x-data="{ isUserMenuOpen: false }" class="relative z-30 ml-3">
                 <button x-on:click="isUserMenuOpen = !isUserMenuOpen"
                         @click.outside="isUserMenuOpen = false"
                         type="button"

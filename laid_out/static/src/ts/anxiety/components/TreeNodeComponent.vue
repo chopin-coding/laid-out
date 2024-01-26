@@ -53,8 +53,9 @@ onMounted(() => {
   <TransitionSlide>
     <li
         v-show="!(node.locked && hideUncontrollable) && !deleted"
+        class="pt-1.5"
         :class="{
-        'border-l border-textblackdimmer2 py-1.5 ml-3 sm:ml-3 pl-4 sm:pl-4':
+        'border-l border-textblackdimmer2 ml-3 sm:ml-3 pl-4 sm:pl-4':
           nodeType !== 'root',
       }"
     >

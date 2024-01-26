@@ -265,7 +265,7 @@ function unfocusInput(event) {
 
       <!--   Info & Controls   -->
       <div
-          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:my-8 lg:px-6"
+          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:mb-8 lg:px-6"
       >
         <div class="flex flex-col gap-y-3 sm:flex-row sm:justify-between">
           <!--   Journal Name   -->
