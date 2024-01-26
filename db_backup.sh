@@ -4,7 +4,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Define the paths to your Docker Compose files
-DOCKER_COMPOSE_BACKUP="docker-compose -f $SCRIPT_DIR/production.yml exec postgres backup"
+DOCKER_COMPOSE_BACKUP="docker-compose -f $SCRIPT_DIR/production.yml exec -T postgres backup"
 DOCKER_COMPOSE_UPLOAD="docker-compose -f $SCRIPT_DIR/production.yml run --rm awscli upload"
 
 # Log file to capture the script output
