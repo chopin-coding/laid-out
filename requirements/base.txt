@@ -1,4 +1,4 @@
-python-slugify==8.0.1  # https://github.com/un33k/python-slugify
+python-slugify==8.0.2  # https://github.com/un33k/python-slugify
 Pillow==10.2.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==23.1.0  # https://github.com/hynek/argon2_cffi
 whitenoise==6.6.0  # https://github.com/evansd/whitenoise
@@ -10,7 +10,7 @@ django-celery-results==2.5.1  # https://github.com/celery/django-celery-results
 flower==2.0.1  # https://github.com/mher/flower
 pydantic==2.5.3
 Markdown==3.5.2
-boto3==1.34.27
+boto3==1.34.28
 
 # Django
 # ------------------------------------------------------------------------------
