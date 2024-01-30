@@ -117,3 +117,5 @@ if allauth_social_loaded:
             },
         }
     }
+
+# added dev branch
