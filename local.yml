@@ -1,8 +1,8 @@
 version: '3'
 
 volumes:
-  laid_out_local_postgres_data: {}
-  laid_out_local_postgres_data_backups: {}
+  laid_out_local_postgres_data: { }
+  laid_out_local_postgres_data_backups: { }
 
 services:
   django: &django
@@ -71,7 +71,7 @@ services:
       - redis
       - postgres
       - mailpit
-    ports: []
+    ports: [ ]
     command: /start-celeryworker
 
   celerybeat:
@@ -82,7 +82,7 @@ services:
       - redis
       - postgres
       - mailpit
-    ports: []
+    ports: [ ]
     command: /start-celerybeat
 
   flower:
@@ -100,6 +100,7 @@ services:
     image: laid_out_local_vite
     volumes:
       - .:/app:z
+      - /app/node_modules
     container_name: laid_out_local_vite
     ports:
       - "5173:5173"
