@@ -10,7 +10,7 @@ log = getLogger(__name__)
 
 class AnxietyTreeSerializer(serializers.Serializer):
     tree_id = serializers.UUIDField(read_only=True)
-    tree_name = serializers.CharField(max_length=50, required=False, default="New Tree")
+    tree_name = serializers.CharField(max_length=50, allow_blank=True, required=False, default="New Tree")
     tree_data = serializers.ListField(required=False, default=default_tree_data)
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
