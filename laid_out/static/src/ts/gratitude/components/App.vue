@@ -137,7 +137,7 @@ async function newGratitudeJournal(loggedIn: boolean) {
 
     tempGratitudeJournalStore.value.splice(0, 0, newGJournal);
     await nextTick();
-    selectedGratitudeJournalIndex.value += 1
+    selectedGratitudeJournalIndex.value = 0
 
     if (loggedIn) {
       addGratitudeJournalWatcher(gJournalId);

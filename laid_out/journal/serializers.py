@@ -10,7 +10,7 @@ log = getLogger(__name__)
 
 class JournalSerializer(serializers.Serializer):
     journal_id = serializers.UUIDField(read_only=True)
-    journal_name = serializers.CharField(max_length=50, required=False, default="New Journal")
+    journal_name = serializers.CharField(max_length=50, allow_blank=True, required=False, default="New Journal")
     journal_data = serializers.CharField(required=False, default=str, allow_blank=True)
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
