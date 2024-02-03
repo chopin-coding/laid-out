@@ -44,8 +44,6 @@ def test_create_journal_with_empty_string(user: User):
     assert create_journal.journal_data == data["journal_data"]
 
 
-# TODO: refactor the test
-@pytest.mark.skip
 def test_create_journal_with_empty_name(user: User):
     data = {
         "journal_name": "",

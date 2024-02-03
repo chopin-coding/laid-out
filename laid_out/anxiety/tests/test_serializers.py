@@ -28,8 +28,6 @@ def test_create_tree_with_valid_data(user: User):
     assert created_tree.tree_data == data["tree_data"]
 
 
-# TODO: refactor the test
-@pytest.mark.skip
 def test_create_tree_with_empty_name(user: User):
     data = {
         "tree_name": "",

@@ -28,8 +28,6 @@ def test_create_g_journal_with_valid_data(user: User):
     assert create_g_journal.g_journal_data == data["g_journal_data"]
 
 
-# TODO: refactor the test
-@pytest.mark.skip
 def test_create_g_journal_with_empty_name(user: User):
     data = {
         "g_journal_name": "",

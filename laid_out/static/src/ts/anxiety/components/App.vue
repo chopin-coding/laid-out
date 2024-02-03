@@ -137,7 +137,7 @@ async function newTree(loggedIn: boolean) {
 
     tempTreeStore.value.splice(0, 0, newTree);
     await nextTick();
-    selectedTreeIndex.value += 1
+    selectedTreeIndex.value = 0;
 
     if (loggedIn) {
       addTreeWatcher(treeId);
@@ -145,6 +145,7 @@ async function newTree(loggedIn: boolean) {
     newTreeLoading.value = false;
   }
 }
+
 
 async function deleteTreeHandler(treeId: string) {
   const indexToDelete = tempTreeStore.value.findIndex(

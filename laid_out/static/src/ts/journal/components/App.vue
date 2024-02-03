@@ -137,7 +137,7 @@ async function newJournal(loggedIn: boolean) {
 
     tempJournalStore.value.splice(0, 0, newJournal);
     await nextTick();
-    selectedJournalIndex.value += 1
+    selectedJournalIndex.value = 0
 
     if (loggedIn) {
       addJournalWatcher(journalId);
