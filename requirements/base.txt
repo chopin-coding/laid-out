@@ -10,7 +10,7 @@ django-celery-results==2.5.1  # https://github.com/celery/django-celery-results
 flower==2.0.1  # https://github.com/mher/flower
 pydantic==2.6.0
 Markdown==3.5.2
-boto3==1.34.40
+boto3==1.34.44
 
 # Django
 # ------------------------------------------------------------------------------
