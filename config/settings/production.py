@@ -1,6 +1,6 @@
-import re
 import logging
 import os
+import re
 
 import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
@@ -236,6 +236,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 # http://whitenoise.evans.io/en/stable/django.html#WHITENOISE_IMMUTABLE_FILE_TEST
+
 
 def immutable_file_test(path, url):
     # Match vite (rollup)-generated hashes, à la, `some_file-CSliV9zW.js`
