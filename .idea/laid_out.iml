@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/staticfiles" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.11.6 Docker Compose (django)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.11.9 Docker Compose (django)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

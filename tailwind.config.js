@@ -1,15 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: [
-    '!**/node_modules',
-    "./laid_out/templates/**/*.{html,css}",
-    "./laid_out/templates/*.{html,css}",
-    "./laid_out/anxiety/templates/**/*.{html,css}",
-    "./laid_out/static/src/**/*.{html,css}",
-    "./laid_out/static/src/ts/**/*.{vue,ts,html,css}",
-    "./laid_out/static/src/ts/*.{vue,ts,html,css}",
-  ],
+  content: ['!**/node_modules', "./laid_out/templates/**/*.{html,css}", "./laid_out/templates/*.{html,css}", "./laid_out/anxiety/templates/**/*.{html,css}", "./laid_out/static/src/**/*.{html,css}", "./laid_out/static/src/ts/**/*.{vue,ts,html,css}", "./laid_out/static/src/ts/*.{vue,ts,html,css}",],
   theme: {
     colors: {
       textwhite: "rgb(var(--color-textwhite) / 1)",
@@ -42,11 +34,11 @@ module.exports = {
       danger: "rgb(var(--color-danger) / 1)"
 
 
-    },
-    extend: {
+    }, extend: {
       boxShadow: {
         inputShadowBottom: 'inset 0px -2px 6px -2px rgba(0, 0, 0, 0.1)',
-      }
+      },
+
     },
   },
   plugins: [],

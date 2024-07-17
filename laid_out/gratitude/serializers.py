@@ -10,7 +10,7 @@ log = getLogger(__name__)
 
 class GratitudeJournalSerializer(serializers.Serializer):
     g_journal_id = serializers.UUIDField(read_only=True)
-    g_journal_name = serializers.CharField(max_length=50, allow_blank=True, required=False, default="New Gratitude")
+    g_journal_name = serializers.CharField(max_length=255, allow_blank=True, required=False, default="New Gratitude")
     g_journal_data = serializers.ListField(required=False, default=default_g_journal_data)
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)

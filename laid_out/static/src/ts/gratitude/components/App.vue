@@ -61,6 +61,10 @@ const numberOfGratitudeJournals = computed(() => {
   return tempGratitudeJournalStore.value.length;
 });
 
+const tutorialPulse = computed(() => {
+  return tempGratitudeJournalStore.value.length === 1 && tempGratitudeJournalStore.value[selectedGratitudeJournalIndex.value].g_journal_name === "Tutorial";
+});
+
 window.addEventListener("beforeunload", function (e) {
   if (loggedIn && syncStatus.value === "syncing") {
     const confirmationMessage =
@@ -196,6 +200,9 @@ function unfocusInput(event) {
             <button
                 class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
                 v-on:click="newGratitudeJournal(loggedIn)"
+                :class="{
+          'animate-[pulse_1s_ease-in-out_infinite]': tutorialPulse
+        }"
             >
               <TransitionOutInGrow duration="50">
                 <!-- New G Journal icon -->
@@ -270,10 +277,10 @@ function unfocusInput(event) {
           <!--   G Journal Name   -->
           <div class="flex text-textblackdim">
             <input
-                class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none"
+                class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none focus:ring-primary"
                 id="selected-tree-name-input"
                 type="text"
-                maxlength="22"
+                maxlength="255"
                 v-model="tempGratitudeJournalStore[selectedGratitudeJournalIndex].g_journal_name"
                 @keydown.enter.exact.prevent.stop="unfocusInput($event)"
             />

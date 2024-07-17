@@ -1,4 +1,4 @@
-version: '3'
+
 
 volumes:
   laid_out_local_postgres_data: { }

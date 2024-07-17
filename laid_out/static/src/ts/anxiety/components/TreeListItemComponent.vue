@@ -21,6 +21,10 @@ const deleted = ref(false);
 const loading = ref(false);
 const deleteConfirmed = ref(false);
 
+const treeNameCompact = computed(() => {
+  return props.tree.tree_name.length < 50 ? props.tree.tree_name : props.tree.tree_name.substring(0, 50) + '...';
+});
+
 async function deleteInTwoStages(treeId: string) {
   if (deleteConfirmed.value) {
     await deleteBtnHandler(treeId);
@@ -67,8 +71,9 @@ async function deleteBtnHandler(treeId: string) {
             tree.tree_id !== selectedTreeId,
         }"
           v-on:click="emit('selectTree', tree.tree_id)"
+          :title="tree.tree_name"
       >
-        <span v-text="tree.tree_name"></span>
+        <span v-text="treeNameCompact"></span>
         <!-- Last update time -->
         <div
             v-if="loggedIn"

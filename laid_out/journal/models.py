@@ -19,7 +19,7 @@ class JournalData(BaseModel):
 
 class Journal(models.Model):
     journal_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    journal_name = models.CharField(max_length=50, null=True, blank=True, default="New Journal")
+    journal_name = models.CharField(max_length=255, null=True, blank=True, default="New Journal")
     date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)  # UTC
     owner = models.ForeignKey(
         to="users.User",

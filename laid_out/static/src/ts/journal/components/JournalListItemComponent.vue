@@ -21,6 +21,10 @@ const deleted = ref(false);
 const loading = ref(false);
 const deleteConfirmed = ref(false);
 
+const journalNameCompact = computed(() => {
+  return props.journal.journal_name.length < 50 ? props.journal.journal_name : props.journal.journal_name.substring(0, 50) + '...';
+});
+
 async function deleteInTwoStages(journalId: string) {
   if (deleteConfirmed.value) {
     await deleteBtnHandler(journalId);
@@ -67,8 +71,9 @@ async function deleteBtnHandler(journalId: string) {
             journal.journal_id !== selectedJournalId,
         }"
           v-on:click="emit('selectJournal', journal.journal_id)"
+          :title="journal.journal_name"
       >
-        <span v-text="journal.journal_name"></span>
+        <span v-text="journalNameCompact"></span>
         <div
             v-if="loggedIn"
             class="text-xs text-textblackdimmer2"

@@ -60,7 +60,7 @@ def demo_g_journal_data():
 
 class GratitudeJournal(models.Model):
     g_journal_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    g_journal_name = models.CharField(max_length=50, null=True, blank=True, default="New Gratitude")
+    g_journal_name = models.CharField(max_length=255, null=True, blank=True, default="New Gratitude")
     date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)  # UTC
     owner = models.ForeignKey(
         to="users.User",

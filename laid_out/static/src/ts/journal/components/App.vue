@@ -271,10 +271,10 @@ function unfocusInput(event) {
           <!--   Journal Name   -->
           <div class="flex text-textblackdim">
             <input
-                class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none"
+                class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none focus:ring-primary"
                 id="selected-tree-name-input"
                 type="text"
-                maxlength="22"
+                maxlength="255"
                 v-model="tempJournalStore[selectedJournalIndex].journal_name"
                 @keydown.enter.exact.prevent.stop="unfocusInput($event)"
             />

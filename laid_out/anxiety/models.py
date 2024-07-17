@@ -84,7 +84,7 @@ def demo_tree_data():
 
 class AnxietyTree(models.Model):
     tree_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    tree_name = models.CharField(max_length=50, null=True, blank=True, default="New Tree")
+    tree_name = models.CharField(max_length=255, null=True, blank=True, default="New Tree")
     date_created = models.DateTimeField(verbose_name="Creation Date", auto_now_add=True)  # UTC
     owner = models.ForeignKey(
         to="users.User",
