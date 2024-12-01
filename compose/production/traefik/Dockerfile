@@ -1,5 +1,5 @@
 
-FROM traefik:3.2.0
+FROM traefik:3.2.1
 
 RUN mkdir -p /etc/traefik/acme \
   && touch /etc/traefik/acme/acme.json \
