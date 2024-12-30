@@ -64,7 +64,7 @@
             <div class="flex space-x-4">
               {% url 'home' as url %}
               <a href="{{ url }}"
-                 class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">Home</a>
+                 class="{% if request.path == url %} navbar-item-current {% else %} navbar-item {% endif %}">Home</a>
               <!-- Dropdown -->
               <div x-data="{ toolMenuOpen: false }" class="relative z-30">
                 <button x-on:click="toolMenuOpen = !toolMenuOpen"
@@ -98,7 +98,7 @@
                      tabindex="-1">
                   {% url 'anxiety:home' as url %}
                   <a href="{{ url }}"
-                     class="flex items-center {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer rounded-md px-4 py-2 font-medium"
+                     class="flex items-center {% if request.path == url %} navbar-dropdown-item-current {% else %} navbar-dropdown-item {% endif %}"
                      tabindex="-1">
                     <svg class="mr-2 h-5 w-5"
                          viewBox="0 0 24 24"
@@ -109,7 +109,7 @@
                   Anxiety</a>
                   {% url 'gratitude:home' as url %}
                   <a href="{{ url }}"
-                     class="flex items-center {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer rounded-md px-4 py-2 font-medium"
+                     class="flex items-center {% if request.path == url %} navbar-dropdown-item-current {% else %} navbar-dropdown-item {% endif %}"
                      tabindex="-1">
                     <svg class="mr-2 h-5 w-5"
                          viewBox="0 0 24 24"
@@ -120,7 +120,7 @@
                   Gratitude</a>
                   {% url 'journal:home' as url %}
                   <a href="{{ url }}"
-                     class="flex items-center {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer rounded-md px-4 py-2 font-medium"
+                     class="flex items-center {% if request.path == url %} navbar-dropdown-item-current {% else %} navbar-dropdown-item {% endif %}"
                      role="menuitem"
                      tabindex="-1"
                      id="user-menu-item-2">
@@ -137,7 +137,7 @@
               </div>
               {% url 'about' as url %}
               <a href="{{ url }}"
-                 class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition duration-100 ease-out hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium">About</a>
+                 class="{% if request.path == url %} navbar-item-current {% else %} navbar-item {% endif %}">About</a>
             </div>
           </div>
           <div class="flex items-center">
@@ -147,7 +147,7 @@
               <button x-on:click="themeMenuOpen = !themeMenuOpen"
                       x-on:click.outside="themeMenuOpen = false"
                       type="button"
-                      class="relative flex rounded-md text-sm font-medium transition duration-100 ease-out group text-textblackdimmer hover:bg-primarylight hover:text-black"
+                      class="relative flex navbar-item p-0"
                       aria-expanded="false"
                       aria-haspopup="true">
                 <span class="sr-only">Open theme selection menu</span>
@@ -183,7 +183,7 @@
                 <a x-on:click="localStorage.setItem('theme', 'light'); currentTheme = 'light'; document.documentElement.classList.remove('dark')"
                    href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'light', 'hover:bg-primarylight hover:text-black': currentTheme !== 'light' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
+                   class="flex navbar-dropdown-item"
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'light' }"
@@ -198,7 +198,7 @@
                 <a x-on:click="localStorage.setItem('theme', 'dark'); currentTheme = 'dark'; document.documentElement.classList.add('dark')"
                    href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'dark', 'hover:bg-primarylight hover:text-black': currentTheme !== 'dark' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
+                   class="flex navbar-dropdown-item"
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'dark' }"
@@ -212,7 +212,7 @@
                 <a x-on:click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
                    href="#"
                    :class="{ 'bg-primary text-white font-semibold': currentTheme === 'system', 'hover:bg-primarylight hover:text-black': currentTheme !== 'system' }"
-                   class="flex px-4 py-2 text-sm font-medium transition duration-100 ease-out group text-textblackdimmer"
+                   class="flex navbar-dropdown-item"
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'system' }"
@@ -231,9 +231,7 @@
               <div class="relative ml-3">
                 <div class="sm:block">
                   <div class="flex space-x-4">
-                    <a href="{% url 'account_login' %}"
-                       class="rounded-md px-3 font-medium py-1.5 text-textblackdimmer hover:bg-primarylight hover:text-black">
-                    Log in</a>
+                    <a href="{% url 'account_login' %}" class="navbar-item text-base">Log in</a>
                   </div>
                 </div>
               </div>
@@ -321,12 +319,12 @@
         </div>
         {% url 'home' as url %}
         <a href="{{ url }}"
-           class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
+           class="{% if request.path == url %} mobile-navbar-item-current {% else %} mobile-navbar-item {% endif %}"
            aria-current="page">Home</a>
         <button x-on:click="toolMenuOpen = !toolMenuOpen"
                 @click.outside="toolMenuOpen = false"
                 type="button"
-                class="relative flex rounded-md px-3 py-2 text-textblackdimmer text-sm transition duration-100 ease-out group hover:bg-primarylight hover:text-black"
+                class="relative flex mobile-navbar-item"
                 aria-expanded="false"
                 aria-haspopup="true">
           <span class="sr-only ">Open tools menu</span>
@@ -343,7 +341,7 @@
         <a x-show="toolMenuOpen"
            x-transition
            href="{{ url }}"
-           class="flex {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm items-center text-textblackdimmer rounded-md block px-4 py-2 font-medium"
+           class="flex {% if request.path == url %} mobile-navbar-dropdown-item-current {% else %} mobile-navbar-dropdown-item {% endif %}"
            role="menuitem"
            tabindex="-1"
            id="user-menu-item-1">
@@ -358,7 +356,7 @@
         <a x-show="toolMenuOpen"
            x-transition
            href="{{ url }}"
-           class="flex {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm items-center text-textblackdimmer rounded-md block px-4 py-2 font-medium"
+           class="flex {% if request.path == url %} mobile-navbar-dropdown-item-current {% else %} mobile-navbar-dropdown-item {% endif %}"
            role="menuitem"
            tabindex="-1"
            id="user-menu-item-2">
@@ -373,7 +371,7 @@
         <a x-show="toolMenuOpen"
            x-transition
            href="{{ url }}"
-           class="flex {% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm items-center text-textblackdimmer rounded-md block px-4 py-2 font-medium"
+           class="flex {% if request.path == url %} mobile-navbar-dropdown-item-current {% else %} mobile-navbar-dropdown-item {% endif %}"
            role="menuitem"
            tabindex="-1">
           <svg class="mr-2 h-4 w-4 m-1"
@@ -387,7 +385,7 @@
         Journal</a>
         {% url 'about' as url %}
         <a href="{{ url }}"
-           class="{% if request.path == url %} bg-primary text-white font-semibold {% else %} transition ease-out duration-100 hover:bg-primarylight hover:text-black {% endif %} text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium"
+           class="{% if request.path == url %} mobile-navbar-item-current {% else %} mobile-navbar-item {% endif %}"
            aria-current="page">About</a>
       </div>
     </div>

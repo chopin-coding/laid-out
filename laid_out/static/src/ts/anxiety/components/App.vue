@@ -61,6 +61,7 @@ const numberOfTrees = computed(() => {
   return tempTreeStore.value.length;
 });
 
+
 const tutorialPulse = computed(() => {
   return tempTreeStore.value.length === 1 && tempTreeStore.value[selectedTreeIndex.value].tree_name === "Tutorial";
 });

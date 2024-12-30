@@ -21,7 +21,7 @@
   {% endif %}
   <li class="flex">
     <a title="{{ provider.name }}"
-       class="socialaccount_provider {{ provider.id }} flex items-center justify-around gap-x-3 rounded px-3 py-2 ring-1 ring-opacity-5 transition duration-100 ease-out ring-primarylight text-textblackdim hover:bg-primarylight hover:text-black focus:outline-none"
+       class="socialaccount_provider {{ provider.id }} flex justify-around gap-x-3 items-center button-1"
        href="{% provider_login_url provider process=process scope=scope auth_params=auth_params %}">
       <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
