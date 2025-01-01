@@ -37,6 +37,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         anxiety: resolve("./laid_out/static/src/ts/anxiety/anxiety.ts"),
+        goal: resolve("./laid_out/static/src/ts/goal/goal.ts"),
         gratitude: resolve("./laid_out/static/src/ts/gratitude/gratitude.ts"),
         journal: resolve("./laid_out/static/src/ts/journal/journal.ts"),
         style: resolve("./laid_out/static/src/ts/style.ts"),

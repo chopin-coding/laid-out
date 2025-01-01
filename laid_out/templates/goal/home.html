@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Goals
+{% endblock title %}
+{% block head %}
+  {{ user_goals|json_script:"user-goals" }}
+  {{ logged_in|json_script:"logged-in" }}
+  {{ GOAL_API_BASE_URL|json_script:"GOAL-API-BASE-URL" }}
+  {% vite_asset 'ts/goal/goal.ts' %}
+{% endblock head %}
+{% block content %}
+  {% csrf_token %}
+  {% include 'partials/cat_images.html' %}
+  <div id="app"></div>
+{% endblock content %}

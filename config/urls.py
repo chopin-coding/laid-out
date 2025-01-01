@@ -31,6 +31,7 @@ urlpatterns = [
     path("anxiety/", include("laid_out.anxiety.urls")),
     path("gratitude/", include("laid_out.gratitude.urls")),
     path("journal/", include("laid_out.journal.urls")),
+    path("goals/", include("laid_out.goal.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

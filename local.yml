@@ -34,6 +34,8 @@ services:
       - laid_out_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
+    ports:
+      - "5432:5432"
 
   mailpit:
     image: axllent/mailpit:v1.8

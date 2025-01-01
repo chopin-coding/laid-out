@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import {ref, watch, computed, nextTick} from "vue";
 import * as helpers from "../helpers";
-import * as timeUtils from "../../timeUtils";
 import {useLocalStorage} from "@vueuse/core";
-import GratitudeJournalComponent from "./GratitudeJournalComponent.vue";
+import GoalComponent from "./GoalComponent.vue";
 import TransitionOutInGrow from "../../transitions/TransitionOutInGrow.vue";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
-import TransitionSlide from "../../transitions/TransitionSlide.vue";
-import GratitudeJournalListItemComponent from "./GratitudeJournalListItemComponent.vue";
+import GoalListItemComponent from "./GoalListItemComponent.vue";
 import {config} from "../../config";
 import CharacterAnimation from "../../animations/CharacterAnimation.vue";
 
@@ -20,49 +18,52 @@ try {
   console.log(e)
 }
 
-const localGratitudeJournalStore = useLocalStorage("gratitude-journal-store", {
-  gratitudeJournals: [helpers.demoGratitudeJournal()],
+
+const localGoalStore = useLocalStorage("goal-store", {
+  goals: [helpers.demoGoal()],
 });
 let syncTimerBaseCount = config.SYNC_TIMER_DURATION_MS;
 
-const tempGratitudeJournalStore = ref([]);
+const tempGoalStore = ref([]);
 let syncTimer = null;
 const syncStatus = ref("synced");
-const selectedGratitudeJournalIndex = ref(0);
+const selectedGoalIndex = ref(0);
+const hideCompleted = ref(false);
 const syncWarningExpanded = ref(false);
 const syncFailedExpanded = ref(false);
-const newGratitudeJournalLoading = ref(false);
-const maxNumberOfGratitudeJournals = 150;
+const newGoalLoading = ref(false);
+const maxNumberOfGoals = 150; // the browser may shit itself before 150 goals:D
 
-initializeGratitudeJournals();
+initializeGoals();
 
-function initializeGratitudeJournals() {
+function initializeGoals() {
   if (loggedIn) {
-    tempGratitudeJournalStore.value = JSON.parse(
-        document.getElementById("user-g-journals").textContent,
+    tempGoalStore.value = JSON.parse(
+        document.getElementById("user-goals").textContent,
     );
 
-    initializeGratitudeJournalWatchers();
+    initializeGoalWatchers();
   } else {
 
-    tempGratitudeJournalStore.value = localGratitudeJournalStore.value.gratitudeJournals;
+    tempGoalStore.value = localGoalStore.value.goals;
   }
 }
 
-const lastRemainingGratitudeJournal = computed(() => {
-  return tempGratitudeJournalStore.value.length === 1;
+const lastRemainingGoal = computed(() => {
+  return tempGoalStore.value.length === 1;
 });
 
-const selectedGratitudeJournalId = computed(() => {
-  return tempGratitudeJournalStore.value[selectedGratitudeJournalIndex.value].g_journal_id;
+const selectedGoalId = computed(() => {
+  return tempGoalStore.value[selectedGoalIndex.value].id;
 });
 
-const numberOfGratitudeJournals = computed(() => {
-  return tempGratitudeJournalStore.value.length;
+const numberOfGoals = computed(() => {
+  return tempGoalStore.value.length;
 });
+
 
 const tutorialPulse = computed(() => {
-  return tempGratitudeJournalStore.value.length === 1 && tempGratitudeJournalStore.value[selectedGratitudeJournalIndex.value].g_journal_name === "Tutorial";
+  return tempGoalStore.value.length === 1 && tempGoalStore.value[selectedGoalIndex.value].name === "Tutorial";
 });
 
 window.addEventListener("beforeunload", function (e) {
@@ -78,10 +79,10 @@ window.addEventListener("beforeunload", function (e) {
   }
 });
 
-function gratitudeJournalWatcher(gJournalIndex: string) {
-  const gratitudeJournalInQuestion = tempGratitudeJournalStore.value[gJournalIndex];
+function goalWatcher(goalIndex: string) {
+  const goalInQuestion = tempGoalStore.value[goalIndex];
 
-  watch(gratitudeJournalInQuestion, (newValue, oldValue) => {
+  watch(goalInQuestion, (newValue, oldValue) => {
     syncStatus.value = "syncing";
 
     // reset the sync timer
@@ -91,8 +92,8 @@ function gratitudeJournalWatcher(gJournalIndex: string) {
 
     // start the sync timer
     syncTimer = setTimeout(async () => {
-      const updateStatus = await helpers.updateGratitudeJournal(
-          gratitudeJournalInQuestion,
+      const updateStatus = await helpers.updateGoal(
+          goalInQuestion,
           loggedIn,
       );
 
@@ -105,93 +106,96 @@ function gratitudeJournalWatcher(gJournalIndex: string) {
   });
 }
 
-function initializeGratitudeJournalWatchers() {
-  for (const index in tempGratitudeJournalStore.value) {
-    gratitudeJournalWatcher(index);
+function initializeGoalWatchers() {
+  for (const index in tempGoalStore.value) {
+    goalWatcher(index);
   }
 }
 
-function addGratitudeJournalWatcher(gJournalId: string) {
-  const indexToWatch = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+function addGoalWatcher(goalId: string) {
+  const indexToWatch = tempGoalStore.value.findIndex(
+      (goal) => goal.id === goalId,
   );
 
   if (indexToWatch !== -1) {
-    gratitudeJournalWatcher(indexToWatch.toString());
+    goalWatcher(indexToWatch.toString());
   }
 }
 
-function selectGratitudeJournalHandler(gJournalId: string): void {
-  const indexToSelect = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+function selectGoalHandler(goalId: string): void {
+  const indexToSelect = tempGoalStore.value.findIndex(
+      (goal) => goal.id === goalId,
   );
 
   if (indexToSelect !== -1) {
-    if (selectedGratitudeJournalIndex.value != indexToSelect) {
-      selectedGratitudeJournalIndex.value = indexToSelect;
+    if (selectedGoalIndex.value != indexToSelect) {
+      selectedGoalIndex.value = indexToSelect;
     }
   }
 }
 
-async function newGratitudeJournal(loggedIn: boolean) {
-  if (numberOfGratitudeJournals.value < maxNumberOfGratitudeJournals) {
-    newGratitudeJournalLoading.value = loggedIn;
-    const gJournalId = await helpers.createGratitudeJournal(loggedIn);
-    const newGJournal = helpers.defaultGratitudeJournal(gJournalId);
+async function newGoal(loggedIn: boolean) {
+  if (numberOfGoals.value < maxNumberOfGoals) {
+    newGoalLoading.value = loggedIn;
+    const goalId = await helpers.createGoal(loggedIn);
+    const newGoal = helpers.defaultGoal(goalId);
 
-    tempGratitudeJournalStore.value.splice(0, 0, newGJournal);
+    tempGoalStore.value.splice(0, 0, newGoal);
     await nextTick();
-    selectedGratitudeJournalIndex.value = 0
+    selectedGoalIndex.value = 0;
 
     if (loggedIn) {
-      addGratitudeJournalWatcher(gJournalId);
+      addGoalWatcher(goalId);
     }
-    newGratitudeJournalLoading.value = false;
+    newGoalLoading.value = false;
   }
 }
 
-async function deleteGratitudeJournalHandler(gJournalId: string) {
-  const indexToDelete = tempGratitudeJournalStore.value.findIndex(
-      (gJournal) => gJournal.g_journal_id === gJournalId,
+
+async function deleteGoalHandler(goalId: string) {
+  const indexToDelete = tempGoalStore.value.findIndex(
+      (goal) => goal.id === goalId,
   );
+
   if (indexToDelete === -1) {
-    console.log("The tree trying to be deleted does not exist in tempTreeStore")
+    console.log("The goal trying to be deleted does not exist in tempGoalStore")
     return;
   }
 
-  if (indexToDelete === selectedGratitudeJournalIndex.value) {
-    selectedGratitudeJournalIndex.value = Math.min(indexToDelete, tempGratitudeJournalStore.value.length - 2);
-  } else if (indexToDelete < selectedGratitudeJournalIndex.value) {
-    selectedGratitudeJournalIndex.value -= 1;
+  if (indexToDelete === selectedGoalIndex.value) {
+    selectedGoalIndex.value = Math.min(indexToDelete, tempGoalStore.value.length - 2);
+  } else if (indexToDelete < selectedGoalIndex.value) {
+    selectedGoalIndex.value -= 1;
   }
 
-  tempGratitudeJournalStore.value.splice(indexToDelete, 1);
-
+  tempGoalStore.value.splice(indexToDelete, 1);
 }
 
 function unfocusInput(event) {
   event.target.blur();
 }
+
 </script>
 
 <template v-cloak>
   <div class="mx-auto my-2 w-full overflow-x-hidden px-4">
     <div class="mt-8 flex flex-col sm:flex-row align-items-middle justify-content-center">
       <div class="order-1 sm:order-2 sm:mx-auto text-4xl text-center font-semibold text-textblackdimmer">
-        Gratitude
+        Goals
       </div>
       <CharacterAnimation
           class="order-2 sm:order-1"
           character="cat_01"
       />
-
     </div>
+
     <div
-        class="flex h-full w-full flex-col items-center gap-y-10 lg:flex-row lg:items-start lg:gap-x-5"
+        class="flex h-full w-full flex-col gap-y-10 items-center lg:flex-row lg:items-start lg:gap-x-5"
     >
 
-      <!--  G Journal List  -->
-      <!-- Mobile g journal list: on top, sm:on the left -->
+      <!--  Goal List  -->
+      <!-- Mobile goal list: on top, sm:on the left -->
+
       <div
           class="w-full rounded-md bg-white px-3 py-2 shadow-lg sm:mb-10 ring-1 ring-opacity-5 ring-primarylight focus:outline-none lg:w-96"
       >
@@ -199,15 +203,15 @@ function unfocusInput(event) {
           <div>
             <button
                 class="my-2 rounded-md px-2 py-2 transition duration-100 ease-out text-textblackdimmer hover:bg-primarylight hover:text-black"
-                v-on:click="newGratitudeJournal(loggedIn)"
+                v-on:click="newGoal(loggedIn)"
                 :class="{
           'animate-[pulse_1s_ease-in-out_infinite]': tutorialPulse
         }"
             >
               <TransitionOutInGrow duration="50">
-                <!-- New G Journal icon -->
+                <!-- New Goal icon -->
                 <div
-                    v-if="!newGratitudeJournalLoading && numberOfGratitudeJournals < maxNumberOfGratitudeJournals"
+                    v-if="!newGoalLoading && numberOfGoals < maxNumberOfGoals"
                     class="flex gap-x-3"
                 >
                   <svg
@@ -226,7 +230,7 @@ function unfocusInput(event) {
 
                 <!-- Loading icon -->
                 <svg
-                    v-else-if="newGratitudeJournalLoading"
+                    v-else-if="newGoalLoading"
                     class="h-6 w-6 animate-spin"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -241,13 +245,13 @@ function unfocusInput(event) {
                 </svg>
 
                 <div
-                    v-else-if="numberOfGratitudeJournals >= maxNumberOfGratitudeJournals"
+                    v-else-if="numberOfGoals >= maxNumberOfGoals"
 
                 >
-                  <div class="text-danger">Maximum number of gratitude journals reached</div>
+                  <div class="text-danger">Maximum number of goals reached</div>
                   <div>
                     This limit is just to prevent spam. You're awesome for reaching this limit! Please do contact us if
-                    you'd like to have more gratitude journals at once!
+                    you'd like to have more goals at once!
                   </div>
                 </div>
               </TransitionOutInGrow>
@@ -255,15 +259,15 @@ function unfocusInput(event) {
           </div>
           <ul class="max-h-80 list-none overflow-y-scroll sm:max-h-96">
             <component
-                v-for="gJournal in tempGratitudeJournalStore"
-                :key="gJournal.g_journal_id"
-                :is="GratitudeJournalListItemComponent"
-                :gratitude-journal="gJournal"
-                :selected-gratitude-journal-id="selectedGratitudeJournalId"
-                :last-remaining-gratitude-journal="lastRemainingGratitudeJournal"
+                v-for="goal in tempGoalStore"
+                :key="goal.id"
+                :is="GoalListItemComponent"
+                :goal="goal"
+                :selected-goal-id="selectedGoalId"
+                :last-remaining-goal="lastRemainingGoal"
                 :logged-in="loggedIn"
-                @select-gratitude-journal="(gJournalId: string) => selectGratitudeJournalHandler(gJournalId)"
-                @delete-gratitude-journal="(gJournalId: string) => deleteGratitudeJournalHandler(gJournalId)"
+                @select-goal="(goalId: string) => selectGoalHandler(goalId)"
+                @delete-goal="(goalId: string) => deleteGoalHandler(goalId)"
             />
           </ul>
         </div>
@@ -271,17 +275,17 @@ function unfocusInput(event) {
 
       <!--   Info & Controls   -->
       <div
-          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:mb-0 lg:px-6"
+          class="mx-auto flex w-full flex-col gap-y-6 text-textblackdim lg:px-6"
       >
         <div class="flex flex-col gap-y-3 sm:flex-row sm:justify-between">
-          <!--   G Journal Name   -->
+          <!--   Goal Name   -->
           <div class="flex text-textblackdim">
             <input
                 class="rounded px-5 py-2 shadow-lg ring-1 ring-opacity-5 transition duration-100 ease-out bg-backg ring-primarylight focus:outline-none focus:ring-primary"
                 id="selected-tree-name-input"
                 type="text"
                 maxlength="255"
-                v-model="tempGratitudeJournalStore[selectedGratitudeJournalIndex].g_journal_name"
+                v-model="tempGoalStore[selectedGoalIndex].name"
                 @keydown.enter.exact.prevent.stop="unfocusInput($event)"
             />
           </div>
@@ -345,7 +349,7 @@ function unfocusInput(event) {
                     class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-danger focus:outline-none"
                 >
                   <span class="inline-block text-sm leading-tight"
-                  >Couldn't save gratitude journal data to your account. If a refresh
+                  >Couldn't save goal data to your account. If a refresh
                     doesn't solve the issue, please contact the admin.</span
                   >
                 </div>
@@ -365,7 +369,7 @@ function unfocusInput(event) {
                 <TransitionBasic duration="150">
                   <div
                       v-show="syncWarningExpanded"
-                      class="absolute top-0 right-0 mt-14 -ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
+                      class="absolute top-0 sm:right-0 mt-14 sm:-ml-32 inline-block w-60 rounded-lg bg-white px-4 py-3 ring-1 ring-opacity-5 text-textblackdim ring-warning focus:outline-none"
                   >
                     <span class="inline-block text-sm leading-tight"
                     >Your data has been saved to this device only. Log in to
@@ -394,18 +398,76 @@ function unfocusInput(event) {
           </div>
         </div>
 
-        <!--   G Journal   -->
+        <div class="flex gap-x-3 text-textblackdim">
+          <button
+              class="transition duration-100 ease-out fill-textblackdimmer hover:fill-black"
+              v-on:click="hideCompleted = !hideCompleted"
+              title="Toggle completed items visibility"
+          >
+            <TransitionBasic>
+              <!-- Not visible -->
+              <svg
+                  v-if="!hideCompleted"
+                  class="h-7 w-7"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                    d="M4.495 7.44c-.948.678-1.717 1.402-2.306 2.04a3.679 3.679 0 0 0 0 5.04C3.917 16.391 7.19 19 12 19c1.296 0 2.48-.19 3.552-.502l-1.662-1.663A10.77 10.77 0 0 1 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326 12.972 12.972 0 0 1 2.273-1.96L4.495 7.442Z"
+                />
+                <path
+                    d="M8.533 11.478a3.5 3.5 0 0 0 3.983 3.983l-3.983-3.983ZM15.466 12.447l-3.919-3.919a3.5 3.5 0 0 1 3.919 3.919Z"
+                />
+                <path
+                    d="M18.112 15.093a12.99 12.99 0 0 0 2.23-1.93 1.68 1.68 0 0 0 0-2.326C18.811 9.18 16.032 7 12 7c-.64 0-1.25.055-1.827.154L8.505 5.486A12.623 12.623 0 0 1 12 5c4.811 0 8.083 2.609 9.81 4.48a3.679 3.679 0 0 1 0 5.04c-.58.629-1.334 1.34-2.263 2.008l-1.435-1.435ZM2.008 3.422a1 1 0 1 1 1.414-1.414L22 20.586A1 1 0 1 1 20.586 22L2.008 3.422Z"
+                />
+              </svg>
+              <!-- Visible -->
+              <svg
+                  v-else-if="hideCompleted"
+                  class="h-7 w-7"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                    d="M11.994 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm0-2.006a1.494 1.494 0 1 1 0-2.988 1.494 1.494 0 0 1 0 2.988Z"
+                />
+                <path
+                    d="M12 5C7.189 5 3.917 7.609 2.19 9.48a3.679 3.679 0 0 0 0 5.04C3.916 16.391 7.188 19 12 19c4.811 0 8.083-2.609 9.81-4.48a3.679 3.679 0 0 0 0-5.04C20.084 7.609 16.812 5 12 5Zm-8.341 5.837C5.189 9.18 7.967 7 12 7c4.033 0 6.812 2.18 8.341 3.837a1.68 1.68 0 0 1 0 2.326C18.811 14.82 16.033 17 12 17c-4.033 0-6.812-2.18-8.341-3.837a1.68 1.68 0 0 1 0-2.326Z"
+                />
+              </svg>
+            </TransitionBasic>
+          </button>
+
+          <div v-if="!hideCompleted">
+            <span class="text-lg text-textblackdim">Hide completed</span>
+          </div>
+          <div v-else>
+            <span class="text-lg text-textblackdim">Show completed</span>
+          </div>
+
+
+        </div>
+
+        <!--   Goal   -->
         <div class="mb-40 w-full sm:mb-10 lg:mb:20">
           <component
               v-show="
-              tempGratitudeJournalStore.length !== 0 && tempGratitudeJournalStore[selectedGratitudeJournalIndex]
+              tempGoalStore.length !== 0 && tempGoalStore[selectedGoalIndex]
             "
-              :is="GratitudeJournalComponent"
-              :nodes="tempGratitudeJournalStore[selectedGratitudeJournalIndex].g_journal_data"
+              :is="GoalComponent"
+              :nodes="tempGoalStore[selectedGoalIndex].data"
               :logged-in="loggedIn"
+              :hide-completed="hideCompleted"
+              :node-type="'root'"
+              :parent-node-id="'root'"
           />
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

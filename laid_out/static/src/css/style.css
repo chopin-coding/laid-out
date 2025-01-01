@@ -181,6 +181,10 @@
     @apply transition ease-out duration-100 bg-primary text-white font-semibold text-sm items-center rounded-md block px-4 py-2
   }
 
+  .custom-checkbox {
+    @apply appearance-none transition duration-100 border border-primarylight rounded bg-backg checked:bg-primary hover:border-primary checked:after:content-['✔'] checked:after:text-white checked:after:flex checked:after:justify-center checked:after:items-center
+  }
+
 
   /* allauth error text */
 }

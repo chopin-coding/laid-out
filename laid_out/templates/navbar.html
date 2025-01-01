@@ -9,7 +9,7 @@
     }
   </script>
 {% endblock head %}
-<div class="border-b border-primarylight bg-white">
+<div class="fixed w-full border-b border-primarylight backdrop-blur-sm bg-white/50">
   <nav x-data="{ isMobileMenuOpen: false }" class="mx-auto max-w-screen-xl">
     <div class="mx-auto px-2 sm:px-6">
       <div class="relative flex h-20 items-center justify-between">
@@ -133,6 +133,23 @@
                       <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
                     </svg>
                   Journal</a>
+                  {% url 'goal:home' as url %}
+                  <a href="{{ url }}"
+                     class="flex items-center {% if request.path == url %} navbar-dropdown-item-current {% else %} navbar-dropdown-item {% endif %}"
+                     role="menuitem"
+                     tabindex="-1"
+                     id="user-menu-item-2">
+                    <svg class="mr-2 h-4 w-4 m-1"
+                         viewBox="0 0 16 16"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <g fill="currentColor">
+                      <path d="M8.17 2.002a6 6 0 1 0 5.828 5.828l1.766-1.766A8 8 0 1 1 9.936.236L8.169 2.002Z" />
+                      <path d="M4 8a4.002 4.002 0 0 1 3-3.874v2.142A2 2 0 1 0 9.732 9h2.142A4.002 4.002 0 0 1 4 8Z" />
+                      <path d="m14 2-1-2-3 3v1.586L7.793 6.793l1.414 1.414L11.414 6H13l3-3-2-1Z" />
+                      </g>
+                    </svg>
+                  Goals</a>
                 </div>
               </div>
               {% url 'about' as url %}
@@ -182,8 +199,8 @@
                    tabindex="-1">
                 <a x-on:click="localStorage.setItem('theme', 'light'); currentTheme = 'light'; document.documentElement.classList.remove('dark')"
                    href="#"
-                   :class="{ 'bg-primary text-white font-semibold': currentTheme === 'light', 'hover:bg-primarylight hover:text-black': currentTheme !== 'light' }"
-                   class="flex navbar-dropdown-item"
+                   :class="{ 'navbar-dropdown-item-current': currentTheme === 'light', 'navbar-dropdown-item': currentTheme !== 'light' }"
+                   class="flex "
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'light' }"
@@ -197,8 +214,8 @@
                 </a>
                 <a x-on:click="localStorage.setItem('theme', 'dark'); currentTheme = 'dark'; document.documentElement.classList.add('dark')"
                    href="#"
-                   :class="{ 'bg-primary text-white font-semibold': currentTheme === 'dark', 'hover:bg-primarylight hover:text-black': currentTheme !== 'dark' }"
-                   class="flex navbar-dropdown-item"
+                   class="flex"
+                   :class="{ 'navbar-dropdown-item-current': currentTheme === 'dark', 'navbar-dropdown-item': currentTheme !== 'dark' }"
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'dark' }"
@@ -211,8 +228,8 @@
                 </a>
                 <a x-on:click="localStorage.removeItem('theme'); currentTheme = 'system'; updateThemeBasedOnSystemPreference()"
                    href="#"
-                   :class="{ 'bg-primary text-white font-semibold': currentTheme === 'system', 'hover:bg-primarylight hover:text-black': currentTheme !== 'system' }"
-                   class="flex navbar-dropdown-item"
+                   :class="{ 'navbar-dropdown-item-current': currentTheme === 'system', 'navbar-dropdown-item': currentTheme !== 'system' }"
+                   class="flex"
                    role="menuitem"
                    tabindex="-1">
                   <svg :class="{ 'fill-textwhitedim': currentTheme === 'system' }"
@@ -383,6 +400,24 @@
             <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
           </svg>
         Journal</a>
+        {% url 'goal:home' as url %}
+        <a x-show="toolMenuOpen"
+           x-transition
+           href="{{ url }}"
+           class="flex {% if request.path == url %} mobile-navbar-dropdown-item-current {% else %} mobile-navbar-dropdown-item {% endif %}"
+           role="menuitem"
+           tabindex="-1">
+          <svg class="mr-2 h-4 w-4 m-1"
+               viewBox="0 0 16 16"
+               fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <g fill="currentColor">
+            <path d="M8.17 2.002a6 6 0 1 0 5.828 5.828l1.766-1.766A8 8 0 1 1 9.936.236L8.169 2.002Z" />
+            <path d="M4 8a4.002 4.002 0 0 1 3-3.874v2.142A2 2 0 1 0 9.732 9h2.142A4.002 4.002 0 0 1 4 8Z" />
+            <path d="m14 2-1-2-3 3v1.586L7.793 6.793l1.414 1.414L11.414 6H13l3-3-2-1Z" />
+            </g>
+          </svg>
+        Goals</a>
         {% url 'about' as url %}
         <a href="{{ url }}"
            class="{% if request.path == url %} mobile-navbar-item-current {% else %} mobile-navbar-item {% endif %}"
