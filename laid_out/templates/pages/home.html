@@ -16,6 +16,9 @@
         <div class="text-end text-sm">to help with anxiety</div>
       </div>
       <div class="text-center">A self-help web app with minimalistic utilities.</div>
+      <div class="text-center">
+        <a class="button-1" href="{% url 'anxiety:home' %}">Get started</a>
+      </div>
     </div>
     <div class="mx-2 flex flex-col items-center h-full w-full gap-y-10 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
       <div class="text-center text-2xl font-extrabold text-primary lg:hidden">Anxiety</div>
@@ -83,6 +86,29 @@
             </a>
           </div>
           <div>Write down your thoughts.</div>
+        </div>
+      </div>
+    </div>
+    <div class="mx-2 flex flex-col justify-between items-center h-full w-full gap-y-10 px-3 py-10 focus:outline-none sm:max-w-screen-lg">
+      <div class="text-center text-2xl font-extrabold text-primary lg:hidden">Goals</div>
+      <div class="flex flex-col lg:flex-row lg:justify-around gap-y-10 items-center">
+        <div class="flex items-center justify-center order-2 lg:w-1/2">
+          <img class="h-5/6 w-5/6"
+               src="{% static 'images/goal_preview.png' %}"
+               alt="preview failed to load"
+               loading="lazy" />
+        </div>
+        <div class="flex flex-col gap-y-6 mx-4 order-3 lg:order-2 lg:w-1/3">
+          <div>
+            <a class="lg:block text-start text-2xl font-extrabold text-primary hidden transition duration-200 justify-center items-center rounded group button hover:text-black focus:outline-none"
+               href="{% url 'goal:home' %}">
+              <span class="inline-block relative">
+                Goals
+                <span class="absolute right-0 bottom-0 bg-primary h-0.5 w-0 group-hover:w-full transition-all duration-200"></span>
+              </span>
+            </a>
+          </div>
+          <div>Write down your goals to help stay focused on what's important to you.</div>
         </div>
       </div>
     </div>

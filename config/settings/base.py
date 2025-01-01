@@ -83,6 +83,7 @@ LOCAL_APPS = [
     "laid_out.anxiety",
     "laid_out.gratitude",
     "laid_out.journal",
+    "laid_out.goal",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

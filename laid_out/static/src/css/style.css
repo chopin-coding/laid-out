@@ -145,5 +145,46 @@
     @apply text-danger text-sm
   }
 
+  .button-1 {
+    @apply transition duration-100 ease-out rounded px-3 py-2 ring-1 ring-opacity-5  ring-primarylight text-textblackdimmer hover:bg-primarylight hover:text-black focus:outline-none
+  }
+
+  .navbar-item {
+    @apply transition duration-100 ease-out hover:bg-primarylight hover:text-black text-sm text-textblackdimmer  rounded-md px-3 py-2 font-medium
+  }
+
+  .navbar-item-current {
+    @apply bg-primary text-white font-semibold transition duration-100 ease-out text-sm rounded-md px-3 py-2
+  }
+
+  .navbar-dropdown-item {
+    @apply transition duration-100 ease-out hover:bg-primarylight hover:text-black text-sm text-textblackdimmer rounded-md px-4 py-2 font-medium
+  }
+
+  .navbar-dropdown-item-current {
+    @apply transition duration-100 bg-primary text-white font-semibold text-sm rounded-md px-4 py-2
+  }
+
+  .mobile-navbar-item {
+    @apply transition ease-out duration-100 hover:bg-primarylight hover:text-black  text-sm text-textblackdimmer block rounded-md px-3 py-2 font-medium
+  }
+
+  .mobile-navbar-item-current {
+    @apply transition ease-out duration-100 bg-primary text-white font-semibold text-sm block rounded-md px-3 py-2
+  }
+
+  .mobile-navbar-dropdown-item {
+    @apply transition ease-out duration-100 hover:bg-primarylight hover:text-black text-sm items-center text-textblackdimmer rounded-md block px-4 py-2 font-medium
+  }
+
+  .mobile-navbar-dropdown-item-current {
+    @apply transition ease-out duration-100 bg-primary text-white font-semibold text-sm items-center rounded-md block px-4 py-2
+  }
+
+  .custom-checkbox {
+    @apply appearance-none transition duration-100 border border-primarylight rounded bg-backg checked:bg-primary hover:border-primary checked:after:content-['✔'] checked:after:text-white checked:after:flex checked:after:justify-center checked:after:items-center
+  }
+
+
   /* allauth error text */
 }

@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import {ref, onMounted, nextTick, watch} from "vue";
+import {ref, onMounted, nextTick} from "vue";
 
-import * as helpers from "../helpers";
-import TreeNodeComponent from "./TreeNodeComponent.vue";
-import {TreeNode} from "../models";
-import TreeComponent from "./TreeComponent.vue";
+import {GoalNode} from "../models";
+import GoalComponent from "./GoalComponent.vue";
 import TransitionBasic from "../../transitions/TransitionBasic.vue";
 import TransitionSlide from "../../transitions/TransitionSlide.vue";
 
-interface TreeNodeProps {
-  node: TreeNode;
+interface GoalNodeProps {
+  node: GoalNode;
   loggedIn: boolean;
-  hideUncontrollable: boolean;
+  hideCompleted: boolean;
   nodeType: "root" | "child";
   singleNodeLeft: boolean;
   parentNodeId: string;
-  parentNodeLocked?: boolean;
+  parentNodeCompleted?: boolean;
 }
 
-// defineProps<TreeNode[]>(); doesn't work
-let props = defineProps<TreeNodeProps>();
+// defineProps<GoalNode[]>(); doesn't work
+let props = defineProps<GoalNodeProps>();
 
 const emit = defineEmits([
   "childBtnHandler",
@@ -31,8 +29,9 @@ const hovered = ref(false);
 const focused = ref(false);
 const deleted = ref(false);
 
+
 function nodeResize() {
-  let textarea = document.getElementById(`${props.node.node_id}-titleInput`);
+  let textarea = document.getElementById(`${props.node.id}-titleInput`);
 
   textarea.style.height = "18px";
   textarea.style.height = textarea.scrollHeight + "px";
@@ -44,6 +43,19 @@ async function focusinHandler() {
   nodeResize();
 }
 
+function handleDelete(
+    event: KeyboardEvent,
+    title: string,
+    singleNodeLeft: boolean,
+    nodeType: string,
+    nodeId: string
+) {
+  if (title === "" && (!singleNodeLeft || nodeType !== "root")) {
+    event.preventDefault();
+    emit("deleteBtnHandler", nodeId);
+  }
+}
+
 onMounted(() => {
   nodeResize();
 });
@@ -52,7 +64,7 @@ onMounted(() => {
 <template>
   <TransitionSlide>
     <li
-        v-show="!(node.locked && hideUncontrollable) && !deleted"
+        v-show="!(node.completed && hideCompleted) && !deleted"
         class="pt-1.5"
         :class="{
         'border-l border-textblackdimmer2 ml-3 sm:ml-3 pl-4 sm:pl-4':
@@ -66,73 +78,31 @@ onMounted(() => {
       >
         <div class="flex w-full min-w-0 gap-x-1 justify-self-start">
           <!-- controllable/uncontrollable switch -->
-          <div class="flex">
-            <button :disabled="parentNodeLocked"
-                class="transition duration-100 ease-out text-textblackdimmer hover:text-black"
-                v-on:click="node.locked = !node.locked"
-                title="Mark controllable/uncontrollable"
-            >
-              <!-- Locked icon -->
-              <svg
-                  v-if="node.locked"
-                  class="h-6 w-6 text-textblackdimmer2"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                    d="M7 10.029C7.471 10 8.053 10 8.8 10h6.4c.747 0 1.329 0 1.8.029m-10 0c-.588.036-1.006.117-1.362.298a3 3 0 0 0-1.311 1.311C4 12.28 4 13.12 4 14.8v1.4c0 1.68 0 2.52.327 3.162a3 3 0 0 0 1.311 1.311C6.28 21 7.12 21 8.8 21h6.4c1.68 0 2.52 0 3.162-.327a3 3 0 0 0 1.311-1.311C20 18.72 20 17.88 20 16.2v-1.4c0-1.68 0-2.52-.327-3.162a3 3 0 0 0-1.311-1.311c-.356-.181-.774-.262-1.362-.298m-10 0V8a5 5 0 0 1 10 0v2.029"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-              </svg>
-              <!-- Unlocked icon -->
-              <svg
-                  v-else-if="!node.locked"
-                  class="h-6 w-6"
-                  :class="{ 'text-textblackdimmer2': parentNodeLocked }"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                    d="M16.584 6A5.001 5.001 0 0 0 7 8v2.029m0 0C7.471 10 8.053 10 8.8 10h6.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C20 12.28 20 13.12 20 14.8v1.4c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311C17.72 21 16.88 21 15.2 21H8.8c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C4 18.72 4 17.88 4 16.2v-1.4c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311c.356-.181.774-.262 1.362-.298Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+          <div class="flex items-center">
+            <input v-show="!parentNodeCompleted"
+                   class="w-6 h-6 mr-2 custom-checkbox" type="checkbox"
+                   v-model="node.completed"/>
           </div>
 
           <!-- node text -->
           <div class="flex w-full">
             <TransitionBasic>
               <textarea
-                  @keydown.enter.exact.prevent.stop="
-                  emit('siblingBtnHandler', node.node_id)
-                "
-                  @keydown.tab.exact.prevent.stop="
-                  emit('childBtnHandler', node.node_id)
-                "
-                 @keydown.delete.exact.stop="
-                  node.title === '' && (!singleNodeLeft || nodeType !== 'root') && emit('deleteBtnHandler', props.node.node_id)
-                "
+                  @keydown.enter.exact.prevent.stop="emit('siblingBtnHandler', node.id)"
+                  @keydown.tab.exact.prevent.stop="emit('childBtnHandler', node.id)"
+                  @keydown.delete.exact.stop="handleDelete($event, node.title, singleNodeLeft, nodeType, props.node.id)"
                   @input="nodeResize"
                   class="w-full resize-none rounded bg-backg px-2 py-2 align-middle text-sm transition duration-300 ease-out placeholder-textblackdimmer2 focus:outline-none"
                   :class="{
                   'text-textblackdimmer2 line-through':
-                    parentNodeLocked || node.locked,
+                    parentNodeCompleted || node.completed,
                     'bg-primarylight': focused
                 }"
                   placeholder="✎..."
                   rows="1"
                   v-model="node.title"
                   type="text"
-                  :id="`${node.node_id}-titleInput`"
+                  :id="`${node.id}-titleInput`"
                   @focusin="focusinHandler"
                   @focusout="focused = false"
                   data-gramm="false"
@@ -147,7 +117,7 @@ onMounted(() => {
         <div class="flex text-textblackdimmer" v-show="hovered || focused">
           <!-- Sibling node button -->
           <button class="transition duration-100 ease-out hover:text-black"
-                  v-on:click="emit('siblingBtnHandler', node.node_id)"
+                  v-on:click="emit('siblingBtnHandler', node.id)"
                   title="Add node (↵ Enter)"
           >
             <svg
@@ -168,7 +138,7 @@ onMounted(() => {
 
           <!-- Child node button -->
           <button class="transition duration-100 ease-out hover:text-black"
-                  v-on:click="emit('childBtnHandler', node.node_id)"
+                  v-on:click="emit('childBtnHandler', node.id)"
                   title="Add child node (↹ Tab)"
           >
             <svg
@@ -192,7 +162,7 @@ onMounted(() => {
               v-show="!singleNodeLeft || nodeType !== 'root'"
               class="transition duration-100 ease-out hover:text-black"
               v-on:click="
-              emit('deleteBtnHandler', props.node.node_id);
+              emit('deleteBtnHandler', props.node.id);
               deleted = true;
             "
               title="Delete node (⌫ Backspace or Delete)"
@@ -215,15 +185,15 @@ onMounted(() => {
         </div>
       </div>
 
-      <template v-if="node.children.length > 0">
+      <template v-if="node.children?.length > 0">
         <component
-            :is="TreeComponent"
+            :is="GoalComponent"
             :nodes="node.children"
             :logged-in="loggedIn"
-            :hide-uncontrollable="hideUncontrollable"
+            :hide-completed="hideCompleted"
             :node-type="'child'"
-            :parent-node-id="node.node_id"
-            :parent-node-locked="parentNodeLocked || node.locked"
+            :parent-node-id="node.id"
+            :parent-node-completed="parentNodeCompleted || node.completed"
         />
       </template>
     </li>

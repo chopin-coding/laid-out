@@ -113,7 +113,7 @@ onMounted(() => {
   <div class="flex items-end gap-x-4 mb-[1px]">
     <div>
       <button v-on:click="showCatHandler"
-              class="max-w-full bg-white justify-around gap-x-3 rounded px-3 py-2 mb-3 ring-1 ring-opacity-5 transition duration-100 ease-out primaryAction ring-primarylight text-textblackdimmer hover:bg-primarylight hover:text-black focus:outline-none">
+              class="button-1 mb-3 bg-white">
         Toggle cat
       </button>
     </div>
