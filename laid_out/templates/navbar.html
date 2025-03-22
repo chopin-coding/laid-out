@@ -329,11 +329,6 @@
          x-show="isMobileMenuOpen"
          class="px-2 sm:hidden sm:px-6">
       <div x-data="{ toolMenuOpen: false }" class="px-2 pt-2 pb-3 space-y-1">
-        <div class="flex h-max items-center space-x-4">
-          <a href="{% url 'home' %}">
-            <span class="mx-3 text-3xl font-black italic text-primary">laid out</span>
-          </a>
-        </div>
         {% url 'home' as url %}
         <a href="{{ url }}"
            class="{% if request.path == url %} mobile-navbar-item-current {% else %} mobile-navbar-item {% endif %}"

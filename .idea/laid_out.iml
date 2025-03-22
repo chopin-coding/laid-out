@@ -17,8 +17,10 @@
       <excludeFolder url="file://$MODULE_DIR$/collectedstatic" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/staticfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/laid_out/goal/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/laid_out/static/dist" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.11.9 Docker Compose (django)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.11.11 Docker Compose (django) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

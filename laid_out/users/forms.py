@@ -1,8 +1,9 @@
-from allauth.account.forms import SignupForm
+from allauth.account.forms import ResetPasswordForm, SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from turnstile.fields import TurnstileField
 
 User = get_user_model()
 
@@ -32,6 +33,8 @@ class UserSignupForm(SignupForm):
     Check UserSocialSignupForm for accounts created from social.
     """
 
+    turnstile = TurnstileField()
+
 
 class UserSocialSignupForm(SocialSignupForm):
     """
@@ -39,3 +42,17 @@ class UserSocialSignupForm(SocialSignupForm):
     Default fields will be added automatically.
     See UserSignupForm otherwise.
     """
+
+
+class CustomResetPasswordForm(ResetPasswordForm):
+    turnstile = TurnstileField()
+
+    def save(self, request):
+        # Ensure you call the parent class's save.
+        # .save() returns a string containing the email address supplied
+        email_address = super().save(request)
+
+        # Add your own processing here.
+
+        # Ensure you return the original result
+        return email_address

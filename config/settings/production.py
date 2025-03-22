@@ -242,3 +242,7 @@ def immutable_file_test(path, url):
 
 
 WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
+
+
+TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY")
+TURNSTILE_SECRET = env("TURNSTILE_SECRET")
