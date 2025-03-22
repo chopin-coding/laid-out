@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "corsheaders",
     "django_vite",
+    "turnstile",
 ]
 
 LOCAL_APPS = [
@@ -241,6 +242,15 @@ MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
 # Force the `admin` sign in process to go through the `django-allauth` workflow
 DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)
+# https://django-allauth.readthedocs.io/en/latest/forms.html
+ACCOUNT_FORMS = {
+    "signup": "laid_out.users.forms.UserSignupForm",
+    "reset_password": "laid_out.users.forms.CustomResetPasswordForm",
+}
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+# SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
+# https://django-allauth.readthedocs.io/en/latest/forms.html
+SOCIALACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSocialSignupForm"}
 
 # LOGGING
 # ------------------------------------------------------------------------------

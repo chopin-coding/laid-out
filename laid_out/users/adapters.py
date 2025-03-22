@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
 
 class AccountAdapter(DefaultAccountAdapter):
     def is_open_for_signup(self, request: HttpRequest) -> bool:
-        return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
+        return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", False)
 
     def send_mail(self, template_prefix, email, context, *args, **kwargs) -> None:
         try:

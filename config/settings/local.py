@@ -95,13 +95,6 @@ if allauth_social_loaded:
     SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED  # noqa: F405
     SOCIALACCOUNT_STORE_TOKENS = False
 
-    # https://django-allauth.readthedocs.io/en/latest/forms.html
-    # ACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSignupForm"}
-    # https://django-allauth.readthedocs.io/en/latest/configuration.html
-    # SOCIALACCOUNT_ADAPTER = "laid_out.users.adapters.SocialAccountAdapter"
-    # https://django-allauth.readthedocs.io/en/latest/forms.html
-    # SOCIALACCOUNT_FORMS = {"signup": "laid_out.users.forms.UserSocialSignupForm"}
-
     SOCIALACCOUNT_PROVIDERS = {
         "google": {
             "SCOPE": [
@@ -119,4 +112,5 @@ if allauth_social_loaded:
         }
     }
 
-# added dev branch
+# TURNSTILE_SITEKEY = None
+# TURNSTILE_SECRET = None
