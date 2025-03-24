@@ -1,16 +1,18 @@
-
+networks:
+  web:
+    external: true
+  internal:
+    external: false
 
 volumes:
   production_postgres_data: { }
   production_postgres_data_backups: { }
-  production_traefik: { }
 
 services:
   django: &django
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
-
     image: laid_out_production_django
     depends_on:
       - postgres
@@ -20,6 +22,20 @@ services:
       - ./.envs/.production/.postgres
       - ./.envs/.production/.allauth
     command: /start
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laid-out-django.rule=Host(`laid-out.com`)"
+      - "traefik.http.routers.laid-out-django.entrypoints=web-secure"
+      - "traefik.http.routers.laid-out-django.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.laid-out-django-secured.headers.sslRedirect=true"
+      - "traefik.http.services.laid-out-django.loadbalancer.server.port=8000"
+      - "traefik.http.certificatesresolvers.laidout-resolver.acme.email=support@laid-out.org"
+      - "traefik.http.certificatesresolvers.laidout-resolver.acme.storage=/etc/traefik/acme/acme-laid-out.json"
+      - "traefik.http.certificatesresolvers.laidout-resolver.acme.httpchallenge.entrypoint=web"
+
 
   postgres:
     build:
@@ -31,50 +47,40 @@ services:
       - production_postgres_data_backups:/backups
     env_file:
       - ./.envs/.production/.postgres
-
-  traefik:
-    build:
-      context: .
-      dockerfile: ./compose/production/traefik/Dockerfile
-    image: laid_out_production_traefik
-    depends_on:
-      - django
-    volumes:
-      - production_traefik:/etc/traefik/acme
-    ports:
-      - '0.0.0.0:80:80'
-      - '0.0.0.0:443:443'
-      - '0.0.0.0:5555:5555'
-
-  nginx:
-    build:
-      context: .
-      dockerfile: ./compose/production/nginx/Dockerfile
-    image: laid_out_production_nginx
-    depends_on:
-      - django
-    volumes:
-      - production_postgres_data:/usr/share/nginx/media
-    ports:
-      - '0.0.0.0:5000:80'
+    networks:
+      - internal
 
   redis:
     image: redis:6
+    networks:
+      - internal
 
   celeryworker:
     <<: *django
     image: laid_out_production_celeryworker
     command: /start-celeryworker
+    networks:
+      - internal
 
   celerybeat:
     <<: *django
     image: laid_out_production_celerybeat
     command: /start-celerybeat
+    networks:
+      - internal
 
   flower:
     <<: *django
     image: laid_out_production_flower
     command: /start-flower
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laid-out-flower.rule=Host(`flower.laid-out.com`)"
+      - "traefik.http.routers.laid-out-flower.entrypoints=flower"
+      - "traefik.http.services.laid-out-flower.loadbalancer.server.port=5555"
 
   awscli:
     build:
@@ -84,3 +90,5 @@ services:
       - ./.envs/.production/.django
     volumes:
       - production_postgres_data_backups:/backups:z
+    networks:
+      - internal
