@@ -70,13 +70,6 @@ updates:
     schedule:
       interval: 'monthly'
 
-  - package-ecosystem: 'docker'
-    # Look for a `Dockerfile` in the `compose/production/traefik` directory
-    directory: 'compose/production/traefik/'
-    # Every weekday
-    schedule:
-      interval: 'monthly'
-
   # Enable version updates for Python/Pip - Production
   - package-ecosystem: 'pip'
     # Look for a `requirements.txt` in the `root` directory
