@@ -30,12 +30,9 @@ services:
       - "traefik.http.routers.laid-out-django.rule=Host(`laid-out.org`)"
       - "traefik.http.routers.laid-out-django.entrypoints=web-secure"
       - "traefik.http.routers.laid-out-django.tls.certresolver=letsencrypt"
-      - "traefik.http.middlewares.laid-out-django-secured.headers.sslRedirect=true"
       - "traefik.http.services.laid-out-django.loadbalancer.server.port=8000"
       - "traefik.http.routers.laid-out-django.tls.options=default"
-      - "traefik.http.routers.laid-out-django.tls.domains[0].main=laid-out.org"
-      - "traefik.http.routers.laid-out-django.tls.domains[0].sans=*.laid-out.org"
-      - "traefik.http.middlewares.laid-out-django-secured.headers.customresponseheaders.X-ACME-Email=support@laid-out.org"
+      - "traefik.http.routers.laid-out-django.tls.certresolver.letsencrypt.acme.email=your-app-specific-email@laid-out.org"
 
 
   postgres:
