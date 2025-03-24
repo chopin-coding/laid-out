@@ -71,15 +71,19 @@ services:
     <<: *django
     image: laid_out_production_flower
     command: /start-flower
-    networks:
-      - internal
-      - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.laid-out-flower.rule=Host(`flower.laid-out.org`)"
+      - "traefik.http.routers.laid-out-flower.rule=Host(`laid-out.org`)"
       - "traefik.http.routers.laid-out-flower.entrypoints=web-secure"
       - "traefik.http.routers.laid-out-flower.tls.certresolver=letsencrypt"
       - "traefik.http.services.laid-out-flower.loadbalancer.server.port=5555"
+      - "traefik.http.routers.laid-out-flower.service=laid-out-flower"
+      # Add a port number to access flower
+      - "traefik.http.services.laid-out-flower.loadbalancer.server.port=5555"
+    networks:
+      - web
+      - default
+
 
   awscli:
     build:
