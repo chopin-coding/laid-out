@@ -63,14 +63,14 @@ services:
     networks:
       - internal
 
-  flower:
-    <<: *django
-    image: laid_out_production_flower
-    container_name: laid-out_flower
-    command: /start-flower
-    networks:
-      - web
-      - internal
+#  flower:
+#    <<: *django
+#    image: laid_out_production_flower
+#    container_name: laid-out_flower
+#    command: /start-flower
+#    networks:
+#      - web
+#      - internal
 
   awscli:
     build:
