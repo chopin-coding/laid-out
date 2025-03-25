@@ -14,6 +14,7 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
     image: laid_out_production_django
+    container_name: laid-out_django
     depends_on:
       - postgres
       - redis
@@ -31,6 +32,7 @@ services:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
     image: laid_out_production_postgres
+    container_name: laid-out_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -41,12 +43,14 @@ services:
 
   redis:
     image: redis:6
+    container_name: laid-out_redis
     networks:
       - internal
 
   celeryworker:
     <<: *django
     image: laid_out_production_celeryworker
+    container_name: laid-out_celeryworker
     command: /start-celeryworker
     networks:
       - internal
@@ -54,6 +58,7 @@ services:
   celerybeat:
     <<: *django
     image: laid_out_production_celerybeat
+    container_name: laid-out_celerybeat
     command: /start-celerybeat
     networks:
       - internal
@@ -61,6 +66,7 @@ services:
   flower:
     <<: *django
     image: laid_out_production_flower
+    container_name: laid-out_flower
     command: /start-flower
     networks:
       - web
@@ -70,6 +76,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/aws/Dockerfile
+    container_name: laid-out_awscli
     env_file:
       - ./.envs/.production/.django
     volumes:
