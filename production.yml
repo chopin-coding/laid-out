@@ -28,17 +28,17 @@ services:
       - internal
     labels:
       - "traefik.enable=true"
-      # HTTP Router
+      # Router configuration
       - "traefik.http.routers.laid-out.rule=Host(`laid-out.org`) || Host(`www.laid-out.org`)"
       - "traefik.http.routers.laid-out.entrypoints=web-secure"
       - "traefik.http.routers.laid-out.tls=true"
       - "traefik.http.routers.laid-out.tls.certresolver=letsencrypt"
-      # Service
-      - "traefik.http.services.laid-out.loadbalancer.server.port=5000"
+      - "traefik.http.routers.laid-out.service=laid-out-service"
+      # Service configuration
+      - "traefik.http.services.laid-out-service.loadbalancer.server.port=5000"
       # Middleware
-      - "traefik.http.middlewares.csrf.headers.hostsproxyheaders=X-CSRFToken"
-      - "traefik.http.routers.laid-out.middlewares=csrf"
-
+      - "traefik.http.middlewares.laid-out-csrf.headers.hostsproxyheaders=X-CSRFToken"
+      - "traefik.http.routers.laid-out.middlewares=laid-out-csrf"
 
   postgres:
     build:
