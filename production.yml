@@ -26,6 +26,19 @@ services:
     networks:
       - web
       - internal
+    labels:
+      - "traefik.enable=true"
+      # HTTP Router
+      - "traefik.http.routers.laid-out.rule=Host(`laid-out.org`) || Host(`www.laid-out.org`)"
+      - "traefik.http.routers.laid-out.entrypoints=web-secure"
+      - "traefik.http.routers.laid-out.tls=true"
+      - "traefik.http.routers.laid-out.tls.certresolver=letsencrypt"
+      # Service
+      - "traefik.http.services.laid-out.loadbalancer.server.port=5000"
+      # Middleware
+      - "traefik.http.middlewares.csrf.headers.hostsproxyheaders=X-CSRFToken"
+      - "traefik.http.routers.laid-out.middlewares=csrf"
+
 
   postgres:
     build:
@@ -63,14 +76,14 @@ services:
     networks:
       - internal
 
-#  flower:
-#    <<: *django
-#    image: laid_out_production_flower
-#    container_name: laid-out_flower
-#    command: /start-flower
-#    networks:
-#      - web
-#      - internal
+  #  flower:
+  #    <<: *django
+  #    image: laid_out_production_flower
+  #    container_name: laid-out_flower
+  #    command: /start-flower
+  #    networks:
+  #      - web
+  #      - internal
 
   awscli:
     build:
