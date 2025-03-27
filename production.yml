@@ -1,6 +1,6 @@
 volumes:
-  production_postgres_data: {}
-  production_postgres_data_backups: {}
+  production_postgres_data: { }
+  production_postgres_data_backups: { }
 
 services:
   django: &django
@@ -8,7 +8,6 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
     image: laid_out_production_django
-    container_name: laid-out-django
     depends_on:
       - postgres
       - redis
@@ -18,22 +17,14 @@ services:
       - ./.envs/.production/.allauth
     command: /start
     networks:
-      - traefik-public
+      - web
       - default
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.laid-out-secure-router.rule=Host(`laid-out.org`) || Host(`www.laid-out.org`)"
-      - "traefik.http.routers.laid-out-secure-router.entrypoints=web-secure"
-      - "traefik.http.routers.laid-out-secure-router.tls.certresolver=letsencrypt"
-      - "traefik.http.services.laid-out-django.loadbalancer.server.port=5000"
-      - "traefik.docker.network=traefik-public"
 
   postgres:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
     image: laid_out_production_postgres
-    container_name: laid-out-postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -42,30 +33,21 @@ services:
 
   redis:
     image: redis:6
-    container_name: laid-out-redis
 
   celeryworker:
     <<: *django
     image: laid_out_production_celeryworker
-    container_name: laid-out-celeryworker
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
     image: laid_out_production_celerybeat
-    container_name: laid-out-celerybeat
     command: /start-celerybeat
 
-#  flower:
-#    <<: *django
-#    image: laid_out_production_flower
-#    container_name: laid-out-flower
-#    command: /start-flower
-#    networks:
-#      - traefik-public
-#      - default
-#    labels:
-#      - "traefik.enable=true"
+  # flower:
+  #   <<: *django
+  #   image: laid_out_production_flower
+  #   command: /start-flower
 
   awscli:
     build:
@@ -77,6 +59,6 @@ services:
       - production_postgres_data_backups:/backups:z
 
 networks:
-  default:
-  traefik-public:
+  web:
     external: true
+  default:
