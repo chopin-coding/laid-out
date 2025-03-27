@@ -10,6 +10,7 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
     image: laid_out_production_django
+    container_name: laid_out_django
     depends_on:
       - postgres
       - redis
