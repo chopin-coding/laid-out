@@ -17,7 +17,7 @@ services:
       - ./.envs/.production/.allauth
     command: /start
     networks:
-      - web
+      - traefik-public
       - default
 
   postgres:
@@ -59,6 +59,6 @@ services:
       - production_postgres_data_backups:/backups:z
 
 networks:
-  web:
+  traefik-public:
     external: true
   default:
