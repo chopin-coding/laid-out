@@ -1,12 +1,7 @@
-networks:
-  web:
-    external: true
-  internal:
-    external: false
-
 volumes:
-  production_postgres_data: { }
-  production_postgres_data_backups: { }
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  production_traefik: {}
 
 services:
   django: &django
@@ -14,7 +9,7 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
     image: laid_out_production_django
-    container_name: laid-out_django
+    container_name: laid-out-django
     depends_on:
       - postgres
       - redis
@@ -24,75 +19,60 @@ services:
       - ./.envs/.production/.allauth
     command: /start
     networks:
-      - web
-      - internal
+      - traefik-public
+      - default
     labels:
       - "traefik.enable=true"
-      # Router configuration
-      - "traefik.http.routers.laid-out.rule=Host(`laid-out.org`) || Host(`www.laid-out.org`)"
-      - "traefik.http.routers.laid-out.entrypoints=web-secure"
-      - "traefik.http.routers.laid-out.tls=true"
-      - "traefik.http.routers.laid-out.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.laid-out.service=laid-out-service"
-      # Service configuration
-      - "traefik.http.services.laid-out-service.loadbalancer.server.port=5000"
-      # Middleware
-      - "traefik.http.middlewares.laid-out-csrf.headers.hostsproxyheaders=X-CSRFToken"
-      - "traefik.http.routers.laid-out.middlewares=laid-out-csrf"
 
   postgres:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
     image: laid_out_production_postgres
-    container_name: laid-out_postgres
+    container_name: laid-out-postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
     env_file:
       - ./.envs/.production/.postgres
-    networks:
-      - internal
 
   redis:
     image: redis:6
-    container_name: laid-out_redis
-    networks:
-      - internal
+    container_name: laid-out-redis
 
   celeryworker:
     <<: *django
     image: laid_out_production_celeryworker
-    container_name: laid-out_celeryworker
+    container_name: laid-out-celeryworker
     command: /start-celeryworker
-    networks:
-      - internal
 
   celerybeat:
     <<: *django
     image: laid_out_production_celerybeat
-    container_name: laid-out_celerybeat
+    container_name: laid-out-celerybeat
     command: /start-celerybeat
-    networks:
-      - internal
 
-  #  flower:
-  #    <<: *django
-  #    image: laid_out_production_flower
-  #    container_name: laid-out_flower
-  #    command: /start-flower
-  #    networks:
-  #      - web
-  #      - internal
+#  flower:
+#    <<: *django
+#    image: laid_out_production_flower
+#    container_name: laid-out-flower
+#    command: /start-flower
+#    networks:
+#      - traefik-public
+#      - default
+#    labels:
+#      - "traefik.enable=true"
 
   awscli:
     build:
       context: .
       dockerfile: ./compose/production/aws/Dockerfile
-    container_name: laid-out_awscli
     env_file:
       - ./.envs/.production/.django
     volumes:
       - production_postgres_data_backups:/backups:z
-    networks:
-      - internal
+
+networks:
+  default:
+  traefik-public:
+    external: true
