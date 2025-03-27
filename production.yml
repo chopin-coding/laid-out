@@ -1,7 +1,6 @@
 volumes:
   production_postgres_data: {}
   production_postgres_data_backups: {}
-  production_traefik: {}
 
 services:
   django: &django
@@ -23,6 +22,11 @@ services:
       - default
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.laid-out-secure-router.rule=Host(`laid-out.org`) || Host(`www.laid-out.org`)"
+      - "traefik.http.routers.laid-out-secure-router.entrypoints=web-secure"
+      - "traefik.http.routers.laid-out-secure-router.tls.certresolver=letsencrypt"
+      - "traefik.http.services.laid-out-django.loadbalancer.server.port=5000"
+      - "traefik.docker.network=traefik-public"
 
   postgres:
     build:
