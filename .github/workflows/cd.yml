@@ -1,0 +1,19 @@
+name: Deploy
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger on version tags like v1.0.0, v1.2.3 etc.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: /home/deployer_laid-out/laid-out/deploy.sh
