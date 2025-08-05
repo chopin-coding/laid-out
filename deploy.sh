@@ -6,6 +6,11 @@ set -e # Exit immediately if a command exits with a non-zero status.
 APP_DIR="/home/deployer_laid-out/laid-out"
 IDENTITY_FILE="/home/deployer_laid-out/.ssh/id_ed25519"
 
+# Source deployment environment variables if the file exists
+if [ -f "$APP_DIR/deploy.env" ]; then
+  . "$APP_DIR/deploy.env"
+fi
+
 # --- Start Deployment ---
 echo "--- Changing to application directory ---"
 cd "$APP_DIR" || exit
