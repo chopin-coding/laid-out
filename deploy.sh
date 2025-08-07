@@ -43,6 +43,9 @@ echo "--- Installing/updating NPM dependencies ---"
 # Now that the environment is set up, this command should be found.
 npm install
 
+echo "--- Clean up old staticfiles ---"
+rm -rf staticfiles &&
+
 echo "--- Building frontend assets ---"
 npm run build
 
