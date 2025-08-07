@@ -43,9 +43,14 @@ echo "--- Installing/updating NPM dependencies ---"
 # Now that the environment is set up, this command should be found.
 npm install
 
+echo "--- Building frontend assets ---"
+npm run build
+
 echo "--- Restarting application with Docker Compose ---"
 # This assumes docker-compose.yml is in the APP_DIR
 # Using --build will rebuild images if the Dockerfile has changed.
-docker compose up -d --build --remove-orphans
+docker compose -f production.yml build
+docker compose -f production.yml run --rm django python manage.py migrate
+docker compose -f production.yml up -d --remove-orphans
 
 echo "--- Deployment finished successfully ---"
