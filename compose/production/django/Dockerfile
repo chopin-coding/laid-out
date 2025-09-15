@@ -1,9 +1,9 @@
 
 # define an alias for the specific python version used in this file.
-FROM python:3.11.11-slim-bullseye as python
+FROM python:3.11.11-slim-bullseye AS python
 
 # Python build stage
-FROM python as python-build-stage
+FROM python AS python-build-stage
 
 ARG BUILD_ENVIRONMENT=production
 
@@ -25,7 +25,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels  \
 
 
 # Python 'run' stage
-FROM python as python-run-stage
+FROM python AS python-run-stage
 
 ARG BUILD_ENVIRONMENT=production
 ARG APP_HOME=/app

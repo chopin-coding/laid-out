@@ -162,6 +162,13 @@ STATICFILES_DIRS = [str(APPS_DIR / "static"), str(DJANGO_VITE_ASSETS_PATH)]
 #     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 # ]
 
+DJANGO_VITE = {
+    "default": {
+        "manifest_path": DJANGO_VITE_ASSETS_PATH / ".vite" / "manifest.json",
+        "assets_path": DJANGO_VITE_ASSETS_PATH,
+    }
+}
+
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
