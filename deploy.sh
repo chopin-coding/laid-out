@@ -44,7 +44,7 @@ echo "--- Installing/updating NPM dependencies ---"
 npm install
 
 echo "--- Clean up old staticfiles ---"
-rm -rf staticfiles
+rm -rf staticfiles &&
 
 echo "--- Building frontend assets ---"
 npm run build
