@@ -165,7 +165,6 @@ STATICFILES_DIRS = [str(APPS_DIR / "static"), str(DJANGO_VITE_ASSETS_PATH)]
 DJANGO_VITE = {
     "default": {
         "manifest_path": DJANGO_VITE_ASSETS_PATH / ".vite" / "manifest.json",
-        "assets_path": DJANGO_VITE_ASSETS_PATH,
     }
 }
 
